@@ -292,11 +292,14 @@ DEPENDENCIES
   bootstrap
   bootstrap-datepicker-rails
   byebug
+  cairo-gobject (~> 3.4, >= 3.4.3)
   capybara (>= 2.15)
   chromedriver-helper
   coffee-rails (~> 4.2)
   devise
   font-awesome-sass
+  gio2 (~> 3.4, >= 3.4.3)
+  gobject-introspection
   image_processing
   jbuilder (~> 2.5)
   jquery-rails
