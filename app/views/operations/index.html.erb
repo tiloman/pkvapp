@@ -1,0 +1,25 @@
+<h1>Vorgänge</h1>
+
+
+  <div class="operations_container">
+  	<div class="operation shadow new_operation">  
+	  <%= link_to new_operation_path do %>
+	  	<i class="fas fa-plus-circle"></i><br><p>Neu</p>
+	  <% end %>
+	</div>
+      <%= render @operations %>
+    
+      <%= render @on_hold_operations %>
+     
+    <%= render @closed_operations %>
+
+    <div class="placeholder"></div>
+  <div class="placeholder"></div>
+  <div class="placeholder"></div>
+  <div class="placeholder"></div>
+
+  </div>
+<hr>
+
+<br>
+

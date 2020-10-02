@@ -1,0 +1,85 @@
+
+
+<div class="details_box">
+  <%= best_in_place @operation, :billing_date, as: :date %>
+  <%= @operation.billing_date.strftime("Rechnung vom %d.%m.%Y") if @operation.billing_date %><br>
+  Fällig in: 
+  <%= distance_of_time_in_words(Time.now, @operation.bill_deadline) %><br>
+  Person: <%= @operation.person.name %> 
+</div>
+
+<h1 class= <%= @operation.person.color %>>
+  <%= best_in_place @operation, :title %> 
+</h1>
+
+
+<hr>
+
+<div class="operation_container">
+
+  <div class="money_box shadow">
+    <table class="table table-hover table-light table-sm ">
+        <thead>
+      <tr>
+        <th>Rechnungsbetrag</th>
+        <th><%= best_in_place @operation, :value %> €</th>
+      </tr>
+    </thead>
+      <tr>
+        <td>Rückzahlung Versicherung <br>
+          <span class="subtitle"><%= get_insurance_ratio(@operation) %></span></td>
+        <td> <%= best_in_place @operation, :insurance_payback %> €<br>
+         <span class="subtitle"><%= get_insurance_difference(@operation) %></td>
+      </tr>
+      <tr>
+        <td>Rückzahlung Beihilfe<br>
+          <span class="subtitle"><%= get_assistance_ratio(@operation) %></span></td>
+        <td><%= best_in_place @operation, :assistance_payback %> €<br>
+          <span class="subtitle"><%= get_assistance_difference(@operation) %></span></td>
+      </tr>
+      <tr>
+        <th>Offener Betrag</th>
+        <th><%= get_overall_value(@operation) %> €</th>
+      </tr>
+    </table>
+  </div>
+
+  <div class="checkbox_container shadow">
+       <%= render "operations/checkboxes", :operation => @operation %>
+
+  </div>
+
+</div>
+
+
+
+
+
+  <% if @operation.content.present? %>
+    <div class="description_box shadow">
+     <%= @operation.content %>
+    </div>
+  <% end %>
+<br>
+<% if @operation.has_attachments? %>
+  <hr>
+  <h5>Anhänge</h5><br>
+
+  <% if @operation.bill.attached? %>
+    <%= link_to rails_blob_path(@operation.bill, disposition: 'preview') do %>
+      <%= show_bill_preview(@operation) %>
+    <% end %>
+  <% end %>
+
+  <% if @operation.insurance_notice.attached? %>
+    <%= link_to rails_blob_path(@operation.insurance_notice, disposition: 'preview') do %>
+      <%= show_insurance_notice_preview(@operation) %>
+    <% end %>
+  <% end %>
+<% end %> 
+
+  <%= link_to 'Bearbeiten', edit_operation_path(@operation), class: "btn btn-sm btn-primary right" %>
+  <%= link_to 'Löschen', @operation, method: :delete, data: { confirm: 'Sicher?' }, class: "btn btn-sm btn-danger right"  %>
+
+
+

@@ -1,0 +1,28 @@
+<h1>Personen</h1>
+
+
+
+<div class="people_container">
+   <div class="person_box shadow new_person">  
+      <%= link_to new_person_path do %>
+        <i class="fas fa-plus-circle"></i><br><p>Person hinzufügen</p>
+      <% end %>
+    </div>
+
+    <% @people.each do |person| %>
+      <%= content_tag :div, class: "person_box #{person.color} shadow", id: dom_id(person) do %>
+        <%= render person %>
+         
+      <% end %>
+    <% end %>
+<div class="placeholder"></div>
+        <div class="placeholder"></div>
+        <div class="placeholder"></div>
+        <div class="placeholder"></div>
+
+   
+</div>
+
+<br>
+<br>
+

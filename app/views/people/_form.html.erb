@@ -1,0 +1,11 @@
+<div class="form_container">
+<%= simple_form_for @person do |f| %>
+<%= f.error_notification %>
+  <%= f.input :name, label: 'Name', error: 'Der Name ist verpflichtend anzugeben' %>
+  <%= f.input :ratio, as: :radio_buttons, collection: ['80/20', '50/50'],label: "Beihilfe/Versicherung", wrapper: :vertical_collection_inline %>
+  <%= f.input :color, as: :radio_buttons, collection: ['blue', 'green', 'red'],label: "Farbe", wrapper: :vertical_collection_inline %>
+  	<br>
+  <%= f.button :submit, class: "btn-primary btn-block" %>
+<% end %>
+
+</div>

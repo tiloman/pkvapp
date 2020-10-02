@@ -1,0 +1,10 @@
+
+<div class="person_box shadow <%= @person.color %>">
+<%= simple_form_for @person do |f| %>
+  <%= f.input :name, label: 'Name der Person', error: 'Der Name ist verpflichtend anzugeben' %>
+  <%= f.input :ratio, label: 'Beihilfe/Versicherung', collection: ['80/20', '50/50'], prompt: "Select your age", selected: "50/50"%>
+  <%= f.input :color, label: 'Farbe', collection: ['blue', 'green', 'red'], error: 'Der Name ist verpflichtend anzugeben' %>
+
+  <%= f.button :submit,class: "btn btn-primary btn-block" %>
+<% end %>
+</div>

@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  value: 1.5
+  insurance_paid: 
+  insurance_submitted: 
+  assistance_paid: 
+  assistance_submitted: 
+  billing_date: 2020-09-30 13:01:13
+  description: MyText
+
+two:
+  title: MyString
+  value: 1.5
+  insurance_paid: 
+  insurance_submitted: 
+  assistance_paid: 
+  assistance_submitted: 
+  billing_date: 2020-09-30 13:01:13
+  description: MyText

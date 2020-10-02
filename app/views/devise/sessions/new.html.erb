@@ -1,0 +1,21 @@
+<div class="form_container">
+
+<h2>Einloggen</h2>
+
+  <%= simple_form_for(resource, as: resource_name, :html => {:id => "sign_in_user"}, url: session_path(resource_name)) do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :email, :label_html => {:class => 'deviselabels'}, placeholder: 'Email-Adresse',  autofocus: true, :input_html => {:maxlength => 25, :size => 40, class: 'lineitemdevise'} %>
+  <%= f.input :password, :label_html => {:class => 'deviselabels'},  placeholder: 'Passwort', :input_html => {:maxlength => 15, :size => 40, class: 'lineitemdevise'} %>
+
+  <% if devise_mapping.rememberable? %>
+    <%= f.check_box :remember_me %>
+
+  <%= f.label :remember_me, "eingeloggt bleiben", class: 'deviselabels' %>
+<% end %>
+    <br><br>
+  <%= f.button :submit, "Login", class: "btn-primary btn-block" %>
+<% end %>
+<hr>
+
+<%= render "devise/shared/links" %>
+</div>

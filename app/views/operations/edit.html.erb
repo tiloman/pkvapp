@@ -1,0 +1,6 @@
+<h1><%= @operation.title %> bearbeiten</h1>
+
+<%= render 'form', operation: @operation %>
+
+<%= link_to 'Anzeigen', @operation, class:"btn btn-secondary" %> |
+<%= link_to 'Zurück', operations_path, class:"btn btn-secondary" %>

@@ -1,0 +1,26 @@
+<div class="form_container">
+
+<h2><%= current_user.email%></h2>
+
+
+
+  <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :first_name, required: true, autofocus: true %>
+        <%= f.input :last_name, required: true, autofocus: true %>
+        <%= f.input :email, required: true, autofocus: true %>
+        <%= f.input :password %>
+        <%= f.input :password_confirmation %>
+                <%= f.input :current_password, required: true %>
+
+    <br><br>
+  <%= f.button :submit, "Aktualisieren", class: "btn-primary btn-block" %>
+<% end %>
+<hr>
+
+
+<h3>Account löschen</h3>
+
+<%= button_to "Löschen", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "btn btn-outline-danger btn-block" %>
+
+</div>
