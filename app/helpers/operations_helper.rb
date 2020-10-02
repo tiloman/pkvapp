@@ -5,7 +5,8 @@ module OperationsHelper
 		 	if operation.bill.variable?
 		   		image_tag operation.bill.variant(resize_to_limit: [300, 300]), class: "attachment_preview" 
 		   	elsif operation.bill.previewable?
-		   	   	image_tag operation.bill.preview(resize_to_limit: [300, 300]), class: "attachment_preview" 
+		   	   	"PDF PREVIEW NA"
+		   	   	#image_tag operation.bill.preview(resize_to_limit: [300, 300]), class: "attachment_preview" 
 		   	end 
 	    end 
 	 end
@@ -15,7 +16,8 @@ module OperationsHelper
 		 	if operation.insurance_notice.variable?
 		   		image_tag operation.insurance_notice.variant(resize_to_limit: [300, 300]), class: "attachment_preview"  
 		   	elsif operation.insurance_notice.previewable?
-		   	   	image_tag operation.insurance_notice.preview(resize_to_limit: [300, 300]), class: "attachment_preview" 
+		   	   	"PDF PREVIEW NA"
+		   	   	#image_tag operation.insurance_notice.preview(resize_to_limit: [300, 300]), class: "attachment_preview" 
 		   	end 
 	    end 
 	 end
