@@ -31,8 +31,8 @@ class OperationsController < ApplicationController
 
     respond_to do |format|
       if @operation.save
-        format.html { redirect_to @operation, notice: 'Operation was successfully created.' }
-        format.json { render :show, status: :created, location: @operation }
+        format.html { redirect_to operations_path, notice: 'Vorgang wurde angelegt.' }
+        format.json { render :index, status: :created, location: @operation }
       else
         format.html { render :new }
         format.json { render json: @operation.errors, status: :unprocessable_entity }
@@ -42,7 +42,7 @@ class OperationsController < ApplicationController
 
   # PATCH/PUT /operations/1
   # PATCH/PUT /operations/1.json
-  def update     
+  def update
     respond_to do |format|
       if @operation.update(operation_params)
         format.html { redirect_to @operation, notice: 'Operation was successfully updated.' }
@@ -59,7 +59,7 @@ def create_asset
   @bill = Image.new(params[:image_form])
   @bill.save
   render :text => @bill.public_filename
-end 
+end
 
   # DELETE /operations/1
   # DELETE /operations/1.json

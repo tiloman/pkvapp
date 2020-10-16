@@ -16,7 +16,7 @@ class Operation < ApplicationRecord
 
     event :wait do
       transitions from: [:editing, :open, :closed], to: :waiting
-    end 
+    end
 
   end
 
@@ -38,30 +38,30 @@ class Operation < ApplicationRecord
   after_update :update_status
   before_update :insurance_submitted?
   validate :assistance_submitted?
-  validates :title, presence: true, length: { minimum: 2, maximum: 20}
+  validates :title, presence: true, length: { minimum: 2, maximum: 100}
 
   def has_attachments?
   	return true if bill.attached? || insurance_notice.attached?
-  end 
+  end
 
 
   def insurance_submitted?
       if insurance_submitted && insurance_paid == true || insurance_paid == false
-        return true 
+        return true
       else
         errors[:base] << "Versicherung noch nicht eingereicht"
         throw :abort
       end
-  end 
+  end
 
   def assistance_submitted?
       if assistance_submitted && assistance_paid == true || assistance_paid == false
-        return true 
+        return true
       else
         errors[:base] << "Beihilfe noch nicht eingereicht"
         throw :abort
       end
-  end  
+  end
 
   def update_status
   	if assistance_paid && insurance_paid
@@ -71,5 +71,5 @@ class Operation < ApplicationRecord
     else
   		self.open! if closed? || waiting?
   	end
-  end 
+  end
 end

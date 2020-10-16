@@ -9,9 +9,10 @@
   <hr>
   <h3>Daten</h3>
 
- 
-  <%= f.input :bill_deadline, label: 'Fälligkeitsdatum', as: :date %>
+
   <%= f.input :billing_date, label: 'Rechnungsdatum', as: :date %>
+  <%= f.input :bill_deadline, label: 'Fälligkeitsdatum', as: :date %>
+
   <hr>
   <%= f.input :content, as: :rich_text_area, label: "Beschreibung" %>
   <hr>
@@ -29,5 +30,3 @@
   <%= f.button :submit, class: "btn btn-primary btn-block" %>
 <% end %>
 </div>
-
-
