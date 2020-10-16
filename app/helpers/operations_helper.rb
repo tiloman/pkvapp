@@ -29,18 +29,18 @@ module OperationsHelper
 	def get_insurance_ratio(operation)
 		person = operation.person
 		if person.ratio == "80/20"
-			return ("20%: #{operation.value * 0.2} €").html_safe
+			return ("20%: #{(operation.value * 0.2).round(2)} €").html_safe
 		elsif person.ratio == "50/50"
-			return ("50%: #{operation.value * 0.5} €").html_safe
+			return ("50%: #{(operation.value * 0.5).round(2)} €").html_safe
 		end
 	end
 
 	def get_assistance_ratio(operation)
 		person = operation.person
 		if person.ratio == "80/20"
-			return ("80%: #{operation.value * 0.8} €").html_safe
+			return ("80%: #{(operation.value * 0.8).round(2)} €").html_safe
 		elsif person.ratio == "50/50"
-			return ("50%: #{operation.value * 0.5} €").html_safe
+			return ("50%: #{(operation.value * 0.5).round(2)} €").html_safe
 		end
 	end
 
@@ -48,9 +48,9 @@ module OperationsHelper
 		person = operation.person
 		if operation.insurance_payback.present?
 			if person.ratio == "80/20"
-				return ("Differenz: #{operation.insurance_payback.to_i - (operation.value * 0.2)} €").html_safe
+				return ("Differenz: #{(operation.insurance_payback.to_i - (operation.value * 0.2)).round(2)} €").html_safe
 			elsif person.ratio == "50/50"
-				return ("Differenz: #{operation.insurance_payback.to_i - (operation.value * 0.5)} €").html_safe
+				return ("Differenz: #{(operation.insurance_payback.to_i - (operation.value * 0.5)).round(2)} €").html_safe
 			end
 		end
 	end
@@ -59,9 +59,9 @@ module OperationsHelper
 		person = operation.person
 		if operation.insurance_payback.present?
 			if person.ratio == "80/20"
-				return ("Differenz: #{operation.assistance_payback.to_i - (operation.value * 0.8)} €").html_safe
+				return ("Differenz: #{(operation.assistance_payback.to_i - (operation.value * 0.8)).round(2)} €").html_safe
 			elsif person.ratio == "50/50"
-				return ("Differenz: #{operation.assistance_payback.to_i - (operation.value * 0.5)} €").html_safe
+				return ("Differenz: #{(operation.assistance_payback.to_i - (operation.value * 0.5)).round(2)} €").html_safe
 			end
 		end
 	end

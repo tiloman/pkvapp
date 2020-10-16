@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_02_081526) do
+ActiveRecord::Schema.define(version: 2020_10_16_135424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 2020_10_02_081526) do
     t.float "insurance_payback"
     t.float "assistance_payback"
     t.string "aasm_state"
+    t.boolean "paid"
     t.index ["person_id"], name: "index_operations_on_person_id"
   end
 

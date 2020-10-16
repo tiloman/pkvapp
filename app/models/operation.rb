@@ -64,9 +64,9 @@ class Operation < ApplicationRecord
   end
 
   def update_status
-  	if assistance_paid && insurance_paid
+  	if assistance_paid && insurance_paid && paid
   		self.close! if editing? || waiting?
-  	elsif assistance_submitted && insurance_submitted
+  	elsif assistance_submitted && insurance_submitted && paid
       self.wait! if editing? || closed?
     else
   		self.open! if closed? || waiting?
