@@ -5,10 +5,11 @@ module OperationsHelper
 		 	if operation.bill.variable?
 		   		image_tag operation.bill.variant(resize_to_limit: [300, 300]), class: "attachment_preview"
 	   	elsif operation.bill.previewable?
-	   	   	"PDF PREVIEW NA"
-	   	   	#image_tag operation.bill.preview(resize_to_limit: [300, 300]), class: "attachment_preview"
-	   	end
-	    end
+	   	   	image_tag operation.bill.preview(resize_to_limit: [300, 300]), class: "attachment_preview"
+			else
+					link_to "Rechnung", Rails.application.routes.url_helpers.rails_blob_path(operation.insurance_notice, disposition: "attachment")
+			end
+	  end
 	 end
 
 	def show_insurance_notice_preview(operation)
@@ -16,12 +17,11 @@ module OperationsHelper
 		 	if operation.insurance_notice.variable?
 		   		image_tag operation.insurance_notice.variant(resize_to_limit: [300, 300]), class: "attachment_preview"
 	   	elsif operation.insurance_notice.previewable?
-	   	   	#"PDF PREVIEW NA"
 	   	   	image_tag operation.insurance_notice.preview(resize_to_limit: [300, 300]), class: "attachment_preview"
 			else
-					link_to "Download", Rails.application.routes.url_helpers.rails_blob_path(operation.insurance_notice, disposition: "attachment")
+					link_to "Versicherungsantwort", Rails.application.routes.url_helpers.rails_blob_path(operation.insurance_notice, disposition: "attachment")
 			end
-	    end
+	  end
 	 end
 
 	def get_overall_value(operation)
@@ -71,6 +71,21 @@ module OperationsHelper
 	def show_attachment_icon(operation)
 		if operation.has_attachments?
 			return ("<i class='fas fa-paperclip'></i>").html_safe
+		end
+	end
+
+
+	def get_status_name(operation)
+		case operation.aasm_state
+		when "editing"
+			return ("<span class='badge badge-primary'>In Bearbeitung</span>").html_safe
+		when "open"
+			return ("<span class='badge badge-danger'>Noch Bearbeiten</span>").html_safe
+		when "closed"
+			return ("<span class='badge badge-success'>Abgeschlossen</span>").html_safe
+		when "waiting"
+			return ("<span class='badge badge-secondary'>Warten</span>").html_safe
+
 		end
 	end
 

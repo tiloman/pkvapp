@@ -1,27 +1,9 @@
-<% if operation == @on_hold_operations.first %>
 
-    <div class="operation shadow first <%= operation.person.color %>">
-            <div class="status">Warten >></div>
-
-<% elsif operation == @operations.first %>
-
-    <div class="operation shadow first <%= operation.person.color %>">
-            <div class="status">Bearbeitung >></div>
-
-<% elsif operation == @closed_operations.first %>
-
-    <div class="operation shadow first <%= operation.person.color %>">
-            <div class="status">Abgeschlossen >></div>
-
-<% else %>
-    <div class="operation shadow  <%= operation.person.color %>">
-<% end %>
-
-
-
+<div class="operation shadow  <%= operation.person.color %>">
     <span class="title"><%= operation.title %></span>
     <%= show_attachment_icon(operation) %>
     <br>
+    <%= get_status_name(operation) %><br>
     <span class="person"><%= operation.person.name %> |</span>
     <span class="value"><%= operation.value %> €</span>
 

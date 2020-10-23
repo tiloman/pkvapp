@@ -3,14 +3,47 @@ class OperationsController < ApplicationController
 
 
   def index
-    users_operations = Operation.where(person_id: [current_user.people])
-    @operations = users_operations.open_operations
-    @closed_operations = users_operations.closed_operations
-    @on_hold_operations = users_operations.on_hold_operations
+    users_operations = Operation.unscoped.where(person_id: [current_user.people])
+    @people = current_user.people
+    operations = users_operations
+
+    # if params[:person]
+    #   filtered_operations = operations.where(person_id: params[:person])
+    # else
+    #   filtered_operations = operations
+    # end
+
+    if params[:filter].present?
+      filtered_operations = operations.where(paid: true) if params[:filter] == "bill_paid"
+      filtered_operations = operations.where(paid: false) if params[:filter] == "bill_not_paid"
+      filtered_operations = operations.where(insurance_submitted: true) if params[:filter] == "insurance_notice"
+      filtered_operations = operations.where(insurance_submitted: false) if params[:filter] == "insurance_no_notice"
+      filtered_operations = operations.where(insurance_paid: true) if params[:filter] == "insurance_paid"
+      filtered_operations = operations.where(insurance_paid: false) if params[:filter] == "insurance_not_paid"
+      filtered_operations = operations.where(assistance_submitted: true) if params[:filter] == "assistance_notice"
+      filtered_operations = operations.where(assistance_submitted: false) if params[:filter] == "assistance_no_notice"
+      filtered_operations = operations.where(assistance_paid: true) if params[:filter] == "assistance_paid"
+      filtered_operations = operations.where(assistance_paid: false) if params[:filter] == "assistance_not_paid"
+    else
+      filtered_operations = operations
+    end
+
+    if params[:sort_by].present?
+      sorted_operations = filtered_operations.order(created_at: :asc) if params[:sort_by] == "created_asc"
+      sorted_operations = filtered_operations.order(created_at: :desc) if params[:sort_by] == "created_desc"
+      sorted_operations = filtered_operations.order(bill_deadline: :asc) if params[:sort_by] == "due_asc"
+      sorted_operations = filtered_operations.order_by_status if params[:sort_by] == "state"
+    else
+      sorted_operations = filtered_operations
+    end
+
+
+    @operations = sorted_operations || operations
 
     respond_to do |format|
       format.html { render :index}
       format.json { respond_with_bip(@operations) }
+      format.js {}
     end
   end
 

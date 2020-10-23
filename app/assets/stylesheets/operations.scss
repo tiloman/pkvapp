@@ -9,18 +9,18 @@
 	  height: 2px;
 	  margin: 1em;
 	  //background-color: red;
-	  
+
 	  flex-basis: 200px;
 	  flex-grow: 1;
 	}
 
 	.divider {
 	  width: 1px;
-	
+
 	  margin: -1px;
 	  margin-top: -10px;
 
-	
+
 	  border-left: 1px solid black;
 	  //background-color: red;
 	  p {
@@ -29,13 +29,13 @@
 	  color: $primary;
 	  font-weight: 600;
 	  }
-	
+
 	}
 
 
 	.operation {
-		
-		
+
+
 		margin: 1em;
 		margin-bottom: 2.3em;
 		padding: 1em;
@@ -56,7 +56,7 @@
 		}
 
 		.description {
-			
+
 
 		}
 		.value, .person {
@@ -64,7 +64,7 @@
 			font-size: 0.8em;
 		}
 
-		
+
 		.status {
 			position: absolute;
 			left: 0;
@@ -73,8 +73,8 @@
 			width: 150px;
 			text-align: left;
 			border-bottom: 1px solid #ccc;
-		}	
-		
+		}
+
 	}
 
 	.new_operation {
@@ -158,14 +158,14 @@
 	font-weight: 600;
 	position: relative;
 	top: -10px;
-}	
+}
 
 .attachment_preview {
     border: 1px solid #ccc;
 	padding: 1em;
 	border-radius: 5px;
 	margin-right: 2em;
-	
+
 	&:hover {
 		box-shadow: 5px 5px 5px #ccc;
 	}
@@ -204,3 +204,8 @@
 }
 
 
+.filter_inputs {
+	display: flex;
+	justify-content: flex-end;
+	//float:right;
+}

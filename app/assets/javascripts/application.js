@@ -20,19 +20,19 @@
 
 //= require bootstrap-sprockets
 
-// require best_in_place
-// require best_in_place.jquery-ui
+//= require best_in_place
+//= require best_in_place.jquery-ui
 
 
-// require jquery.purr
-// require best_in_place.purr
+//= require jquery.purr
+//= require best_in_place.purr
 
 //= require_tree .
 
 
 $(document).ready(function() {
   /* Activating Best In Place */
-  //jquery(".best_in_place").best_in_place();
+  $(".best_in_place").best_in_place();
 
 
 //   $("input.datepicker").each(function(input) {
@@ -65,4 +65,10 @@ $('#uploadForm input').change(function(){
    // Will set that image tag to display the uploaded image.
   },
  });
+});
+
+document.addEventListener("turbolinks:load", function() {
+  $("body").on("change", ".ajax-input", function() {
+    Rails.fire(this.form, "submit");
+  });
 });

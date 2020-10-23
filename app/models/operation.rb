@@ -20,6 +20,7 @@ class Operation < ApplicationRecord
 
   end
 
+  STATE_ORDER = ['editing', 'open', 'waiting','closed']
 
   belongs_to :person
 
@@ -34,6 +35,19 @@ class Operation < ApplicationRecord
   scope :closed_operations, -> { where(aasm_state: "closed") }
   scope :on_hold_operations, -> { where(aasm_state: "waiting") }
   scope :open_operations, -> { where(aasm_state: "editing") }
+  scope :order_by_status, -> {
+  order(<<-SQL)
+    CASE operations.aasm_state
+    WHEN 'editing' THEN 'a'
+    WHEN 'open' THEN 'b'
+    WHEN 'waiting' THEN 'c'
+    ELSE 'z'
+    END ASC,
+    id ASC
+  SQL
+}
+
+
 
   after_update :update_status
   before_update :insurance_submitted?
