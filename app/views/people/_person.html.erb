@@ -1,5 +1,5 @@
 
-<div class="name"><%= best_in_place person, :name%>
+<div class="name"><%= best_in_place person, :name, :data => {:person_name => person.name} %>
 </div><br>
 <div class="color"><b>Farbe</b><br> <%= best_in_place person, :color, :as => :select, :collection => [['blue', 'Blau'], ['green','Grün'], ['red','Rot']]%>
 </div><br>
@@ -10,4 +10,3 @@
   	<i class="fas fa-trash-alt"></i>
   <% end %>
 </div>
-

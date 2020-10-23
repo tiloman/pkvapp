@@ -13,38 +13,42 @@
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-//= require jquery
-//= require best_in_place
+//= require jquery3
+//= require jquery_ujs
 //= require jquery-ui
-//= require best_in_place.jquery-ui
+//= require popper
 
-//= require bootstrap-datepicker
-//= require bootstrap-datepicker/core
-//= require jquery.purr
-//= require best_in_place.purr
 //= require bootstrap-sprockets
+
+// require best_in_place
+// require best_in_place.jquery-ui
+
+
+// require jquery.purr
+// require best_in_place.purr
 
 //= require_tree .
 
 
 $(document).ready(function() {
   /* Activating Best In Place */
-  jQuery(".best_in_place").best_in_place();
+  //jquery(".best_in_place").best_in_place();
 
 
-  $("input.datepicker").each(function(input) {
-  $(this).datepicker({
-    dateFormat: "dd.mm.yy",
-    altField: $(this).next()
-  })
+//   $("input.datepicker").each(function(input) {
+//   $(this).datepicker({
+//     dateFormat: "dd.mm.yy",
+//     altField: $(this).next()
+//   })
+//
+//
+//   // If you use i18n-js you can set the locale like that
+//   //$(this).datepicker("option", $.datepicker.regional[I18n.currentLocale()]);
+// })
 
-  // If you use i18n-js you can set the locale like that
-  //$(this).datepicker("option", $.datepicker.regional[I18n.currentLocale()]);
-})
 
 
 
-  
 });
 
 
@@ -62,5 +66,3 @@ $('#uploadForm input').change(function(){
   },
  });
 });
-
-

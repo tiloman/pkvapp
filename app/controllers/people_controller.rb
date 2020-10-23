@@ -5,6 +5,10 @@ class PeopleController < ApplicationController
   # GET /people.json
   def index
     @people = current_user.people
+    respond_to do |format|
+      format.html { render :index }
+      format.json { respond_with_bip(@people) }
+    end
   end
 
   # GET /people/1

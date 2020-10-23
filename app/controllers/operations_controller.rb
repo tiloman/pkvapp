@@ -1,13 +1,17 @@
 class OperationsController < ApplicationController
   before_action :set_operation, only: [:show, :edit, :update, :destroy]
 
-  # GET /operations
-  # GET /operations.json
+
   def index
     users_operations = Operation.where(person_id: [current_user.people])
     @operations = users_operations.open_operations
     @closed_operations = users_operations.closed_operations
     @on_hold_operations = users_operations.on_hold_operations
+
+    respond_to do |format|
+      format.html { render :index}
+      format.json { respond_with_bip(@operations) }
+    end
   end
 
   # GET /operations/1
