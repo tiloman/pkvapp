@@ -16,6 +16,12 @@ $primary: #2c3e50;
 @import "jquery-ui/datepicker";
 
 
+.container {
+	// padding-left: 2em;
+	// padding-right: 2em;
+	max-width: 1800px;
+}
+
 .check_icon_checked {
 	margin: 1em;
 	color: green;
@@ -37,7 +43,7 @@ $primary: #2c3e50;
 }
 
 .add_button {
-	font-size: 1.2em;	
+	font-size: 1.2em;
 	border: 1px solid #ccc;
 	border-radius: 10px;
 	padding: 10px;
@@ -66,5 +72,5 @@ h1 {
 	font-size: 2.5em;
 	font-weight: 300;
 	padding: inherit;
-	
+
 }

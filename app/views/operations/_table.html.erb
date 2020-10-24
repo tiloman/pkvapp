@@ -1,0 +1,60 @@
+<div class="table-responsive">
+
+<table class="table table-hover table-sm  operations_table" id="operations_container">
+<thead>
+  <tr>
+    <th class="align-text-top"><%= link_to "Vorgang", :sort => "title", :view => "Tabelle" %></th>
+    <th class="align-text-top"><%= link_to "Person", :sort => "person_id", :view => "Tabelle" %></th>
+    <th class="align-text-top"><%= link_to "Betrag", :sort => "value", :view => "Tabelle" %></th>
+    <th class="align-text-top"><%= link_to "Rechnung", :sort => "paid", :view => "Tabelle" %></th>
+    <th class="align-text-top"><%= link_to "Versicherung<br>eingereicht".html_safe, :sort => "insurance_submitted", :view => "Tabelle" %></th>
+    <th class="align-text-top"><%= link_to "Versicherung <br>gezahlt".html_safe, :sort => "insurance_paid", :view => "Tabelle" %></th>
+    <th class="align-text-top"><%= link_to "Beihilfe<br>eingereicht".html_safe, :sort => "assistance_submitted", :view => "Tabelle" %></th>
+    <th class="align-text-top"><%= link_to "Beihilfe<br>gezahlt".html_safe, :sort => "assistance_paid", :view => "Tabelle" %></th>
+    <th class="align-text-top"><%= link_to "erstellt", :sort => "created_at", :view => "Tabelle" %></th>
+    <th class="align-text-top"><%= link_to "Status", :sort => "aasm_state", :view => "Tabelle" %></th>
+    <th class="align-text-top"></th>
+  </tr>
+
+  </thead>
+  <tbody>
+    </tbody>
+
+  <% @operations.each do |operation| %>
+    <tr class="<%= operation.person.color %>">
+      <td class="title"><%= operation.title %></td>
+      <td class="name"><%= operation.person.name %></td>
+      <td class="text-left value"><%= number_to_currency(operation.value) %></td>
+      <td><%= best_in_place operation, :paid, type: :checkbox, :collection => {
+           true: raw("<i class='fas fa-check' style='color: green'></i>"),
+           false: raw("<i class='fas fa-times' style='color:red'></i>")}
+       %></td>
+      <td><%= best_in_place operation, :insurance_submitted, type: :checkbox, :collection => {
+           true: raw("<i class='fas fa-check' style='color: green'></i>"),
+           false: raw("<i class='fas fa-times' style='color:red'></i>")}
+       %></td>
+      <td><%= best_in_place operation, :insurance_paid, type: :checkbox, :collection => {
+        true: raw("<i class='fas fa-check' style='color: green'></i>"),
+        false: raw("<i class='fas fa-times' style='color:red'></i>")}
+      %></td>
+      <td><%= best_in_place operation, :assistance_submitted, type: :checkbox, :collection => {
+        true: raw("<i class='fas fa-check' style='color: green'></i>"),
+        false: raw("<i class='fas fa-times' style='color:red'></i>")}
+      %></td>
+      <td><%= best_in_place operation, :assistance_paid, type: :checkbox, :collection => {
+        true: raw("<i class='fas fa-check' style='color: green'></i>"),
+        false: raw("<i class='fas fa-times' style='color:red'></i>")}
+      %></td>
+      <td class="created_at"><%= operation.created_at.strftime("%d.%m.%Y") %></td>
+
+      <td class="status"><%= get_status_name(operation) %></td>
+      <td class="text-right">    <%= link_to operation, class:"btn btn-sm btn-outline-primary" do %><i class="fas fa-eye"></i><% end %>
+
+        <%= link_to edit_operation_path(operation), class: "btn btn-sm btn-outline-secondary" do %><i class="fas fa-edit"></i><% end %>
+      <%= link_to operation, method: :delete, data: { confirm: 'Sicher?' }, class: "btn btn-sm btn-outline-danger "  do %><i class="fas fa-trash-alt"></i><% end %>
+</td>
+    </tr>
+  <% end %>
+
+</table>
+</div>

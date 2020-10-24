@@ -5,7 +5,7 @@ class OperationsController < ApplicationController
   def index
     users_operations = Operation.unscoped.where(person_id: [current_user.people])
     @people = current_user.people
-    operations = users_operations
+    operations = users_operations.order(params[:sort])
 
     # if params[:person]
     #   filtered_operations = operations.where(person_id: params[:person])
