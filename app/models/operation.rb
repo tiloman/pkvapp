@@ -86,4 +86,14 @@ class Operation < ApplicationRecord
   		self.open! if closed? || waiting?
   	end
   end
+
+  def start_time
+    #only for calendar
+    self.bill_deadline ##Where 'start' is a attribute of type 'Date' accessible through MyModel's relationship
+  end
+
+
+
+
+
 end

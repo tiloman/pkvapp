@@ -10,25 +10,46 @@
   <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
     <ul class="navbar-nav navbar-right ">
       <% if user_signed_in? %>
-        <li class="nav-item">
-          <%= link_to "Personen", people_path, class: "nav-link" %>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Vorgänge
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <%= link_to "Alle Vorgänge", operations_path, class: "dropdown-item" %>
-            <%= link_to "Vorgang anlegen", new_operation_path, class: "dropdown-item" %>
-          </div>
-        </li>
+
+
+      <li class="nav-item">
+        <%= link_to "Übersicht", "#", class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to "Vorgänge", operations_path, class: "nav-link" %>
+     </li>
+     <li class="nav-item">
+       <%= link_to "Kalender", calendar_path, class: "nav-link" %>
+    </li>
+
+
+
 
       <% end %>
 
       <%= link_to "Login", new_user_session_url, class: 'nav-item nav-link' unless user_signed_in? %>
       <%= link_to "Registrieren", new_user_registration_url, class: 'nav-item nav-link' unless user_signed_in? %>
-      <%= link_to current_user.full_name, edit_user_registration_path(current_user), class: 'nav-item nav-link' if user_signed_in? %>
-      <%= link_to "Logout", destroy_user_session_path, method: :delete, class: 'nav-item nav-link' if user_signed_in? %>
+      <% if user_signed_in? %>
+      <li class="nav-item dropdown ">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          <%= link_to "Meine Daten", edit_user_registration_path(current_user), class: "dropdown-item" %>
+          <%= link_to "Personen", people_path, class: "dropdown-item" %>
+          <%= link_to "Deine Mitgliedschaft", "#", class: "dropdown-item" %>
+          <%= link_to "Benachrichtigungen", "#", class: "dropdown-item" %>
+
+        </div>
+      </li>
+
+
+
+        <%= link_to edit_user_registration_path(current_user), class: 'nav-item nav-link' do %>  <% end %>
+          <%= link_to destroy_user_session_path, method: :delete, class: 'nav-item nav-link' do %><i class="fas fa-power-off"></i><% end %>
+      <% end %>
+
+
     </ul>
 
   </div>

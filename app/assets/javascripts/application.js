@@ -26,11 +26,48 @@
 
 //= require jquery.purr
 //= require best_in_place.purr
+//= require select2
+//= require select2_locale_de
+
+
+//= require moment
+//= require fullcalendar
+//= require fullcalendar/locale-all
 
 //= require_tree .
 
 
-$(document).ready(function() {
+
+function operationsCalendar() {
+  var options = {
+    events: '/operations.json',
+    eventColor: '#016973',
+    themeSystem: 'standard',
+    defaultView: 'month',
+    locale: 'de',
+    fixedWeekCount: true,
+
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay,listWeek'
+      }
+     };
+
+  return $('#calendar').fullCalendar(options);
+};
+
+function clearCalendar() {
+  $('#calendar').fullCalendar('delete');
+  $('#calendar').html('');
+};
+
+$(document).on('turbolinks:load', operationsCalendar);
+$(document).on('turbolinks:before-cache', clearCalendar)
+
+
+document.addEventListener("turbolinks:load", function() {
+
   /* Activating Best In Place */
   $(".best_in_place").best_in_place();
 
@@ -46,10 +83,15 @@ $(document).ready(function() {
 //   //$(this).datepicker("option", $.datepicker.regional[I18n.currentLocale()]);
 // })
 
-
+$( ".select2_form" ).select2({
+    theme: "bootstrap"
+});
 
 
 });
+
+
+
 
 
 $('#uploadForm input').change(function(){

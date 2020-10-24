@@ -29,7 +29,9 @@ gem 'bootstrap-datepicker-rails'
 gem 'simple-form-datepicker'
 gem 'aasm'
 gem 'aws-sdk-s3' #for storage
-
+gem "select2-rails"
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

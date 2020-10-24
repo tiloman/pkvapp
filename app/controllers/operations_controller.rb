@@ -42,6 +42,8 @@ class OperationsController < ApplicationController
 
     respond_to do |format|
       format.html { render :index}
+      format.json { }
+
       format.json { respond_with_bip(@operations) }
       format.js {}
     end
@@ -97,6 +99,17 @@ def create_asset
   @bill.save
   render :text => @bill.public_filename
 end
+
+
+def calendar
+  @operations = Operation.unscoped.where(person_id: [current_user.people])
+  respond_to do |format|
+    format.html {}
+    format.json {  }
+    #format.json { render json: Jbuilder.new { |json| json.array! @operations, :title, :bill_deadline  }.target! }
+  end
+end
+
 
   # DELETE /operations/1
   # DELETE /operations/1.json

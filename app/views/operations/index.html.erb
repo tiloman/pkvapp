@@ -1,17 +1,29 @@
-<h1>Vorgänge</h1>
 
 
-<%= form_tag operations_path, class: "", remote: true,  method: :get  do %>
-<div class="filter_inputs">
-  <div>
-    <%= select_tag "view", options_for_select(["Boxen","Tabelle"], params[:view]),  class: "ajax-input input_animated" ,onchange: "this.form.submit()" %>
-  </div>
-</div>
-<% end %>
+
+
 <% if params[:view] == "Tabelle" %>
+<div class="view_controls">
+  <%= link_to new_operation_path, class:"btn btn-outline-primary" do %>Vorgang anlegen<% end %>
+  <%= link_to operations_path(:view => "Tabelle"), class:"btn btn-primary" do %><i class="fas fa-list"></i><% end %>
+  <%= link_to operations_path(:view => "Boxen"), class:"btn btn-outline-primary" do %><i class="fas fa-grip-horizontal"></i><% end %>
+
+  </div>
+  <h1>Vorgänge</h1>
+
   <%= render "operations/table" %>
+
 <% else %>
+<div class="view_controls">
+  <%= link_to new_operation_path, class:"btn btn-outline-primary" do %>Vorgang anlegen<% end %>
+
+  <%= link_to operations_path(:view => "Tabelle"), class:"btn btn-outline-primary" do %><i class="fas fa-list"></i><% end %>
+  <%= link_to operations_path(:view => "Boxen"), class:"btn btn-primary" do %><i class="fas fa-grip-horizontal"></i><% end %>
+  </div>
+  <h1>Vorgänge</h1>
+
   <%= render "operations/container" %>
+
 <% end %>
 
 <hr>

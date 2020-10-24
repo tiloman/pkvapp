@@ -78,7 +78,7 @@ module OperationsHelper
 	def get_status_name(operation)
 		case operation.aasm_state
 		when "editing"
-			return ("<span class='badge badge-primary'>In Bearbeitung</span>").html_safe
+			return ("<span class='badge badge-primary'>Bearbeitung</span>").html_safe
 		when "open"
 			return ("<span class='badge badge-danger'>Noch Bearbeiten</span>").html_safe
 		when "closed"
