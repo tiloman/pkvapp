@@ -31,18 +31,18 @@ module OperationsHelper
 	def get_insurance_ratio(operation)
 		person = operation.person
 		if person.ratio == "80/20"
-			return ("20%: #{(operation.value * 0.2).round(2)} €").html_safe
+			return ("<span id='insurance_ratio'>20</span>%: <span id='insurance_calculated'>#{(operation.value * 0.2).round(2)}</span> €").html_safe
 		elsif person.ratio == "50/50"
-			return ("50%: #{(operation.value * 0.5).round(2)} €").html_safe
+			return ("<span id='insurance_ratio'>50</span>%: <span id='insurance_calculated'>#{(operation.value * 0.5).round(2)}</span> €").html_safe
 		end
 	end
 
 	def get_assistance_ratio(operation)
 		person = operation.person
 		if person.ratio == "80/20"
-			return ("80%: #{(operation.value * 0.8).round(2)} €").html_safe
+			return ("<span id='assistance_ratio'>80</span>%: <span id='assistance_calculated'>#{(operation.value * 0.8).round(2)}</span> €").html_safe
 		elsif person.ratio == "50/50"
-			return ("50%: #{(operation.value * 0.5).round(2)} €").html_safe
+			return ("<span id='assistance_ratio'>50</span>%: <span id='assistance_calculated'>#{(operation.value * 0.5).round(2)}</span> €").html_safe
 		end
 	end
 
@@ -50,9 +50,9 @@ module OperationsHelper
 		person = operation.person
 		if operation.insurance_payback.present?
 			if person.ratio == "80/20"
-				return ("Differenz: #{(operation.insurance_payback.to_f - (operation.value * 0.2)).round(2)} €").html_safe
+				return ("Differenz: <span id='insurance_difference'>#{(operation.insurance_payback.to_f - (operation.value * 0.2)).round(2)}</span> €").html_safe
 			elsif person.ratio == "50/50"
-				return ("Differenz: #{(operation.insurance_payback.to_f - (operation.value * 0.5)).round(2)} €").html_safe
+				return ("Differenz: <span id='insurance_difference'>#{(operation.insurance_payback.to_f - (operation.value * 0.5)).round(2)}</span €").html_safe
 			end
 		end
 	end
@@ -61,9 +61,9 @@ module OperationsHelper
 		person = operation.person
 		if operation.insurance_payback.present?
 			if person.ratio == "80/20"
-				return ("Differenz: #{(operation.assistance_payback.to_f - (operation.value * 0.8)).round(2)} €").html_safe
+				return ("Differenz: <span id='assistance_difference'>#{(operation.assistance_payback.to_f - (operation.value * 0.8)).round(2)}</span> €").html_safe
 			elsif person.ratio == "50/50"
-				return ("Differenz: #{(operation.assistance_payback.to_f - (operation.value * 0.5)).round(2)} €").html_safe
+				return ("Differenz: <span id='assistance_difference'>#{(operation.assistance_payback.to_f - (operation.value * 0.5)).round(2)}</span> €").html_safe
 			end
 		end
 	end

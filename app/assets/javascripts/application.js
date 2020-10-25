@@ -50,7 +50,7 @@ function operationsCalendar() {
     header: {
       left: 'prev,next today',
       center: 'title',
-      right: 'month,agendaWeek,agendaDay,listWeek'
+      right: 'month,listWeek'
       }
      };
 
@@ -94,23 +94,64 @@ $( ".select2_form" ).select2({
 
 
 
-$('#uploadForm input').change(function(){
- $(this).parent().ajaxSubmit({
-  beforeSubmit: function(a,f,o) {
-   o.dataType = 'json';
-  },
-  complete: function(XMLHttpRequest, textStatus) {
-   // XMLHttpRequest.responseText will contain the URL of the uploaded image.
-   // Put it in an image element you create, or do with it what you will.
-   // For example, if you have an image elemtn with id "my_image", then
-   $('#bill').attr('src', XMLHttpRequest.responseText);
-   // Will set that image tag to display the uploaded image.
-  },
- });
-});
+
+
+
+
+
+
 
 document.addEventListener("turbolinks:load", function() {
   $("body").on("change", ".ajax-input", function() {
     Rails.fire(this.form, "submit");
   });
+
+
+
+  $('.best_in_place').bind("ajax:success", function () {
+    $(this).closest('tr').effect('highlight');
+    update_values();
+    }
+  );
+
+  function update_values(){
+    var difference = $('#insurance_difference').html();
+    var insurance_ratio = $('#insurance_ratio').html();
+    var insurance_payback = $('#best_in_place_operation_11_insurance_payback').html();
+    var assistance_ratio = $('#assistance_ratio').html();
+    var assistance_payback = $('#best_in_place_operation_11_assistance_payback').html();
+    var value = $('#best_in_place_operation_11_value').html();
+    console.log(value);
+    console.log(assistance_ratio);
+    console.log(assistance_payback);
+
+
+
+
+    $('#insurance_difference').html(insurance_payback - (value * (insurance_ratio/100)));
+    $('#insurance_calculated').html(value * (insurance_ratio/100));
+    $('#assistance_difference').html(assistance_payback - (value * (assistance_ratio/100)));
+    $('#assistance_calculated').html(value * (assistance_ratio/100));
+  }
+
+
+
+
+  $('#uploadForm input').change(function(){
+   $(this).parent().ajaxSubmit({
+    beforeSubmit: function(a,f,o) {
+     o.dataType = 'json';
+    },
+    complete: function(XMLHttpRequest, textStatus) {
+     // XMLHttpRequest.responseText will contain the URL of the uploaded image.
+     // Put it in an image element you create, or do with it what you will.
+     // For example, if you have an image elemtn with id "my_image", then
+     $('#bill').attr('src', XMLHttpRequest.responseText);
+     // Will set that image tag to display the uploaded image.
+    },
+   });
+  });
+
+
+
 });

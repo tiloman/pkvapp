@@ -32,6 +32,9 @@ class Operation < ApplicationRecord
 
   default_scope { order(billing_date: :asc) }
 
+  scope :overdue, -> { where("bill_deadline <= ? AND paid IS ?", Time.now, false) }
+  scope :unpaid_operations, -> { where(paid: false) }
+  scope :paid_operations, -> { where(paid: true) }
   scope :closed_operations, -> { where(aasm_state: "closed") }
   scope :on_hold_operations, -> { where(aasm_state: "waiting") }
   scope :open_operations, -> { where(aasm_state: "editing") }

@@ -1,0 +1,29 @@
+<h1> Übersicht </h1>
+
+
+<div class="dashboard_container">
+  <div class="dashboard_infobox shadow green">
+    <span class="description">Zu zahlende Rechnungen</span>
+    <span class="number"><%= @unpaid_operations.count %></span>
+    <span class="value"><%= @unpaid_operations.sum(:value) %>€</span>
+  </div>
+
+  <div class="dashboard_infobox shadow blue">
+    <span class="description">Die nächste Rechnung</span>
+    <span class="number"><%= link_to @next_payment.title, @next_payment if @next_payment%></span>
+    <span class="value"><%= @next_payment.value if @next_payment %>€</span>
+  </div>
+
+  <div class="dashboard_infobox shadow red">
+    <span class="description">Überfällige Rechnungen</span>
+    <span class="number"><%= @overdue_operations.count %></span>
+    <span class="value"><%= @overdue_operations.sum(:value)%>€</span>
+  </div>
+
+  <div class="dashboard_infobox shadow green">
+    <span class="description">Gezahlte Rechnungen</span>
+    <span class="number"><%= @paid_operations.count %></span>
+    <span class="value"><%= @paid_operations.sum(:value) %>€</span>
+  </div>
+
+</div>

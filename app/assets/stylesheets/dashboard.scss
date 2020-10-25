@@ -1,0 +1,48 @@
+.dashboard_container {
+  display: flex;
+  flex-wrap: wrap;
+
+  .dashboard_infobox {
+    flex-basis: 200px;
+    flex-grow: 1;
+    max-width: 250px;
+    margin: 1em;
+    padding: 1em;
+    border-radius: 5px;
+    position: relative;
+    height: 100px;
+    .value {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+    }
+
+    .number {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      font-size: 2em;
+
+    }
+    .description{
+      position: absolute;
+      left: 10px;
+      top: 10px;
+    }
+
+
+  }
+
+  .green {
+    border: 3px solid #1abc9c !important;
+  }
+
+  .red {
+    border: 3px solid #e74c3c !important;
+
+  }
+
+  .blue {
+    border: 3px solid #3498db !important;
+  }
+}

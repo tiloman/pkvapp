@@ -70,7 +70,7 @@ class OperationsController < ApplicationController
 
     respond_to do |format|
       if @operation.save
-        format.html { redirect_to operations_path, notice: 'Vorgang wurde angelegt.' }
+        format.html { redirect_to @operation, notice: 'Vorgang wurde angelegt.' }
         format.json { render :index, status: :created, location: @operation }
       else
         format.html { render :new }
@@ -86,6 +86,7 @@ class OperationsController < ApplicationController
       if @operation.update(operation_params)
         format.html { redirect_to @operation, notice: 'Operation was successfully updated.' }
         format.json { render :show, status: :ok, location: @operation }
+        format.js {}
       else
         format.html { render :edit }
         format.json { render json: @operation.errors.full_messages, status: :unprocessable_entity }
@@ -108,6 +109,15 @@ def calendar
     format.json {  }
     #format.json { render json: Jbuilder.new { |json| json.array! @operations, :title, :bill_deadline  }.target! }
   end
+end
+
+def dashboard
+  users_operations = Operation.unscoped.where(person_id: [current_user.people])
+  @unpaid_operations = users_operations.unpaid_operations
+  @paid_operations = users_operations.paid_operations
+
+  @next_payment = users_operations.where("bill_deadline <= ?", Time.now).first
+  @overdue_operations = users_operations.overdue
 end
 
 

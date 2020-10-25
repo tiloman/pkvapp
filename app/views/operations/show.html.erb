@@ -30,7 +30,7 @@
       <tr>
         <td>Rückzahlung Versicherung <br>
           <span class="subtitle"><%= get_insurance_ratio(@operation) %></span></td>
-        <td> <%= best_in_place @operation, :insurance_payback %> €<br>
+        <td id="insurance_payback"> <%= best_in_place @operation, :insurance_payback %> €<br>
          <span class="subtitle"><%= get_insurance_difference(@operation) %></td>
       </tr>
       <tr>
