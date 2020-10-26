@@ -24,24 +24,24 @@
         <thead>
       <tr>
         <th>Rechnungsbetrag</th>
-        <th><%= best_in_place @operation, :value %> €</th>
+        <th><%= best_in_place @operation, :value, :display_with => :number_to_currency %></th>
       </tr>
     </thead>
       <tr>
         <td>Rückzahlung Versicherung <br>
           <span class="subtitle"><%= get_insurance_ratio(@operation) %></span></td>
-        <td id="insurance_payback"> <%= best_in_place @operation, :insurance_payback %> €<br>
+        <td id="insurance_payback"> <%= best_in_place @operation, :insurance_payback, :display_with => :number_to_currency %> <br>
          <span class="subtitle"><%= get_insurance_difference(@operation) %></td>
       </tr>
       <tr>
         <td>Rückzahlung Beihilfe<br>
           <span class="subtitle"><%= get_assistance_ratio(@operation) %></span></td>
-        <td><%= best_in_place @operation, :assistance_payback %> €<br>
+        <td><%= best_in_place @operation, :assistance_payback, :display_with => :number_to_currency %> <br>
           <span class="subtitle"><%= get_assistance_difference(@operation) %></span></td>
       </tr>
       <tr>
         <th>Offener Betrag</th>
-        <th><%= get_overall_value(@operation).round(2) %> €</th>
+        <th><%= get_overall_value(@operation) %></th>
       </tr>
     </table>
   </div>

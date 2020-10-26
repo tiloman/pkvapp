@@ -32,6 +32,7 @@ gem 'aws-sdk-s3' #for storage
 gem "select2-rails"
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
+gem 'icalendar', '~> 2.6' #for webcal
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

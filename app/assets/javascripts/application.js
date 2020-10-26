@@ -115,25 +115,30 @@ document.addEventListener("turbolinks:load", function() {
   );
 
   function update_values(){
+    var operation_id = window.location.pathname.split('/')[2];
     var difference = $('#insurance_difference').html();
+    difference = parseInt(difference.replace(/,/g,''))
+
     var insurance_ratio = $('#insurance_ratio').html();
-    var insurance_payback = $('#best_in_place_operation_11_insurance_payback').html();
+    var insurance_payback = $('#best_in_place_operation_'+ operation_id + '_insurance_payback').html();
+    insurance_payback = parseInt(insurance_payback.replace(/,/g,''))
     var assistance_ratio = $('#assistance_ratio').html();
-    var assistance_payback = $('#best_in_place_operation_11_assistance_payback').html();
-    var value = $('#best_in_place_operation_11_value').html();
-    console.log(value);
-    console.log(assistance_ratio);
-    console.log(assistance_payback);
+    var assistance_payback = $('#best_in_place_operation_'+ operation_id + '_assistance_payback').html();
+    assistance_payback = parseInt(assistance_payback.replace(/,/g,''))
+    var value = $('#best_in_place_operation_'+ operation_id + '_value').html();
+    value = parseInt(value.replace(/,/g,''))
 
 
-
-
-    $('#insurance_difference').html(insurance_payback - (value * (insurance_ratio/100)));
-    $('#insurance_calculated').html(value * (insurance_ratio/100));
-    $('#assistance_difference').html(assistance_payback - (value * (assistance_ratio/100)));
-    $('#assistance_calculated').html(value * (assistance_ratio/100));
+    $('#insurance_difference').html((Math.round((insurance_payback - (value * (insurance_ratio)))/100 * 100) / 100).toFixed(2));
+    $('#insurance_calculated').html((Math.round(value * (insurance_ratio/100)).toFixed(2)));
+    $('#assistance_difference').html((Math.round((assistance_payback - (value * (assistance_ratio)))/100 * 100) / 100).toFixed(2));
+    $('#assistance_calculated').html((Math.round(value * (assistance_ratio/100)).toFixed(2)));
   }
 
+
+  function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
 
 

@@ -135,6 +135,9 @@ GEM
       activesupport (>= 4.2.0)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
+    icalendar (2.7.0)
+      ice_cube (~> 0.16)
+    ice_cube (0.16.3)
     image_processing (1.12.0)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
@@ -305,6 +308,7 @@ DEPENDENCIES
   devise
   font-awesome-sass
   fullcalendar-rails
+  icalendar (~> 2.6)
   image_processing
   jbuilder (~> 2.5)
   jquery-rails
