@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  default_url_options :host => "abile.timolohmann.de"
+  
   resources :operations
   resources :people
   devise_for :users

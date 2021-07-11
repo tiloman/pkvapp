@@ -7,7 +7,7 @@ module OperationsHelper
 	   	elsif operation.bill.previewable?
 	   	   	image_tag operation.bill.preview(resize_to_limit: [300, 300]), class: "attachment_preview"
 			else
-					link_to "Rechnung", Rails.application.routes.url_helpers.rails_blob_path(operation.insurance_notice, disposition: "attachment")
+					link_to "Rechnung", Rails.application.routes.url_helpers.rails_blob_path(operation.bill, disposition: "attachment")
 			end
 	  end
 	 end
