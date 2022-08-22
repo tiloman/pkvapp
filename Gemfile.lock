@@ -131,7 +131,7 @@ GEM
       warden (~> 1.2.3)
     erubi (1.9.0)
     execjs (2.7.0)
-    ffi (1.13.1)
+    ffi (1.15.5)
     font-awesome-sass (5.13.0)
       sassc (>= 1.11)
     fullcalendar-rails (3.9.0.0)
@@ -298,7 +298,8 @@ GEM
     zeitwerk (2.4.0)
 
 PLATFORMS
-  ruby
+  -darwin-21
+  arm64-darwin-21
 
 DEPENDENCIES
   aasm
@@ -342,4 +343,4 @@ RUBY VERSION
    ruby 2.6.3p62
 
 BUNDLED WITH
-   2.1.4
+   2.3.20

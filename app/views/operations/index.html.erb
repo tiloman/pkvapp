@@ -1,31 +1,10 @@
-
-
-
-
-<% if params[:view] == "Tabelle" %>
-<div class="view_controls">
-  <%= link_to new_operation_path, class:"btn btn-outline-primary" do %>Vorgang anlegen<% end %>
-  <%= link_to operations_path(:view => "Tabelle"), class:"btn btn-primary" do %><i class="fas fa-list"></i><% end %>
-  <%= link_to operations_path(:view => "Boxen"), class:"btn btn-outline-primary" do %><i class="fas fa-grip-horizontal"></i><% end %>
-
-  </div>
-  <h1>Vorgänge</h1>
-
-  <%= render "operations/table" %>
-
+<% if current_user.prefered_operations_view.present? && params[:view].nil? %>
+  <%= render "operations_header", view: current_user.prefered_operations_view %>
+  <%= render "operations/#{current_user.prefered_operations_view}" %>
+<% elsif params[:view] == 'list' %>
+  <%= render "operations_header", view: 'list' %>
+  <%= render "operations/list" %>
 <% else %>
-<div class="view_controls">
-  <%= link_to new_operation_path, class:"btn btn-outline-primary" do %>Vorgang anlegen<% end %>
-
-  <%= link_to operations_path(:view => "Tabelle"), class:"btn btn-outline-primary" do %><i class="fas fa-list"></i><% end %>
-  <%= link_to operations_path(:view => "Boxen"), class:"btn btn-primary" do %><i class="fas fa-grip-horizontal"></i><% end %>
-  </div>
-  <h1>Vorgänge</h1>
-
-  <%= render "operations/container" %>
-
+  <%= render "operations_header", view: 'tile' %>
+  <%= render "operations/tile" %>
 <% end %>
-
-<hr>
-
-<br>

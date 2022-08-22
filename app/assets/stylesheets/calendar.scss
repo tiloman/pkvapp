@@ -3,23 +3,35 @@
     color: $primary;
   }
 
-  .wday-0 {}
-  .wday-1 {}
-  .wday-2 {}
-  .wday-3 {}
-  .wday-4 {}
-  .wday-5 {}
-  .wday-6 {}
+  .wday-0 {
+  }
+  .wday-1 {
+  }
+  .wday-2 {
+  }
+  .wday-3 {
+  }
+  .wday-4 {
+  }
+  .wday-5 {
+  }
+  .wday-6 {
+  }
 
   .today {
     background-color: $primary;
     color: white;
-    a {color: #ccc;}
+    a {
+      color: #ccc;
+    }
   }
-  .past {}
-  .future {}
+  .past {
+  }
+  .future {
+  }
 
-  .start-date {}
+  .start-date {
+  }
 
   .prev-month {
     color: #888;
@@ -29,25 +41,36 @@
     color: #888;
     background-color: #eee;
   }
-  .current-month {}
+  .current-month {
+  }
 
-  .has-events {}
+  .has-events {
+  }
 }
 
-
-.fc-right .fc-prev-button, .fc-right .fc-next-button, .fc-state-default, .fc-button-group > *{
-    background-color: $primary !important;
-    background-image: none !important;
-    color: white !important;
-    text-shadow: none !important;
-    font-size: 0.8em !important;
+.fc-right .fc-prev-button,
+.fc-right .fc-next-button,
+.fc-state-default,
+.fc-button-group > * {
+  background-color: $primary !important;
+  background-image: none !important;
+  color: white !important;
+  text-shadow: none !important;
+  font-size: 0.8em !important;
 }
 
-.fc-state-down, .fc-state-active {
+.fc-state-down,
+.fc-state-active {
   background-color: $secondary !important;
   color: white !important;
 }
 
-.fc-content, .fc-event-container, .fc-day-grid-event, .fc-h-event, .fc-event, .fc-start, .fc-end {
+.fc-content,
+.fc-event-container,
+.fc-day-grid-event,
+.fc-h-event,
+.fc-event,
+.fc-start,
+.fc-end {
   border-radius: 7px !important;
 }

@@ -3,14 +3,13 @@
   align-items: stetch;
   flex-wrap: wrap;
 
-
   .placeholder {
-      width: 260px;
-      height: 2px;
-      margin: 1em;      
-      flex-basis: 260px;
-      flex-grow: 1;
-    }
+    width: 260px;
+    height: 2px;
+    margin: 1em;
+    flex-basis: 260px;
+    flex-grow: 1;
+  }
 
   .person_box {
     width: 260px;
@@ -22,44 +21,39 @@
     text-align: center;
     border-radius: 10px;
 
-    .green {border-color: #1abc9c;}
-    .blue {border-color: #3498db;}
-    .red {border-color: #e74c3c;}
+    .green {
+      border-color: #1abc9c;
+    }
+    .blue {
+      border-color: #3498db;
+    }
+    .red {
+      border-color: #e74c3c;
+    }
 
     .name {
       font-size: 1.5em;
     }
     .ratio {
-
     }
 
     .actions {
-
     }
 
     .color {
-
     }
-
-    
   }
   .new_person {
-
-      padding-top: 60px;
-      i {
+    padding-top: 60px;
+    i {
       font-size: 6em;
-        opacity: 0.5;
-      }
-      p {
-      font-size: 1.2em;
-      }
+      opacity: 0.5;
     }
-
-
-
+    p {
+      font-size: 1.2em;
+    }
+  }
 }
-
-
 
 .purr {
   position: fixed;
@@ -67,7 +61,9 @@
   right: 100px;
   width: 250px;
   padding: 20px;
-  background-color: #FCC;
-  border: solid 2px #C66;
-  &:first-letter { text-transform: uppercase; }
+  background-color: #fcc;
+  border: solid 2px #c66;
+  &:first-letter {
+    text-transform: uppercase;
+  }
 }
