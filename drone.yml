@@ -45,15 +45,6 @@ steps:
       branch:
         - production
 
-  - name: Slack
-    image: plugins/slack
-    settings:
-      webhook:
-        from_secret: slack_webhook
-      channel: slack-integration
-    when:
-      status: [ success, failure ]
-
 services:
   - name: database
     image: postgres
