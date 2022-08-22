@@ -27,6 +27,7 @@ de:
         updated_at: Aktualisiert am
         terms_accepted_at: AGB
         privacy_accepted_at: Datenschutzerklärung
+        prefered_operations_view: Bevorzugte Ansicht bei Vorgängen
     models:
       user: Benutzer
   devise:

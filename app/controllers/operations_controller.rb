@@ -1,70 +1,54 @@
 class OperationsController < ApplicationController
-  before_action :set_operation, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_operation, only: %i[show edit update destroy]
 
   def index
     users_operations = Operation.unscoped.where(person_id: [current_user.people])
     @people = current_user.people
     operations = users_operations.order(params[:sort])
 
-    # if params[:person]
-    #   filtered_operations = operations.where(person_id: params[:person])
-    # else
-    #   filtered_operations = operations
-    # end
-
     if params[:filter].present?
-      filtered_operations = operations.where(paid: true) if params[:filter] == "bill_paid"
-      filtered_operations = operations.where(paid: false) if params[:filter] == "bill_not_paid"
-      filtered_operations = operations.where(insurance_submitted: true) if params[:filter] == "insurance_notice"
-      filtered_operations = operations.where(insurance_submitted: false) if params[:filter] == "insurance_no_notice"
-      filtered_operations = operations.where(insurance_paid: true) if params[:filter] == "insurance_paid"
-      filtered_operations = operations.where(insurance_paid: false) if params[:filter] == "insurance_not_paid"
-      filtered_operations = operations.where(assistance_submitted: true) if params[:filter] == "assistance_notice"
-      filtered_operations = operations.where(assistance_submitted: false) if params[:filter] == "assistance_no_notice"
-      filtered_operations = operations.where(assistance_paid: true) if params[:filter] == "assistance_paid"
-      filtered_operations = operations.where(assistance_paid: false) if params[:filter] == "assistance_not_paid"
+      filtered_operations = operations.where(paid: true) if params[:filter] == 'bill_paid'
+      filtered_operations = operations.where(paid: false) if params[:filter] == 'bill_not_paid'
+      filtered_operations = operations.where(insurance_submitted: true) if params[:filter] == 'insurance_notice'
+      filtered_operations = operations.where(insurance_submitted: false) if params[:filter] == 'insurance_no_notice'
+      filtered_operations = operations.where(insurance_paid: true) if params[:filter] == 'insurance_paid'
+      filtered_operations = operations.where(insurance_paid: false) if params[:filter] == 'insurance_not_paid'
+      filtered_operations = operations.where(assistance_submitted: true) if params[:filter] == 'assistance_notice'
+      filtered_operations = operations.where(assistance_submitted: false) if params[:filter] == 'assistance_no_notice'
+      filtered_operations = operations.where(assistance_paid: true) if params[:filter] == 'assistance_paid'
+      filtered_operations = operations.where(assistance_paid: false) if params[:filter] == 'assistance_not_paid'
     else
       filtered_operations = operations
     end
 
     if params[:sort_by].present?
-      sorted_operations = filtered_operations.order(created_at: :asc) if params[:sort_by] == "created_asc"
-      sorted_operations = filtered_operations.order(created_at: :desc) if params[:sort_by] == "created_desc"
-      sorted_operations = filtered_operations.order(bill_deadline: :asc) if params[:sort_by] == "due_asc"
-      sorted_operations = filtered_operations.order_by_status if params[:sort_by] == "state"
+      sorted_operations = filtered_operations.order(created_at: :asc) if params[:sort_by] == 'created_asc'
+      sorted_operations = filtered_operations.order(created_at: :desc) if params[:sort_by] == 'created_desc'
+      sorted_operations = filtered_operations.order(bill_deadline: :asc) if params[:sort_by] == 'due_asc'
+      sorted_operations = filtered_operations.order_by_status if params[:sort_by] == 'state'
     else
       sorted_operations = filtered_operations
     end
 
-
     @operations = sorted_operations || operations
 
     respond_to do |format|
-      format.html { render :index}
-      format.json { }
+      format.html { render :index }
+      format.json {}
 
       format.json { respond_with_bip(@operations) }
       format.js {}
     end
   end
 
-  # GET /operations/1
-  # GET /operations/1.json
-  def show
-  end
+  def show; end
 
-  # GET /operations/new
   def new
     @operation = Operation.new
   end
 
-  # GET /operations/1/edit
-  def edit
-  end
+  def edit; end
 
-  # POST /operations
-  # POST /operations.json
   def create
     @operation = Operation.new(operation_params)
 
@@ -79,8 +63,6 @@ class OperationsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /operations/1
-  # PATCH/PUT /operations/1.json
   def update
     respond_to do |format|
       if @operation.update(operation_params)
@@ -94,35 +76,29 @@ class OperationsController < ApplicationController
     end
   end
 
-
-def create_asset
-  @bill = Image.new(params[:image_form])
-  @bill.save
-  render :text => @bill.public_filename
-end
-
-
-def calendar
-  @operations = Operation.unscoped.where(person_id: [current_user.people])
-  respond_to do |format|
-    format.html {}
-    format.json {  }
-    #format.json { render json: Jbuilder.new { |json| json.array! @operations, :title, :bill_deadline  }.target! }
+  def create_asset
+    @bill = Image.new(params[:image_form])
+    @bill.save
+    render text: @bill.public_filename
   end
-end
 
-def dashboard
-  users_operations = Operation.unscoped.where(person_id: [current_user.people])
-  @unpaid_operations = users_operations.unpaid_operations
-  @paid_operations = users_operations.paid_operations
+  def calendar
+    @operations = Operation.unscoped.where(person_id: [current_user.people])
+    respond_to do |format|
+      format.html {}
+      format.json {}
+    end
+  end
 
-  @next_payment = users_operations.where("bill_deadline <= ?", Time.now).first
-  @overdue_operations = users_operations.overdue
-end
+  def dashboard
+    users_operations = Operation.unscoped.where(person_id: [current_user.people])
+    @unpaid_operations = users_operations.unpaid_operations
+    @paid_operations = users_operations.paid_operations
 
+    @next_payment = users_operations.where('bill_deadline <= ?', Time.now).first
+    @overdue_operations = users_operations.overdue
+  end
 
-  # DELETE /operations/1
-  # DELETE /operations/1.json
   def destroy
     @operation.destroy
     respond_to do |format|
@@ -132,13 +108,12 @@ end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_operation
-      @operation = Operation.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def operation_params
-      params.require(:operation).permit(:title, :value, :insurance_paid, :insurance_submitted, :insurance_payback, :assistance_paid, :assistance_submitted, :assistance_payback, :billing_date, :content, :person_id, :bill, :bill_deadline, :insurance_notice, :paid)
-    end
+  def set_operation
+    @operation = Operation.find(params[:id])
+  end
+
+  def operation_params
+    params.require(:operation).permit(:title, :value, :insurance_paid, :insurance_submitted, :insurance_payback, :assistance_paid, :assistance_submitted, :assistance_payback, :billing_date, :content, :person_id, :bill, :bill_deadline, :insurance_notice, :paid)
+  end
 end
