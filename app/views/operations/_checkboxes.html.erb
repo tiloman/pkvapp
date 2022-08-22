@@ -1,65 +1,58 @@
-
-    <div class="checkbox_box">
-      <span class="user">Rechnung </span><br>
-         <div style="display: flex; justify-content: center; text-align: center;">
-           <div>
-             <span class='check_text'>gezahlt</span><br>
-              <%= best_in_place operation, :paid, type: :checkbox, :collection => {
-                   true: raw("<i class='fas fa-check' style='color: green'></i>"),
-                   false: raw("<i class='fas fa-times' style='color:red'></i>")}
-               %>
-           </div>
-
-         </div>
-     </div>
-     <div class="checkbox_box">
-
-     <span class="insurance">Versicherung </span><br>
-        <div style="display: flex; justify-content: center; text-align: center;">
-          <div>
-            <span class='check_text'>eingereicht</span><br>
-             <%= best_in_place operation, :insurance_submitted, type: :checkbox, :collection => {
-                  true: raw("<i class='fas fa-check' style='color: green'></i>"),
-                  false: raw("<i class='fas fa-times' style='color:red'></i>")}
-              %>
-          </div>
-          <div>
-             <span class='check_text'>gezahlt</span><br>
-             <span>
-                <%= best_in_place operation, :insurance_paid, type: :checkbox, :collection => {
-                  true: raw("<i class='fas fa-check' style='color: green'></i>"),
-                  false: raw("<i class='fas fa-times' style='color:red'></i>")}
-                %>
-              </span>
-          </div>
-        </div>
+<div class="checkbox_box">
+  <span class="user">Rechnung</span><br>
+  <div style="display: flex; justify-content: center; text-align: center;">
+    <div>
+      <span class='check_text'>gezahlt</span><br>
+      <%= best_in_place operation, :paid, type: :checkbox, :collection => {
+            true: raw("<i class='fas fa-check' style='color: green'></i>"),
+            false: raw("<i class='fas fa-times' style='color:red'></i>")}
+        %>
     </div>
-    <div class="checkbox_box">
-      <span class="assistance">Beihilfe</span> <br>
+  </div>
+</div>
 
-        <div style="display: flex; justify-content: center; text-align: center;">
-
-          <div>
-             <span class='check_text'>eingereicht</span><br>
-             <span>
-                <%= best_in_place operation, :assistance_submitted, type: :checkbox, :collection => {
-                  true: raw("<i class='fas fa-check' style='color: green'></i>"),
-                  false: raw("<i class='fas fa-times' style='color:red'></i>")}
-                %>
-              </span>
-          </div>
-
-          <div>
-             <span class='check_text'>gezahlt</span><br>
-             <span>
-                <%= best_in_place operation, :assistance_paid, type: :checkbox, :collection => {
-                  true: raw("<i class='fas fa-check' style='color: green'></i>"),
-                  false: raw("<i class='fas fa-times' style='color:red'></i>")}
-                %>
-              </span>
-          </div>
-
-        </div>
-
-
+<div class="checkbox_box">
+  <span class="insurance">Versicherung </span><br>
+  <div style="display: flex; justify-content: center; text-align: center;">
+    <div>
+      <span class='check_text'>eingereicht</span><br>
+        <%= best_in_place operation, :insurance_submitted, type: :checkbox, :collection => {
+            true: raw("<i class='fas fa-check' style='color: green'></i>"),
+            false: raw("<i class='fas fa-times' style='color:red'></i>")}
+        %>
     </div>
+    <div>
+      <span class='check_text'>gezahlt</span><br>
+      <span>
+        <%= best_in_place operation, :insurance_paid, type: :checkbox, :collection => {
+          true: raw("<i class='fas fa-check' style='color: green'></i>"),
+          false: raw("<i class='fas fa-times' style='color:red'></i>")}
+        %>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="checkbox_box">
+  <span class="assistance">Beihilfe</span> <br>
+  <div style="display: flex; justify-content: center; text-align: center;">
+    <div>
+      <span class='check_text'>eingereicht</span><br>
+      <span>
+        <%= best_in_place operation, :assistance_submitted, type: :checkbox, :collection => {
+          true: raw("<i class='fas fa-check' style='color: green'></i>"),
+          false: raw("<i class='fas fa-times' style='color:red'></i>")}
+        %>
+      </span>
+    </div>
+    <div>
+      <span class='check_text'>gezahlt</span><br>
+      <span>
+        <%= best_in_place operation, :assistance_paid, type: :checkbox, :collection => {
+          true: raw("<i class='fas fa-check' style='color: green'></i>"),
+          false: raw("<i class='fas fa-times' style='color:red'></i>")}
+        %>
+      </span>
+    </div>
+  </div>
+</div>

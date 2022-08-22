@@ -3,5 +3,4 @@ class Person < ApplicationRecord
   belongs_to :user
 
   default_scope { order(name: :asc) }
-
 end
