@@ -26,7 +26,7 @@ steps:
       RAILS_ENV: test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: verleihsystem_test
+      POSTGRES_DB: abile_test
       DATABASE_HOST: database
       PARALLEL_TEST_PROCESSORS: 15
       TZ: Europe/Berlin
@@ -37,13 +37,13 @@ steps:
       GIT_PUSH_SSH_KEY:
         from_secret: ssh_key
     settings:
-      remote: ssh://dokku@192.168.178.83:876/simren
+      remote: ssh://dokku@192.168.178.83:876/abile
       remote_name: production
       ssh_key:
         from_secret: ssh_key
     when:
       branch:
-        - production
+        - main
 
 services:
   - name: database
