@@ -22,8 +22,8 @@ class OperationsController < ApplicationController
     end
 
     if params[:sort_by].present?
-      sorted_operations = filtered_operations.order(created_at: :asc) if params[:sort_by] == 'created_asc'
       sorted_operations = filtered_operations.order(created_at: :desc) if params[:sort_by] == 'created_desc'
+      sorted_operations = filtered_operations.order(created_at: :asc) if params[:sort_by] == 'created_asc'
       sorted_operations = filtered_operations.order(bill_deadline: :asc) if params[:sort_by] == 'due_asc'
       sorted_operations = filtered_operations.order_by_status if params[:sort_by] == 'state'
     else

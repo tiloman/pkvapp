@@ -11,8 +11,8 @@
     <div class="filter_inputs">
       <div>
         <%= select_tag "sort_by", options_for_select([
-          ["Neuste zuerst", "created_asc"],
-          ["Älteste zuerst", "created_desc"],
+          ["Neuste zuerst", "created_desc"],
+          ["Älteste zuerst", "created_asc"],
           ["Fälligkeitsdatum", "due_asc"],
           ['Nach Status', "state"]], params[:sort_by]),
           include_blank:"Sortieren",
