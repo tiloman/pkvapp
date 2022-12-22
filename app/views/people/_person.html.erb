@@ -1,12 +1,15 @@
-
-<div class="name"><%= best_in_place person, :name, :data => {:person_name => person.name} %>
-</div><br>
-<div class="color"><b>Farbe</b><br> <%= best_in_place person, :color, :as => :select, :collection => [['blue', 'Blau'], ['green','Grün'], ['red','Rot']]%>
-</div><br>
-<div class="ratio"><b>Beihilfe/Versicherung</b><br><%= best_in_place person, :ratio, :as => :select, :collection => [['80/20', '80/20'], ['50/50', '50/50']]%></div>
+<div class="name mb-3"><%= best_in_place person, :name, :data => { :person_name => person.name } %>
+</div>
+<div class="mb-3">
+  <b>Farbe</b><br> <%= best_in_place person, :color, :as => :select, :collection => [['blue', 'Blau'], ['green', 'Grün'], ['red', 'Rot']] %>
+</div>
+<div class="mb-3">
+	<b>Beihilfe/Versicherung</b><br>
+	<%= best_in_place person, :ratio, :as => :select, :collection => [['80/20', '80/20'], ['50/50', '50/50']] %>
+</div>
 <hr>
 <div class="actions">
-  <%= link_to person, method: :delete, data: { confirm: 'Sicher? Damit werden alle mit der Person verbundenen Vorgänge ebenfalls gelöscht' }, class: "btn btn-sm btn-outline-secondary right"  do%>
-  	<i class="fas fa-trash-alt"></i>
+  <%= link_to person, method: :delete, data: { confirm: 'Sicher? Damit werden alle mit der Person verbundenen Vorgänge ebenfalls gelöscht' }, class: "btn btn-sm btn-outline-secondary right" do %>
+    <i class="fas fa-trash-alt"></i>
   <% end %>
 </div>

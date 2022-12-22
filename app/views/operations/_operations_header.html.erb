@@ -3,7 +3,7 @@
   <%= link_to operations_path(:view => "list"), class:"btn #{view == 'list' ? 'btn-primary': 'btn-outline-primary'}" do %><i class="fas fa-list"></i><% end %>
   <%= link_to operations_path(:view => "tile"), class:"btn #{view == 'tile' ? 'btn-primary': 'btn-outline-primary'}" do %><i class="fas fa-grip-horizontal"></i><% end %>
 </div>
-<h1>Vorgänge</h1>
+<h1><%= Operation.model_name.human(count: 2) %></h1>
 <hr>
 
 <% if view == 'tile' %>

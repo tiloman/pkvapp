@@ -45,11 +45,15 @@
   }
   .new_person {
     padding-top: 60px;
+    a {
+      text-decoration: none;
+    }
     i {
       font-size: 6em;
       opacity: 0.5;
     }
     p {
+
       font-size: 1.2em;
     }
   }

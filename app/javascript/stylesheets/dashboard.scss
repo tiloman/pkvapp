@@ -3,6 +3,8 @@
   flex-wrap: wrap;
 
   .dashboard_infobox {
+    a {text-decoration: none;}
+
     flex-basis: 200px;
     flex-grow: 1;
     max-width: 250px;

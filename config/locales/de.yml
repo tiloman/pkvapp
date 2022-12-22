@@ -1,6 +1,25 @@
 ---
 de:
   activerecord:
+    models:
+      operation:
+        one: Vorgang
+        other: Vorgänge
+    attributes:
+      operation:
+        rich_text_area: Beschreibung
+        bill: Rechnung
+        bill_deadline: Fälligkeitsdatum
+        billing_date: Rechnungsdatum
+        title: Titel
+        value: Summe
+        insurance_notice: Versicherungsantwort
+      user:
+        first_name: Vorname
+        last_name: Nachname
+        email: E-Mail Adresse
+        password: Passwort
+        password_confirmation: Passwort wiederholen
     errors:
       messages:
         record_invalid: 'Gültigkeitsprüfung ist fehlgeschlagen: %{errors}'
