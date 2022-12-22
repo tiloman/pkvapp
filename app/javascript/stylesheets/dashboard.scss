@@ -33,14 +33,14 @@
   }
 
   .green {
-    border: 3px solid #1abc9c !important;
+    border: 3px solid $green !important;
   }
 
   .red {
-    border: 3px solid #e74c3c !important;
+    border: 3px solid $red !important;
   }
 
   .blue {
-    border: 3px solid #3498db !important;
+    border: 3px solid $blue !important;
   }
 }

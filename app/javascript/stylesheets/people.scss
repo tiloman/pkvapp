@@ -22,13 +22,13 @@
     border-radius: 10px;
 
     .green {
-      border-color: #1abc9c;
+      border-color: $green;
     }
     .blue {
-      border-color: #3498db;
+      border-color: $blue;
     }
     .red {
-      border-color: #e74c3c;
+      border-color: $red;
     }
 
     .name {
