@@ -25,7 +25,9 @@ gem "select2-rails"
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'icalendar', '~> 2.6' #for webcal
-
+gem 'filterrific'
+gem 'will_paginate'
+gem 'will_paginate-bootstrap4'
 #mimemagic version bug...
 gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
 

@@ -1,10 +1,17 @@
-<% if current_user.prefered_operations_view.present? && params[:view].nil? %>
-  <%= render "operations_header", view: current_user.prefered_operations_view %>
-  <%= render "operations/#{current_user.prefered_operations_view}" %>
-<% elsif params[:view] == 'list' %>
+<%# if current_user.prefered_operations_view.present? && params[:view].nil? %>
+  <%#= render "operations_header", view: current_user.prefered_operations_view %>
+  <%#= render "operations/#{current_user.prefered_operations_view}" %>
+<%# elsif params[:view] == 'list' %>
+
   <%= render "operations_header", view: 'list' %>
-  <%= render "operations/list" %>
-<% else %>
-  <%= render "operations_header", view: 'tile' %>
-  <%= render "operations/tile" %>
-<% end %>
+  <%= render 'filterrific' %>
+
+  <%#= render "operations/list" %>
+<%# else %>
+  <%#= render "operations_header", view: 'tile' %>
+  <%#= render "operations/tile" %>
+<%# end %>
+
+
+
+<%= render(partial: 'list', locals: { operations: @operations }) %>

@@ -239,3 +239,20 @@ de:
       long: "%A, %d. %B %Y, %H:%M Uhr"
       short: "%d. %B, %H:%M Uhr"
     pm: nachmittags
+  operations:
+    list:
+      title: Titel
+      person: Person
+      value: Wert
+      paid: Gezahlt
+      insurance_submitted: Versicherung übermittelt
+      insurance_paid: Versicherung bezahlt
+      assistance_submitted: Beihilfe übermittelt
+      assistance_paid: Beihilfe gezahlt
+      created_at: Erstellt
+      aasm_state: Status
+    aasm_state:
+      editing: Bearbeitung
+      closed: Abgeschlossen
+      waiting: Warten
+      open: Offen

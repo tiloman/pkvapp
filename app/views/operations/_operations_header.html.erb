@@ -1,11 +1,11 @@
-<div class="view_controls">
-  <%= link_to new_operation_path, class:"btn btn-outline-primary" do %>Vorgang anlegen<% end %>
-  <%= link_to operations_path(:view => "list"), class:"btn #{view == 'list' ? 'btn-primary': 'btn-outline-primary'}" do %><i class="fas fa-list"></i><% end %>
-  <%= link_to operations_path(:view => "tile"), class:"btn #{view == 'tile' ? 'btn-primary': 'btn-outline-primary'}" do %><i class="fas fa-grip-horizontal"></i><% end %>
+<div class="d-flex justify-content-between align-items-center mb-5">
+  <h1><%= Operation.model_name.human(count: 2) %></h1>
+  <div class="view_controls">
+    <%= link_to new_operation_path, class:"btn btn-outline-primary" do %>Vorgang anlegen<% end %>
+    <%= link_to operations_path(:view => "list"), class:"btn #{view == 'list' ? 'btn-primary': 'btn-outline-primary'}" do %><i class="fas fa-list"></i><% end %>
+    <%= link_to operations_path(:view => "tile"), class:"btn #{view == 'tile' ? 'btn-primary': 'btn-outline-primary'}" do %><i class="fas fa-grip-horizontal"></i><% end %>
+  </div>
 </div>
-<h1><%= Operation.model_name.human(count: 2) %></h1>
-<hr>
-
 <% if view == 'tile' %>
   <%= form_tag operations_path, remote: true, method: :get  do %>
     <div class="filter_inputs">

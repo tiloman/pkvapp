@@ -1,0 +1,24 @@
+<%= form_for_filterrific @filterrific do |f| %>
+  <div class="row mb-5">
+    <div class="col-8">
+      <%= f.text_field(
+            :search_query,
+            class: 'filterrific-periodically-observed',
+            placeholder: 'Suchen',
+            class: 'form-control',
+            autocomplete: 'off'
+          ) %>
+    </div>
+    <div class="col-2">
+      <%= f.select(:by_person, @filterrific.select_options[:by_person], { :include_blank => "- Person -" }, { :class => 'form-select' }) %>
+    </div>
+
+    <div class="col-2">
+      <%= f.select(:by_state, @filterrific.select_options[:by_state], { :prompt => "- Status -" }, { :class => 'form-select' }) %>
+    </div>
+    <div class="text-end">
+      <%= link_to 'Filter zurücksetzen', reset_filterrific_url, class: 'btn btn-text' %>
+    </div>
+  </div>
+  <%= render_filterrific_spinner %>
+<% end %>

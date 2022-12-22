@@ -13,6 +13,7 @@
 // require rails-ujs
 //= require activestorage
 // require turbolinks
+//= require filterrific/filterrific-jquery
 
 //= require best_in_place
 //= require best_in_place.jquery-ui

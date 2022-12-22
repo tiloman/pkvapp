@@ -26,8 +26,41 @@ class Operation < ApplicationRecord
   has_one_attached :insurance_notice
 
   has_rich_text :content
-  default_scope { order(created_at: :desc) }
+  # default_scope { order(created_at: :desc) }
 
+  scope :search_query, ->(query) {
+   where("LOWER(title) LIKE ?", "%#{query}%")
+  }
+
+  scope :sorted_by, ->(sort_option) {
+    direction = /desc$/.match?(sort_option) ? "desc" : "asc"
+    case sort_option.to_s
+    when /^title/
+      order("LOWER(operations.title) #{direction}")
+    when /^created_at/
+      order("operations.created_at #{direction}")
+    when /^value/
+      order("operations.value #{direction}")
+    when /^paid/
+      order("operations.paid #{direction}")
+    when /^insurance_submitted/
+      order("operations.insurance_submitted #{direction}")
+    when /^insurance_paid/
+      order("operations.insurance_paid #{direction}")
+    when /^assistance_submitted/
+      order("operations.assistance_submitted #{direction}")
+    when /^assistance_paid/
+      order("operations.assistance_paid #{direction}")
+    when /^person/
+      joins(:person).order("people.name #{direction}")
+    when /^aasm_state/
+      order("operations.aasm_state #{direction}")
+    else
+      raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
+    end
+  }
+  scope :by_person, ->(person_id) {where(person_id: person_id)}
+  scope :by_state, ->(state) {where(aasm_state: state)}
   scope :overdue, -> { where('bill_deadline <= ? AND paid IS ?', Time.now, false) }
   scope :unpaid_operations, -> { where(paid: false) }
   scope :paid_operations, -> { where(paid: true) }
@@ -35,7 +68,7 @@ class Operation < ApplicationRecord
   scope :on_hold_operations, -> { where(aasm_state: 'waiting') }
   scope :open_operations, -> { where(aasm_state: 'editing') }
   scope :order_by_status, lambda {
-                            order(<<-SQL)
+    order(<<-SQL)
     CASE operations.aasm_state
     WHEN 'editing' THEN 'a'
     WHEN 'open' THEN 'b'
@@ -43,13 +76,31 @@ class Operation < ApplicationRecord
     ELSE 'z'
     END ASC,
     id ASC
-                            SQL
-                          }
+    SQL
+  }
 
   after_update :update_status
   before_update :insurance_submitted?
   validate :assistance_submitted?
   validates :title, presence: true, length: { minimum: 2, maximum: 100 }
+
+  filterrific(
+   default_filter_params: { sorted_by: 'created_at_desc' },
+   available_filters: [
+     :sorted_by,
+     :search_query,
+     :by_person,
+     :by_state
+   ]
+ )
+
+  def self.options_for_person_select
+    Person.pluck(:name, :id)
+  end
+
+  def self.options_for_state_select
+    Operation.all.map { |operation| [I18n.t("#{operation.aasm_state}", scope: 'operations.aasm_state'), operation.aasm_state]}.uniq
+  end
 
   def has_attachments?
     return true if bill.attached? || insurance_notice.attached?
