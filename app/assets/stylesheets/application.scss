@@ -1,22 +1,18 @@
 // COLORS: https://flatuicolors.com/palette/defo
 $primary: #2c3e50;
+$secondary: #2c3e50;
 
-@import "bootstrap";
 @import "operations";
 @import "people";
 @import "dashboard";
-@import "font-awesome-sprockets";
-@import "font-awesome";
 @import "actiontext";
-@import "bootstrap-datepicker";
-@import "jquery-ui/datepicker";
 @import "select2";
 @import "select2-bootstrap";
 @import "calendar";
 @import "fullcalendar";
 
 body {
-	zoom: "90%"
+  zoom: "90%"
 }
 
 .container {
@@ -48,9 +44,11 @@ body {
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
+
   i {
     margin-right: 10px;
   }
+
   &:hover {
     text-decoration: none;
   }
