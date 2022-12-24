@@ -9,7 +9,7 @@ class OperationsController < ApplicationController
     elsif
       @view = params[:view]
     else
-      @view =current_user.prefered_operations_view
+      @view =current_user.operations_view
     end
 
     @filterrific = initialize_filterrific(

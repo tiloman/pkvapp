@@ -16,4 +16,8 @@ class User < ApplicationRecord
       email
     end
   end
+
+  def operations_view
+    prefered_operations_view || 'tile'
+  end
 end
