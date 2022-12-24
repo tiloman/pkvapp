@@ -14,11 +14,12 @@
     </div>
 
     <div class="col-2">
-      <%= f.select(:by_state, @filterrific.select_options[:by_state], { :prompt => "- Status -" }, { :class => 'form-select' }) %>
+      <%= f.select(:by_state, @filterrific.select_options[:by_state], { :include_blank => "- Status -" }, { :class => 'form-select' }) %>
     </div>
     <div class="text-end">
       <%= link_to 'Filter zurücksetzen', reset_filterrific_url, class: 'btn btn-text' %>
     </div>
   </div>
-  <%= render_filterrific_spinner %>
+  <%= f.hidden_field :view, value: @view %>
+  <% render_filterrific_spinner %>
 <% end %>

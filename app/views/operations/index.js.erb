@@ -1,4 +1,4 @@
 <% js = escape_javascript(
-  render(partial: 'operations/list', locals: { operations: @operations })
+  render "operations/#{@view}", operations: @operations
 ) %>
-$("#operations-list").html("<%= js %>");
+$("#operations").html("<%= js %>");

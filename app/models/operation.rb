@@ -21,12 +21,14 @@ class Operation < ApplicationRecord
   STATE_ORDER = %w[editing open waiting closed]
 
   belongs_to :person
-
   has_one_attached :bill
   has_one_attached :insurance_notice
-
   has_rich_text :content
-  # default_scope { order(created_at: :desc) }
+
+  after_update :update_status
+  before_update :insurance_submitted?
+  validate :assistance_submitted?
+  validates :title, presence: true, length: { minimum: 2, maximum: 100 }
 
   scope :search_query, ->(query) {
    where("LOWER(title) LIKE ?", "%#{query}%")
@@ -64,25 +66,6 @@ class Operation < ApplicationRecord
   scope :overdue, -> { where('bill_deadline <= ? AND paid IS ?', Time.now, false) }
   scope :unpaid_operations, -> { where(paid: false) }
   scope :paid_operations, -> { where(paid: true) }
-  scope :closed_operations, -> { where(aasm_state: 'closed') }
-  scope :on_hold_operations, -> { where(aasm_state: 'waiting') }
-  scope :open_operations, -> { where(aasm_state: 'editing') }
-  scope :order_by_status, lambda {
-    order(<<-SQL)
-    CASE operations.aasm_state
-    WHEN 'editing' THEN 'a'
-    WHEN 'open' THEN 'b'
-    WHEN 'waiting' THEN 'c'
-    ELSE 'z'
-    END ASC,
-    id ASC
-    SQL
-  }
-
-  after_update :update_status
-  before_update :insurance_submitted?
-  validate :assistance_submitted?
-  validates :title, presence: true, length: { minimum: 2, maximum: 100 }
 
   filterrific(
    default_filter_params: { sorted_by: 'created_at_desc' },
@@ -94,12 +77,12 @@ class Operation < ApplicationRecord
    ]
  )
 
-  def self.options_for_person_select
-    Person.pluck(:name, :id)
+  def self.options_for_person_select(current_user)
+    current_user.people.pluck(:name, :id)
   end
 
-  def self.options_for_state_select
-    Operation.all.map { |operation| [I18n.t("#{operation.aasm_state}", scope: 'operations.aasm_state'), operation.aasm_state]}.uniq
+  def self.options_for_state_select(scope)
+    scope.all.map { |operation| [I18n.t("#{operation.aasm_state}", scope: 'operations.aasm_state'), operation.aasm_state]}.uniq
   end
 
   def has_attachments?
@@ -135,7 +118,6 @@ class Operation < ApplicationRecord
   end
 
   def start_time
-    # only for calendar
-    bill_deadline # #Where 'start' is a attribute of type 'Date' accessible through MyModel's relationship
+    bill_deadline
   end
 end

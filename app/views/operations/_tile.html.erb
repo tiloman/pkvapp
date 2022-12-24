@@ -1,6 +1,5 @@
-<div class="operations_container" id="operations_container">
-  <%= render "operations/new" %>
-  <%= render @operations %>
+<div class="operations_container">
+  <%= render operations %>
   <div class="spacer"></div>
   <div class="spacer"></div>
   <div class="spacer"></div>
@@ -8,3 +7,7 @@
   <div class="spacer"></div>
   <div class="spacer"></div>
 </div>
+
+<%= will_paginate operations,
+                  renderer: WillPaginate::ActionView::BootstrapLinkRenderer,
+                  list_classes: %w(pagination justify-content-center) %>

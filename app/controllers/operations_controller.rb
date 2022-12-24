@@ -4,22 +4,28 @@ class OperationsController < ApplicationController
   def index
     users_operations = Operation.where(person_id: [current_user.people])
     @people = current_user.people
+    if params.dig('filterrific', 'view').present?
+      @view = params[:filterrific][:view]
+    elsif
+      @view = params[:view]
+    else
+      @view =current_user.prefered_operations_view
+    end
 
     @filterrific = initialize_filterrific(
       users_operations,
       params[:filterrific],
       select_options: {
-        by_person: Operation.options_for_person_select,
-        by_state: Operation.options_for_state_select
+        by_person: Operation.options_for_person_select(current_user),
+        by_state: Operation.options_for_state_select(users_operations)
       },
     ) || return
 
     @operations = @filterrific.find.paginate(page: params[:page], per_page: 15)
 
     respond_to do |format|
-      format.html { render :index }
-      format.json {}
       format.js {}
+      format.html { render :index }
       format.json { respond_with_bip(@operations) }
     end
   end
