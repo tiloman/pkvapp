@@ -28,7 +28,6 @@
 
 //= require_tree .
 
-console.log('hi from assets')
 function operationsCalendar() {
   var options = {
     events: "/operations.json",

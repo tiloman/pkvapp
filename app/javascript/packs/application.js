@@ -9,4 +9,3 @@ window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
 import '@fortawesome/fontawesome-free/css/all'
 
 require("../stylesheets/application.scss")
-console.log('hi from packs')
