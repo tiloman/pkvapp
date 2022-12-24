@@ -10,21 +10,15 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require rails-ujs
+// require rails-ujs
 //= require activestorage
-//= require turbolinks
-//= require jquery3
-//= require jquery_ujs
-//= require jquery-ui
-//= require popper
-
-//= require bootstrap-sprockets
+// require turbolinks
+//= require filterrific/filterrific-jquery
 
 //= require best_in_place
 //= require best_in_place.jquery-ui
-
-//= require jquery.purr
 //= require best_in_place.purr
+
 //= require select2
 //= require select2_locale_de
 
@@ -34,6 +28,7 @@
 
 //= require_tree .
 
+console.log('hi from assets')
 function operationsCalendar() {
   var options = {
     events: "/operations.json",
@@ -64,17 +59,6 @@ $(document).on("turbolinks:before-cache", clearCalendar);
 document.addEventListener("turbolinks:load", function () {
   /* Activating Best In Place */
   $(".best_in_place").best_in_place();
-
-  //   $("input.datepicker").each(function(input) {
-  //   $(this).datepicker({
-  //     dateFormat: "dd.mm.yy",
-  //     altField: $(this).next()
-  //   })
-  //
-  //
-  //   // If you use i18n-js you can set the locale like that
-  //   //$(this).datepicker("option", $.datepicker.regional[I18n.currentLocale()]);
-  // })
 
   $(".select2_form").select2({
     theme: "bootstrap",

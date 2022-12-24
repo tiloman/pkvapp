@@ -1,59 +1,54 @@
 <div class="table-responsive">
-<table class="table table-hover table-sm  operations_table" id="operations_container">
-<thead>
-  <tr>
-    <th class="align-text-top"><%= link_to "Vorgang", :sort => "title", :view => "list" %></th>
-    <th class="align-text-top"><%= link_to "Person", :sort => "person_id", :view => "list" %></th>
-    <th class="align-text-top"><%= link_to "Betrag", :sort => "value", :view => "list" %></th>
-    <th class="align-text-top"><%= link_to "Bezahlt", :sort => "paid", :view => "list" %></th>
-    <th class="align-text-top"><%= link_to "Versicherung<br>eingereicht".html_safe, :sort => "insurance_submitted", :view => "list" %></th>
-    <th class="align-text-top"><%= link_to "Versicherung <br>gezahlt".html_safe, :sort => "insurance_paid", :view => "list" %></th>
-    <th class="align-text-top"><%= link_to "Beihilfe<br>eingereicht".html_safe, :sort => "assistance_submitted", :view => "list" %></th>
-    <th class="align-text-top"><%= link_to "Beihilfe<br>gezahlt".html_safe, :sort => "assistance_paid", :view => "list" %></th>
-    <th class="align-text-top"><%= link_to "erstellt", :sort => "created_at", :view => "list" %></th>
-    <th class="align-text-top"><%= link_to "Status", :sort => "aasm_state", :view => "list" %></th>
-    <th class="align-text-top"></th>
-  </tr>
-
-  </thead>
-  <tbody>
-    </tbody>
-
-  <% @operations.each do |operation| %>
-    <tr class="<%= operation.person.color %>">
-      <td class="title"><%= operation.title %></td>
-      <td class="name"><%= operation.person.name %></td>
-      <td class="text-left value"><%= number_to_currency(operation.value) %></td>
-      <td><%= best_in_place operation, :paid, type: :checkbox, :collection => {
-           true: raw("<i class='fas fa-check' style='color: green'></i>"),
-           false: raw("<i class='fas fa-times' style='color:red'></i>")}
-       %></td>
-      <td><%= best_in_place operation, :insurance_submitted, type: :checkbox, :collection => {
-           true: raw("<i class='fas fa-check' style='color: green'></i>"),
-           false: raw("<i class='fas fa-times' style='color:red'></i>")}
-       %></td>
-      <td><%= best_in_place operation, :insurance_paid, type: :checkbox, :collection => {
-        true: raw("<i class='fas fa-check' style='color: green'></i>"),
-        false: raw("<i class='fas fa-times' style='color:red'></i>")}
-      %></td>
-      <td><%= best_in_place operation, :assistance_submitted, type: :checkbox, :collection => {
-        true: raw("<i class='fas fa-check' style='color: green'></i>"),
-        false: raw("<i class='fas fa-times' style='color:red'></i>")}
-      %></td>
-      <td><%= best_in_place operation, :assistance_paid, type: :checkbox, :collection => {
-        true: raw("<i class='fas fa-check' style='color: green'></i>"),
-        false: raw("<i class='fas fa-times' style='color:red'></i>")}
-      %></td>
-      <td class="created_at"><%= operation.created_at.strftime("%d.%m.%Y") %></td>
-
-      <td class="status"><%= get_status_name(operation) %></td>
-      <td class="text-right">    <%= link_to operation, class:"btn btn-sm btn-outline-primary" do %><i class="fas fa-eye"></i><% end %>
-
-        <%= link_to edit_operation_path(operation), class: "btn btn-sm btn-outline-secondary" do %><i class="fas fa-edit"></i><% end %>
-      <%= link_to operation, method: :delete, data: { confirm: 'Sicher?' }, class: "btn btn-sm btn-outline-danger "  do %><i class="fas fa-trash-alt"></i><% end %>
-</td>
+  <table class="table table-hover operations_table" id="operations_container">
+    <thead>
+    <tr>
+      <th class="align-middle"><%= filterrific_sorting_link(@filterrific, :title, { label: t('.title') }) %></th>
+      <th class="align-middle"><%= filterrific_sorting_link(@filterrific, :person, { label: t('.person') }) %></th>
+      <th class="align-middle"><%= filterrific_sorting_link(@filterrific, :value, { label: t('.value') }) %></th>
+      <th class="align-middle"><%= filterrific_sorting_link(@filterrific, :paid, { label: t('.paid') }) %></th>
+      <th class="align-middle"><%= filterrific_sorting_link(@filterrific, :insurance_submitted, { label: t('.insurance_submitted') }) %></th>
+      <th class="align-middle"><%= filterrific_sorting_link(@filterrific, :insurance_paid, { label: t('.insurance_paid') }) %></th>
+      <th class="align-middle"><%= filterrific_sorting_link(@filterrific, :assistance_submitted, { label: t('.assistance_submitted') }) %></th>
+      <th class="align-middle"><%= filterrific_sorting_link(@filterrific, :assistance_paid, { label: t('.assistance_paid') }) %></th>
+      <th class="align-middle"><%= filterrific_sorting_link(@filterrific, :created_at, { label: t('.created_at') }) %></th>
+      <th class="align-middle"><%= filterrific_sorting_link(@filterrific, :aasm_state, { label: t('.aasm_state') }) %></th>
+      <th class="align-middle"></th>
     </tr>
-  <% end %>
+    </thead>
 
-</table>
+    <% operations.each do |operation| %>
+      <tr class="<%= operation.person.color %> align-middle">
+        <td class="title"><%= operation.title %></td>
+        <td class="name"><%= operation.person.name %></td>
+        <td class="text-left value"><%= number_to_currency(operation.value) %></td>
+        <td><%= best_in_place operation, :paid, type: :checkbox, :collection => check_collection
+        %></td>
+        <td><%= best_in_place operation, :insurance_submitted, type: :checkbox, :collection => check_collection
+        %></td>
+        <td><%= best_in_place operation, :insurance_paid, type: :checkbox, :collection => check_collection
+        %></td>
+        <td><%= best_in_place operation, :assistance_submitted, type: :checkbox, :collection => check_collection
+        %></td>
+        <td><%= best_in_place operation, :assistance_paid, type: :checkbox, :collection => check_collection
+        %></td>
+        <td class="created_at"><%= operation.created_at.strftime("%d.%m.%Y") %></td>
+        <td class="status"><%= get_status_name(operation) %></td>
+        <td class="text-right">
+          <%= link_to operation, class: "btn btn-sm btn-outline-primary" do %>
+            <i class="fas fa-eye"></i>
+          <% end %>
+          <%= link_to edit_operation_path(operation), class: "btn btn-sm btn-outline-secondary" do %>
+            <i class="fas fa-edit"></i>
+          <% end %>
+          <%= link_to operation, method: :delete, data: { confirm: 'Sicher?' }, class: "btn btn-sm btn-outline-danger " do %>
+            <i class="fas fa-trash-alt"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
 </div>
+
+<%= will_paginate operations,
+                  renderer: WillPaginate::ActionView::BootstrapLinkRenderer,
+                  list_classes: %w(pagination justify-content-center) %>

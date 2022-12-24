@@ -4,20 +4,20 @@
 <%= f.error_notification %>
 <h3>Allgemeines</h3>
   <%= f.association :person, collection: current_user.people %>
-  <%= f.input :title, label: 'Titel'%>
-  <%= f.input :value, label: 'Summe'%>
+  <%= f.input :title %>
+  <%= f.input :value %>
   <hr>
   <h3>Daten</h3>
 
 
-  <%= f.input :billing_date, label: 'Rechnungsdatum', as: :date %>
-  <%= f.input :bill_deadline, label: 'Fälligkeitsdatum', as: :date %>
+  <%= f.input :billing_date, as: :date %>
+  <%= f.input :bill_deadline, as: :date %>
 
   <hr>
-  <%= f.input :content, as: :rich_text_area, label: "Beschreibung" %>
+  <%= f.input :content, as: :rich_text_area %>
   <hr>
-  <%= f.input :bill, label: "Rechnung", as: :file %>
-  <%= f.input :insurance_notice, label: "Versicherungsantwort", as: :file %>
+  <%= f.input :bill, as: :file %>
+  <%= f.input :insurance_notice, as: :file %>
   <br>
 
 
@@ -25,7 +25,6 @@
   <%= f.input :assistance_payback, :as => :hidden, :input_html => { :value => 0 } %>
 
 
-
-  <%= f.button :submit, class: "btn btn-primary btn-block" %>
+  <%= f.button :submit, class: "btn-primary btn-block" %>
 <% end %>
 </div>

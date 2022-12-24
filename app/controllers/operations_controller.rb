@@ -2,42 +2,31 @@ class OperationsController < ApplicationController
   before_action :set_operation, only: %i[show edit update destroy]
 
   def index
-    users_operations = Operation.unscoped.where(person_id: [current_user.people])
+    users_operations = Operation.where(person_id: [current_user.people])
     @people = current_user.people
-    operations = users_operations.order(params[:sort])
-
-    if params[:filter].present?
-      filtered_operations = operations.where(paid: true) if params[:filter] == 'bill_paid'
-      filtered_operations = operations.where(paid: false) if params[:filter] == 'bill_not_paid'
-      filtered_operations = operations.where(insurance_submitted: true) if params[:filter] == 'insurance_notice'
-      filtered_operations = operations.where(insurance_submitted: false) if params[:filter] == 'insurance_no_notice'
-      filtered_operations = operations.where(insurance_paid: true) if params[:filter] == 'insurance_paid'
-      filtered_operations = operations.where(insurance_paid: false) if params[:filter] == 'insurance_not_paid'
-      filtered_operations = operations.where(assistance_submitted: true) if params[:filter] == 'assistance_notice'
-      filtered_operations = operations.where(assistance_submitted: false) if params[:filter] == 'assistance_no_notice'
-      filtered_operations = operations.where(assistance_paid: true) if params[:filter] == 'assistance_paid'
-      filtered_operations = operations.where(assistance_paid: false) if params[:filter] == 'assistance_not_paid'
+    if params.dig('filterrific', 'view').present?
+      @view = params[:filterrific][:view]
+    elsif
+      @view = params[:view]
     else
-      filtered_operations = operations
+      @view =current_user.prefered_operations_view
     end
 
-    if params[:sort_by].present?
-      sorted_operations = filtered_operations.order(created_at: :desc) if params[:sort_by] == 'created_desc'
-      sorted_operations = filtered_operations.order(created_at: :asc) if params[:sort_by] == 'created_asc'
-      sorted_operations = filtered_operations.order(bill_deadline: :asc) if params[:sort_by] == 'due_asc'
-      sorted_operations = filtered_operations.order_by_status if params[:sort_by] == 'state'
-    else
-      sorted_operations = filtered_operations
-    end
+    @filterrific = initialize_filterrific(
+      users_operations,
+      params[:filterrific],
+      select_options: {
+        by_person: Operation.options_for_person_select(current_user),
+        by_state: Operation.options_for_state_select(users_operations)
+      },
+    ) || return
 
-    @operations = sorted_operations || operations
+    @operations = @filterrific.find.paginate(page: params[:page], per_page: 15)
 
     respond_to do |format|
-      format.html { render :index }
-      format.json {}
-
-      format.json { respond_with_bip(@operations) }
       format.js {}
+      format.html { render :index }
+      format.json { respond_with_bip(@operations) }
     end
   end
 

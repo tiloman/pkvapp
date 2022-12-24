@@ -14,16 +14,10 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 #custom
 gem 'devise'
-gem 'bootstrap'
-gem 'jquery-rails'
 gem 'simple_form'
-gem 'font-awesome-sass'
 gem 'image_processing'
-#gem 'poppler' not working with dokku
-gem 'webpacker', '~> 5.x'
-gem 'jquery-ui-rails'
+gem 'webpacker'
 gem 'best_in_place', '~> 3.0.1'
-gem 'bootstrap-datepicker-rails'
 gem 'simple-form-datepicker'
 gem 'aasm'
 gem 'aws-sdk-s3' #for storage
@@ -31,13 +25,16 @@ gem "select2-rails"
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'icalendar', '~> 2.6' #for webcal
-
+gem 'filterrific'
+gem 'will_paginate'
+gem 'will_paginate-bootstrap4'
 #mimemagic version bug...
 gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
 
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rubocop'
 end
 
 group :development do

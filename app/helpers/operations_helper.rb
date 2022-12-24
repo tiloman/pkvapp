@@ -39,6 +39,13 @@ module OperationsHelper
     end
   end
 
+  def check_collection
+    {
+           true: raw("<i class='fas fa-check' style='color: green'></i>"),
+           false: raw("<i class='fas fa-times' style='color:red'></i>")
+    }
+  end
+
   def get_assistance_ratio(operation)
     person = operation.person
     if person.ratio == '80/20'
@@ -77,13 +84,13 @@ module OperationsHelper
   def get_status_name(operation)
     case operation.aasm_state
     when 'editing'
-      "<span class='badge badge-primary'>Bearbeitung</span>".html_safe
+      "<span class='badge bg-primary'>Bearbeitung</span>".html_safe
     when 'open'
-      "<span class='badge badge-danger'>Noch Bearbeiten</span>".html_safe
+      "<span class='badge bg-danger'>Noch Bearbeiten</span>".html_safe
     when 'closed'
-      "<span class='badge badge-success'>Abgeschlossen</span>".html_safe
+      "<span class='badge bg-success'>Abgeschlossen</span>".html_safe
     when 'waiting'
-      "<span class='badge badge-secondary'>Warten</span>".html_safe
+      "<span class='badge bg-secondary'>Warten</span>".html_safe
 
     end
   end

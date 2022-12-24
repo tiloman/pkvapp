@@ -1,4 +1,4 @@
-$('#operations_container').html("<%= j render 'operations/new' %><%= j render @operations %>");
-$('#operations_container').append("<div class='placeholder'></div>");
-$('#operations_container').append("<div class='placeholder'></div>");
-$('#operations_container').append("<div class='placeholder'></div>");
+<% js = escape_javascript(
+  render "operations/#{@view}", operations: @operations
+) %>
+$("#operations").html("<%= js %>");

@@ -3,7 +3,7 @@
   align-items: stetch;
   flex-wrap: wrap;
 
-  .placeholder {
+  .spacer {
     width: 260px;
     height: 2px;
     margin: 1em;
@@ -22,13 +22,13 @@
     border-radius: 10px;
 
     .green {
-      border-color: #1abc9c;
+      border-color: $green;
     }
     .blue {
-      border-color: #3498db;
+      border-color: $blue;
     }
     .red {
-      border-color: #e74c3c;
+      border-color: $red;
     }
 
     .name {
@@ -45,11 +45,15 @@
   }
   .new_person {
     padding-top: 60px;
+    a {
+      text-decoration: none;
+    }
     i {
       font-size: 6em;
       opacity: 0.5;
     }
     p {
+
       font-size: 1.2em;
     }
   }

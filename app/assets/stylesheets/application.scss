@@ -1,75 +1,7 @@
 // COLORS: https://flatuicolors.com/palette/defo
-$primary: #2c3e50;
+//$primary: #2c3e50;
+//$secondary: #2c3e50;
 
-@import "bootstrap";
-@import "operations";
-@import "people";
-@import "dashboard";
-@import "font-awesome-sprockets";
-@import "font-awesome";
-@import "actiontext";
-@import "bootstrap-datepicker";
-@import "jquery-ui/datepicker";
 @import "select2";
 @import "select2-bootstrap";
-@import "calendar";
 @import "fullcalendar";
-
-body {
-	zoom: "90%"
-}
-
-.container {
-  max-width: 1800px;
-}
-
-.check_icon_checked {
-  margin: 1em;
-  color: green;
-}
-
-.check_icon_unchecked {
-  margin: 1em;
-  color: red;
-}
-
-.check_text {
-  font-size: 0.7em;
-  border-bottom: 1px solid #ccc;
-  padding: 3px;
-}
-
-.right {
-  float: right;
-}
-
-.add_button {
-  font-size: 1.2em;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 10px;
-  i {
-    margin-right: 10px;
-  }
-  &:hover {
-    text-decoration: none;
-  }
-}
-
-.form_container {
-  max-width: 600px;
-  margin: auto;
-  padding: 1em;
-  border: 5px solid $primary;
-  border-radius: 10px;
-
-  label {
-    font-weight: 600;
-  }
-}
-
-h1 {
-  font-size: 2.5em;
-  font-weight: 300;
-  padding: inherit;
-}
