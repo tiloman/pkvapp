@@ -1,7 +1,7 @@
 ---
 de:
   mailers:
-    greeting: Hi %{username}
+    greeting: "Hi %{username},"
     regards: Liebe Grüße
   operations_mailer:
     deadline_reminder:
