@@ -1,4 +1,4 @@
-class OperationMailer < ApplicationMailer
+class OperationsMailer < ApplicationMailer
   default from: "from@example.com"
   layout 'mailer'
 
