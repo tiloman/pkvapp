@@ -119,6 +119,11 @@ GEM
     diff-lcs (1.5.0)
     erubi (1.11.0)
     execjs (2.8.1)
+    factory_bot (6.2.1)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
     ffi (1.15.5)
     filterrific (5.2.3)
     fullcalendar-rails (3.9.0.0)
@@ -338,6 +343,7 @@ DEPENDENCIES
   capybara (>= 2.15)
   delayed_job_active_record
   devise
+  factory_bot_rails
   filterrific
   fullcalendar-rails
   icalendar (~> 2.6)

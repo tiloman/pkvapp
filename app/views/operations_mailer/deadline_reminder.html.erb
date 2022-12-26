@@ -1,0 +1,3 @@
+<%= t('mailers.greeting', username: @user.first_name) %>
+
+<%= t('.deadline', date: (l @operation.bill_deadline, :format => :short)) %>

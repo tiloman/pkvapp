@@ -1,11 +1,11 @@
 class OperationsMailer < ApplicationMailer
-  default from: "from@example.com"
+  default from: "no-reply@timolohmann.de"
   layout 'mailer'
 
-  def insurance_reminder(operation_id)
+  def deadline_reminder(operation_id)
     @operation = Operation.find(operation_id)
-    @user = @operation.user
+    @user = @operation.person.user
 
-    mail(to: @user.email, subject: 'Bald fällig')
+    mail(to: @user.email, subject: I18n.t('operations_mailer.deadline_reminder.subject'))
   end
 end
