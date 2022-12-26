@@ -1,0 +1,9 @@
+---
+de:
+  mailers:
+    greeting: Hi %{username}
+    regards: Liebe Grüße
+  operations_mailer:
+    deadline_reminder:
+      subject: Versicherung bald fällig
+      deadline: Die Rechnung ist am %{date} fällig.

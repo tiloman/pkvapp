@@ -23,4 +23,7 @@ Rails.application.routes.draw do
   get '/calendar', to: 'operations#calendar'
   get '/dashboard', to: 'operations#dashboard'
   resource :webcal, only: :show
+
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, :via => [:get, :post]
+
 end

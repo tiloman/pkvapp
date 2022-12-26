@@ -28,13 +28,18 @@ gem 'icalendar', '~> 2.6' #for webcal
 gem 'filterrific'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap4'
+gem 'delayed_job_active_record'
+gem "delayed_job_web"
+
 #mimemagic version bug...
 gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
 
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rspec-rails', '~> 5.0.0'
   gem 'rubocop'
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -44,8 +49,6 @@ end
 
 group :test do
   gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
-  gem 'chromedriver-helper'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

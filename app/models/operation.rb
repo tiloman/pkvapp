@@ -26,6 +26,8 @@ class Operation < ApplicationRecord
   has_rich_text :content
 
   after_update :update_status
+  after_create :reminder_job
+  after_update :update_job
   before_update :insurance_submitted?
   validate :assistance_submitted?
   validates :title, presence: true, length: { minimum: 2, maximum: 100 }
@@ -115,6 +117,27 @@ class Operation < ApplicationRecord
     elsif closed? || waiting?
       open!
     end
+  end
+
+  def reminder_job
+    OperationsMailer.delay(run_at: remind_at).deadline_reminder(id)
+  end
+
+  def update_job
+    return unless find_reminder_job.any?
+
+    find_reminder_job.first.update_attribute(:run_at, remind_at)
+  end
+
+  def remind_at
+    bill_deadline - 7.days
+  end
+
+  def find_reminder_job
+    Delayed::Job.where(
+      "handler like (?) AND handler like (?)",
+      "%method_name: :deadline_reminder%", "%args:\n- #{self.id}%"
+    )
   end
 
   def start_time
