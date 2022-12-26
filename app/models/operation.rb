@@ -120,7 +120,7 @@ class Operation < ApplicationRecord
   end
 
   def reminder_job
-    OperationsMailer.deadline_reminder(id).deliver_later(wait_until: remind_at)
+    OperationsMailer.delay(run_at: remind_at).deadline_reminder(id)
   end
 
   def update_job
@@ -135,8 +135,8 @@ class Operation < ApplicationRecord
 
   def find_reminder_job
     Delayed::Job.where(
-      "handler ilike (?)",
-      "%Operation/#{self.id}%"
+      "handler like (?) AND handler like (?)",
+      "%method_name: :deadline_reminder%", "%args:\n- #{self.id}%"
     )
   end
 
