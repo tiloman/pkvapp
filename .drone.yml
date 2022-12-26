@@ -37,7 +37,7 @@ steps:
       GIT_PUSH_SSH_KEY:
         from_secret: ssh_key
     settings:
-      remote: ssh://dokku@192.168.178.83:876/simren
+      remote: ssh://dokku@192.168.178.83:876/abile
       remote_name: staging
       ssh_key:
         from_secret: ssh_key

@@ -130,6 +130,8 @@ class Operation < ApplicationRecord
   end
 
   def remind_at
+    return unless bill_deadline
+
     bill_deadline - 7.days
   end
 

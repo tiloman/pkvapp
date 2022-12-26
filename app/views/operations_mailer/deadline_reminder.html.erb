@@ -1,3 +1,9 @@
 <%= t('mailers.greeting', username: @user.first_name) %>
 
-<%= t('.deadline', date: (l @operation.bill_deadline, :format => :short)) %>
+<p>
+  <strong><%= t('.operation_title', title: @operation.title) %></strong>
+  <br>
+  <%= t('.deadline', date: (l @operation.bill_deadline, :format => :short)) %>
+</p>
+
+<p><%= I18n.t('mailers.regards') %></p>
