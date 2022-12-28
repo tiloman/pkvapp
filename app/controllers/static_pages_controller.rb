@@ -1,13 +1,8 @@
 class StaticPagesController < ApplicationController
+  layout "landing"
   def index
   end
 
-  def about
-  end
-
   def contact
-  end
-
-  def features
   end
 end

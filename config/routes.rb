@@ -11,14 +11,12 @@ Rails.application.routes.draw do
     end
 
     unauthenticated do
-      root 'devise/sessions#new', as: :unauthenticated_root
+      root 'static_pages#index', as: :unauthenticated_root
     end
   end
 
   get 'static_pages/index'
-  get 'static_pages/about'
   get 'static_pages/contact'
-  get 'static_pages/features'
 
   get '/calendar', to: 'operations#calendar'
   get '/dashboard', to: 'operations#dashboard'
