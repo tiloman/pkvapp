@@ -1,0 +1,15 @@
+#toast-container {
+  .toast {
+    box-shadow: none !important;
+    top: 80px !important;
+    right: 0px !important;
+  }
+
+  .toast-error, .toast-alert {
+    background-color: $danger;
+  }
+
+  .toast-notice, .toast-info {
+    background-color: $primary;
+  }
+}

@@ -3,8 +3,10 @@
     <h2><%= t('.sign_up') %></h2>
     <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
       <%= f.error_notification %>
-      <%= f.input :first_name, required: true, autofocus: true %>
-      <%= f.input :last_name, required: true, autofocus: true %>
+      <div class="row">
+        <div class="col"><%= f.input :first_name, required: true, autofocus: true %></div>
+        <div class="col"><%= f.input :last_name, required: true, autofocus: true %></div>
+      </div>
       <%= f.input :email, required: true, autofocus: true %>
       <%= f.input :password, required: true %>
       <%= f.input :password_confirmation, required: true %>
