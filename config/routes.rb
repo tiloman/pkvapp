@@ -3,11 +3,16 @@ Rails.application.routes.draw do
 
   resources :operations
   resources :people
-  devise_for :users
+  devise_for :users,
+             :controllers => {
+               :registrations => 'users/registrations',
+               :sessions => 'users/sessions',
+               :passwords => 'users/passwords'
+             }
 
   devise_scope :user do
     authenticated :user do
-      root 'operations#dashboard'# as: :authenticated_root
+      root 'operations#dashboard' # as: :authenticated_root
     end
 
     unauthenticated do
