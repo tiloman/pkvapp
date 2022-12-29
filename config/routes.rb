@@ -3,22 +3,25 @@ Rails.application.routes.draw do
 
   resources :operations
   resources :people
-  devise_for :users
+  devise_for :users,
+             :controllers => {
+               :registrations => 'users/registrations',
+               :sessions => 'users/sessions',
+               :passwords => 'users/passwords'
+             }
 
   devise_scope :user do
     authenticated :user do
-      root 'operations#dashboard'# as: :authenticated_root
+      root 'operations#dashboard' # as: :authenticated_root
     end
 
     unauthenticated do
-      root 'devise/sessions#new', as: :unauthenticated_root
+      root 'static_pages#index', as: :unauthenticated_root
     end
   end
 
   get 'static_pages/index'
-  get 'static_pages/about'
   get 'static_pages/contact'
-  get 'static_pages/features'
 
   get '/calendar', to: 'operations#calendar'
   get '/dashboard', to: 'operations#dashboard'
