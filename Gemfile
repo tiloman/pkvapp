@@ -31,6 +31,7 @@ gem 'delayed_job_active_record'
 gem "delayed_job_web"
 gem "sentry-ruby"
 gem 'sentry-rails'
+gem 'todoist-ruby'
 
 # mimemagic version bug...
 gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'

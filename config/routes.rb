@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   resources :operations
   resources :people
+  resources :integrations
   devise_for :users,
              :controllers => {
                :registrations => 'users/registrations',
