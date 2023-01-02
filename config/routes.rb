@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resources :operations
   resources :people
   resources :integrations
+  resources :todoist_integrations
+
   devise_for :users,
              :controllers => {
                :registrations => 'users/registrations',

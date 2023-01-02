@@ -1,6 +1,7 @@
 class IntegrationsController < ApplicationController
 
   def index
+    @todoist_integration = current_user.todoist_integration
   end
 
   def new

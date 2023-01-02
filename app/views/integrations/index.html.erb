@@ -1,1 +1,8 @@
 <h1>Integrationen</h1>
+
+<% if @todoist_integration %>
+  <%= @todoist_integration.email %>
+  <%= link_to "Editieren", edit_todoist_integration_path(@todoist_integration.id) %>
+<% else %>
+  <%= link_to "Neue Todoist integration", new_todoist_integration_path %>
+<% end %>
