@@ -1,6 +1,7 @@
 class TodoistIntegrationsController < ApplicationController
   require 'todoist'
 
+  before_action :authenticate_user!
   before_action :set_integration, only: %i[show edit update destroy]
 
   def new

@@ -1,4 +1,6 @@
 class WebcalsController < ApplicationController
+  before_action :authenticate_user!
+
   def show
     user = User.find(params[:user])
     operations = Operation.unscoped.where(person_id: [user.people])

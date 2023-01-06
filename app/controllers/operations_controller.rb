@@ -1,4 +1,5 @@
 class OperationsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_operation, only: %i[show edit update destroy]
 
   def index
@@ -116,12 +117,12 @@ class OperationsController < ApplicationController
     todoist_client
     @todoist_item = @todoist_client.sync_items.add(
       {
-        content: "Rechnung fällig: #{@operation.title} (#{@operation.value})",
+        content: "Rechnung fällig: #{@operation.title}",
         due: { string: (@operation.bill_deadline - 1.day).strftime("%d.%m.%Y") },
-        description: "Automatisch erstellt von Abile"
+        description: todoist_description
       })
     @todoist_client.sync
-    @operation.todoist_item_id = @todoist_item.id
+    @operation.update(todoist_item_id: @todoist_item.id)
   end
 
   def update_todoist_item
@@ -132,11 +133,15 @@ class OperationsController < ApplicationController
     @todoist_item = @todoist_client.sync_items.update(
       {
         id:           @operation.todoist_item_id,
-        content:     "Rechnung fällig: #{@operation.title} (#{@operation.value})",
+        content:     "Rechnung fällig: #{@operation.title}",
         due:         { string: (@operation.bill_deadline - 1.day).strftime("%d.%m.%Y") },
-        description: "Automatisch erstellt von Abile kk",
-        checked:     done
+        description: todoist_description,
+        checked: done
       })
     @todoist_client.sync
+  end
+
+  def todoist_description
+    "**Status: #{@operation.aasm_state}** \nPerson: #{@operation.person.name} \nBetrag: #{@operation.value} Euro\n\n[Bei Abile bearbeiten](#{operation_url(@operation)})"
   end
 end

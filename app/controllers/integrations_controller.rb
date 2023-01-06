@@ -1,4 +1,5 @@
 class IntegrationsController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @todoist_integration = current_user.todoist_integration
