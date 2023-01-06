@@ -1,5 +1,6 @@
 class TodoistIntegrationsController < ApplicationController
   before_action :set_integration, only: %i[show edit update destroy]
+  require 'todoist'
 
   def new
     @todoist_integration = TodoistIntegration.new
@@ -10,6 +11,7 @@ class TodoistIntegrationsController < ApplicationController
 
      respond_to do |format|
       if @todoist_integration.save
+        test_connection
         format.html { redirect_to integrations_path, notice: 'Integration wurde erstellt.' }
       else
         format.html { render :new, error: ' Es ist ein Fehler aufgetreten' }
@@ -20,6 +22,7 @@ class TodoistIntegrationsController < ApplicationController
   def update
      respond_to do |format|
       if @todoist_integration.update(todoist_params.merge!(user_id: current_user.id))
+        test_connection
         format.html { redirect_to integrations_path, notice: 'Integration wurde aktualisiert.' }
       else
         format.html { render :edit }
@@ -41,6 +44,10 @@ class TodoistIntegrationsController < ApplicationController
 
   def todoist_params
     params.require(:todoist_integration).permit(:email, :password, :token)
+  end
+
+  def test_connection
+    Todoist::Client.create_client_by_login(@todoist_integration.email, @todoist_integration.password)
   end
 
 end
