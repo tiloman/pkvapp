@@ -21,4 +21,8 @@ class User < ApplicationRecord
   def operations_view
     prefered_operations_view || 'tile'
   end
+
+  def remind_days_before
+    5
+  end
 end

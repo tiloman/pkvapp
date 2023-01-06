@@ -118,7 +118,7 @@ class OperationsController < ApplicationController
     @todoist_item = @todoist_client.sync_items.add(
       {
         content: "Rechnung fällig: #{@operation.title}",
-        due: { string: (@operation.bill_deadline - 1.day).strftime("%d.%m.%Y") },
+        due: { string: (@operation.bill_deadline - current_user.remind_days_before.days).strftime("%d.%m.%Y") },
         description: todoist_description
       })
     @todoist_client.sync
@@ -129,12 +129,12 @@ class OperationsController < ApplicationController
     return unless @operation.todoist_item_id
 
     todoist_client
-    done = @operation.closed? ? 1 : 0
+    done = @operation.paid ? 1 : 0
     @todoist_item = @todoist_client.sync_items.update(
       {
         id:           @operation.todoist_item_id,
         content:     "Rechnung fällig: #{@operation.title}",
-        due:         { string: (@operation.bill_deadline - 1.day).strftime("%d.%m.%Y") },
+        due:         { string: (@operation.bill_deadline - current_user.remind_days_before.days).strftime("%d.%m.%Y") },
         description: todoist_description,
         checked: done
       })

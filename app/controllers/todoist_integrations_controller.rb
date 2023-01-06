@@ -57,19 +57,3 @@ class TodoistIntegrationsController < ApplicationController
     Todoist::Client.create_client_by_token(@todoist_integration.token).sync
   end
 end
-
-# CREATE ITEM:
-# operation = client.sync_items.add({content: "Vorgang bezahlen", due: {string: (Time.now + 1.day).strftime("%d.%m.%Y")} })
-# Store item id in database
-
-# SYNC ITEMS:
-# list = client.sync_items.collection
-
-# GET ITEM
-# list[operation.id]
-
-# UPDATE ITEM
-# updated = client.sync_items.update({id: operation.id, content: 'From string', due: {string: (Time.now + 1.day).strftime("%d.%m.%Y")} })
-
-# CLIENT VALID?
-# client.present?
