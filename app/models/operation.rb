@@ -21,6 +21,7 @@ class Operation < ApplicationRecord
   STATE_ORDER = %w[editing open waiting closed]
 
   belongs_to :person
+  delegate :user, to: :person
   has_one_attached :bill
   has_one_attached :insurance_notice
   has_rich_text :content

@@ -1,0 +1,12 @@
+.integration_card {
+  max-width: 400px;
+
+  &.todoist {
+    background: lighten(#E44332, 40%);
+  }
+  img {
+    height: 30px;
+    widht: 30px;
+    border-radius: 5px;
+  }
+}

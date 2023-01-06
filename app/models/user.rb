@@ -4,6 +4,7 @@ class User < ApplicationRecord
 
   after_create :create_person
   has_many :people, dependent: :destroy
+  has_one :todoist_integration
 
   def create_person
     Person.create(name: first_name, color: 'red', ratio: '50/50')
@@ -19,5 +20,9 @@ class User < ApplicationRecord
 
   def operations_view
     prefered_operations_view || 'tile'
+  end
+
+  def remind_days_before
+    5
   end
 end

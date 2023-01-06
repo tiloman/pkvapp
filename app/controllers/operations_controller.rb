@@ -1,4 +1,7 @@
 class OperationsController < ApplicationController
+  require 'todoist'
+
+  before_action :authenticate_user!
   before_action :set_operation, only: %i[show edit update destroy]
 
   def index
@@ -6,10 +9,9 @@ class OperationsController < ApplicationController
     @people = current_user.people
     if params.dig('filterrific', 'view').present?
       @view = params[:filterrific][:view]
-    elsif
-      @view = params[:view]
+    elsif @view = params[:view]
     else
-      @view =current_user.operations_view
+      @view = current_user.operations_view
     end
 
     @filterrific = initialize_filterrific(
@@ -40,9 +42,10 @@ class OperationsController < ApplicationController
 
   def create
     @operation = Operation.new(operation_params)
-
     respond_to do |format|
       if @operation.save
+        SyncTodoist.call(operation: @operation)
+
         format.html { redirect_to @operation, notice: 'Vorgang wurde angelegt.' }
         format.json { render :index, status: :created, location: @operation }
       else
@@ -55,6 +58,8 @@ class OperationsController < ApplicationController
   def update
     respond_to do |format|
       if @operation.update(operation_params)
+        SyncTodoist.call(operation: @operation)
+
         format.html { redirect_to @operation, notice: 'Operation was successfully updated.' }
         format.json { render :show, status: :ok, location: @operation }
         format.js {}
