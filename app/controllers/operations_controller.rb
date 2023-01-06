@@ -44,7 +44,8 @@ class OperationsController < ApplicationController
     @operation = Operation.new(operation_params)
     respond_to do |format|
       if @operation.save
-        create_todoist_item
+        SyncTodoist.call(operation: @operation)
+
         format.html { redirect_to @operation, notice: 'Vorgang wurde angelegt.' }
         format.json { render :index, status: :created, location: @operation }
       else
@@ -57,7 +58,8 @@ class OperationsController < ApplicationController
   def update
     respond_to do |format|
       if @operation.update(operation_params)
-        update_todoist_item
+        SyncTodoist.call(operation: @operation)
+
         format.html { redirect_to @operation, notice: 'Operation was successfully updated.' }
         format.json { render :show, status: :ok, location: @operation }
         format.js {}
@@ -107,40 +109,5 @@ class OperationsController < ApplicationController
 
   def operation_params
     params.require(:operation).permit(:title, :value, :insurance_paid, :insurance_submitted, :insurance_payback, :assistance_paid, :assistance_submitted, :assistance_payback, :billing_date, :content, :person_id, :bill, :bill_deadline, :insurance_notice, :paid)
-  end
-
-  def todoist_client
-    return unless current_user.todoist_integration
-
-    @todoist_client ||= Todoist::Client.create_client_by_token(current_user.todoist_integration.token)
-  end
-
-  def create_todoist_item
-    todoist_client
-    @todoist_item = @todoist_client.sync_items.add(todoist_item_data)
-    @todoist_client.sync
-    @operation.update(todoist_item_id: @todoist_item.id)
-  end
-
-  def update_todoist_item
-    return unless @operation.todoist_item_id
-
-    todoist_client
-    done = @operation.paid ? 1 : 0
-    @todoist_item = @todoist_client.sync_items.update(
-      { id: @operation.todoist_item_id}.merge(todoist_item_data))
-    @todoist_client.sync
-  end
-
-  def todoist_description
-    "**Status: #{@operation.aasm_state}** \nPerson: #{@operation.person.name} \nBetrag: #{@operation.value} Euro\n\n[Bei Abile bearbeiten](#{operation_url(@operation)})"
-  end
-
-  def todoist_item_data
-    {
-        content: "Rechnung fällig: #{@operation.title}",
-        due: { string: (@operation.bill_deadline - current_user.remind_days_before.days).strftime("%d.%m.%Y") },
-        description: todoist_description
-      }
   end
 end
