@@ -6,10 +6,9 @@ class OperationsController < ApplicationController
     @people = current_user.people
     if params.dig('filterrific', 'view').present?
       @view = params[:filterrific][:view]
-    elsif
-      @view = params[:view]
+    elsif @view = params[:view]
     else
-      @view =current_user.operations_view
+      @view = current_user.operations_view
     end
 
     @filterrific = initialize_filterrific(
@@ -40,9 +39,9 @@ class OperationsController < ApplicationController
 
   def create
     @operation = Operation.new(operation_params)
-
     respond_to do |format|
       if @operation.save
+        create_todoist_item
         format.html { redirect_to @operation, notice: 'Vorgang wurde angelegt.' }
         format.json { render :index, status: :created, location: @operation }
       else
@@ -55,6 +54,7 @@ class OperationsController < ApplicationController
   def update
     respond_to do |format|
       if @operation.update(operation_params)
+        update_todoist_item
         format.html { redirect_to @operation, notice: 'Operation was successfully updated.' }
         format.json { render :show, status: :ok, location: @operation }
         format.js {}
@@ -104,5 +104,39 @@ class OperationsController < ApplicationController
 
   def operation_params
     params.require(:operation).permit(:title, :value, :insurance_paid, :insurance_submitted, :insurance_payback, :assistance_paid, :assistance_submitted, :assistance_payback, :billing_date, :content, :person_id, :bill, :bill_deadline, :insurance_notice, :paid)
+  end
+
+  def todoist_client
+    return unless current_user.todoist_integration
+
+    @todoist_client ||= Todoist::Client.create_client_by_token(current_user.todoist_integration.token)
+  end
+
+  def create_todoist_item
+    todoist_client
+    @todoist_item = @todoist_client.sync_items.add(
+      {
+        content: "Rechnung fällig: #{@operation.title} (#{@operation.value})",
+        due: { string: (@operation.bill_deadline - 1.day).strftime("%d.%m.%Y") },
+        description: "Automatisch erstellt von Abile"
+      })
+    @todoist_client.sync
+    @operation.todoist_item_id = @todoist_item.id
+  end
+
+  def update_todoist_item
+    return unless @operation.todoist_item_id
+
+    todoist_client
+    done = @operation.closed? ? 1 : 0
+    @todoist_item = @todoist_client.sync_items.update(
+      {
+        id:           @operation.todoist_item_id,
+        content:     "Rechnung fällig: #{@operation.title} (#{@operation.value})",
+        due:         { string: (@operation.bill_deadline - 1.day).strftime("%d.%m.%Y") },
+        description: "Automatisch erstellt von Abile kk",
+        checked:     done
+      })
+    @todoist_client.sync
   end
 end
