@@ -1,3 +1,3 @@
 class TodoistIntegration < ApplicationRecord
-  validates :email, :password, presence: true
+  validates :token, presence: true
 end

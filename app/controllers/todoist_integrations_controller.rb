@@ -1,6 +1,7 @@
 class TodoistIntegrationsController < ApplicationController
-  before_action :set_integration, only: %i[show edit update destroy]
   require 'todoist'
+
+  before_action :set_integration, only: %i[show edit update destroy]
 
   def new
     @todoist_integration = TodoistIntegration.new
@@ -8,26 +9,31 @@ class TodoistIntegrationsController < ApplicationController
 
   def create
     @todoist_integration = TodoistIntegration.new(todoist_params.merge!(user_id: current_user.id))
-
-     respond_to do |format|
+    validate_token
+    respond_to do |format|
       if @todoist_integration.save
-        test_connection
         format.html { redirect_to integrations_path, notice: 'Integration wurde erstellt.' }
       else
-        format.html { render :new, error: ' Es ist ein Fehler aufgetreten' }
+        format.html { render :new, alert: ' Es ist ein Fehler aufgetreten' }
       end
     end
+
+  rescue StandardError => error
+    redirect_to new_todoist_integration_path, alert: "Fehler beim abspeichern des Tokens: #{error}"
   end
 
   def update
-     respond_to do |format|
+    validate_token
+    respond_to do |format|
       if @todoist_integration.update(todoist_params.merge!(user_id: current_user.id))
-        test_connection
         format.html { redirect_to integrations_path, notice: 'Integration wurde aktualisiert.' }
       else
         format.html { render :edit }
       end
     end
+
+  rescue StandardError => error
+    redirect_to edit_todoist_integration_path(@todoist_integration), alert: "Fehler beim abspeichern des Tokens: #{error}"
   end
 
   def edit
@@ -43,11 +49,26 @@ class TodoistIntegrationsController < ApplicationController
   end
 
   def todoist_params
-    params.require(:todoist_integration).permit(:email, :password, :token)
+    params.require(:todoist_integration).permit(:token)
   end
 
-  def test_connection
-    Todoist::Client.create_client_by_login(@todoist_integration.email, @todoist_integration.password)
+  def validate_token
+    Todoist::Client.create_client_by_token(@todoist_integration.token).sync
   end
-
 end
+
+# CREATE ITEM:
+# operation = client.sync_items.add({content: "Vorgang bezahlen", due: {string: (Time.now + 1.day).strftime("%d.%m.%Y")} })
+# Store item id in database
+
+# SYNC ITEMS:
+# list = client.sync_items.collection
+
+# GET ITEM
+# list[operation.id]
+
+# UPDATE ITEM
+# updated = client.sync_items.update({id: operation.id, content: 'From string', due: {string: (Time.now + 1.day).strftime("%d.%m.%Y")} })
+
+# CLIENT VALID?
+# client.present?
