@@ -1,4 +1,6 @@
 .integration_card {
+  max-width: 400px;
+
   &.todoist {
     background: lighten(#E44332, 40%);
   }
