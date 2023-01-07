@@ -24,7 +24,6 @@
 
   &__green {
     border-left: 3px solid $green;
-    //background: lighten($green, 40%);
     &:hover {
       background: lighten($green, 40%);
     }
@@ -32,7 +31,6 @@
 
   &__red {
     border-left: 3px solid $red;
-    //background: lighten($red, 40%);
     &:hover {
       background: lighten($red, 40%);
     }
@@ -40,7 +38,6 @@
 
   &__blue {
     border-left: 3px solid $blue;
-    //background: lighten($blue, 40%);
     &:hover {
       background: lighten($blue, 40%);
     }
