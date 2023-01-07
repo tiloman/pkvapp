@@ -38,11 +38,15 @@ class TodoistIntegrationsController < ApplicationController
   end
 
   def edit
-    client ||= Todoist::Client.create_client_by_token(@todoist_integration.token)
-    @projects = client.sync_projects.collection.map { |project| [project[1].name, project[0]] }
+    get_projects
   end
 
   def destroy
+    @todoist_integration.destroy
+    respond_to do |format|
+      format.html { redirect_to integrations_path, notice: 'Integration wurde entfernt.' }
+      format.json { head :no_content }
+    end
   end
 
   private
@@ -56,6 +60,16 @@ class TodoistIntegrationsController < ApplicationController
   end
 
   def validate_token
-    Todoist::Client.create_client_by_token(@todoist_integration.token).sync
+    todoist_client
+    @todoist_client.sync
+  end
+
+  def todoist_client
+    @todoist_client = Todoist::Client.create_client_by_token(@todoist_integration.token)
+  end
+
+  def get_projects
+    todoist_client
+    @projects = @todoist_client.sync_projects.collection.map { |project| [project[1].name, project[0]] }
   end
 end

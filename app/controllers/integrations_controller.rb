@@ -3,6 +3,7 @@ class IntegrationsController < ApplicationController
 
   def index
     @todoist_integration = current_user.todoist_integration
+    get_todoist_project_name
   end
 
   def new
@@ -23,4 +24,10 @@ class IntegrationsController < ApplicationController
 
   private
 
+  def get_todoist_project_name
+    return unless @todoist_integration
+
+    client = Todoist::Client.create_client_by_token(@todoist_integration.token)
+    @project_name = client.sync_projects.collection[@todoist_integration.project_id].name
+  end
 end

@@ -248,7 +248,7 @@ de:
       title: Todoist Integration bearbeiten
     form:
       project_prompt: Wo sollen die Aufgaben gespeichert werden?
-      set_project_id: Kehre zu dieser Seite zurück, um nach der erfolgreichen Verknüpfung auszuwählen in welchem Projekt die Erinnerungen gespeichert werden sollen.
+      set_project_id: Kehre zu dieser Seite zurück, um nach der erfolgreichen Verknüpfung auszuwählen in welchem Projekt die Aufgaben gespeichert werden sollen.
   integrations:
     index:
       todoist_token: API Token

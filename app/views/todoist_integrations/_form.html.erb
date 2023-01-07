@@ -6,5 +6,12 @@
   <% else %>
     <p class="alert alert-primary"><%= t('.set_project_id') %></p>
   <% end %>
-  <%= f.button :submit, class: "btn-primary btn-block mt-3" %>
+  <div class="mt-5">
+    <%= f.button :submit, class: "btn-primary" %>
+    <% if @todoist_integration.persisted? %>
+      <%= link_to @todoist_integration, method: :delete, data: { confirm: 'Sicher?' }, class: "btn btn-outline-danger" do %>
+        <i class="fas fa-trash-alt"></i>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>
