@@ -5,6 +5,7 @@ de:
       operation:
         one: Vorgang
         other: Vorgänge
+      todoist_integration: Todoist Integration
     attributes:
       operation:
         rich_text_area: Beschreibung
@@ -20,6 +21,9 @@ de:
         email: E-Mail Adresse
         password: Passwort
         password_confirmation: Passwort wiederholen
+      todoist_integration:
+        token: API-Token
+        project_id: Projekt
     errors:
       messages:
         record_invalid: 'Gültigkeitsprüfung ist fehlgeschlagen: %{errors}'
@@ -239,6 +243,18 @@ de:
       long: "%A, %d. %B %Y, %H:%M Uhr"
       short: "%d. %B, %H:%M Uhr"
     pm: nachmittags
+  todoist_integrations:
+    edit:
+      title: Todoist Integration bearbeiten
+    form:
+      project_prompt: Wo sollen die Aufgaben gespeichert werden?
+      set_project_id: Kehre zu dieser Seite zurück, um nach der erfolgreichen Verknüpfung auszuwählen in welchem Projekt die Aufgaben gespeichert werden sollen.
+  integrations:
+    index:
+      todoist_token: API Token
+      todoist_project: Projekt
+      todoist_description_1: Gehe zu den Einstellungen -> Integrationen und füge hier den API-Token ein.
+      todoist_description_2: Abile erstellt pro Vorgang eine Aufgabe mit entsprechendem Fälligkeitsdatum. Sobald ein Vorgang als bezahlt markiert wurde, wird die Aufgabe in Todoist auch erledigt.
   operations:
     list:
       title: Titel

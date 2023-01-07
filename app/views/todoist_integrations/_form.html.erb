@@ -1,5 +1,17 @@
 <%= simple_form_for @todoist_integration do |f| %>
-<%= f.error_notification %>
+  <%= f.error_notification %>
   <%= f.input :token %>
-  <%= f.button :submit, class: "btn-primary btn-block mt-3" %>
+  <% if @todoist_integration.persisted? %>
+    <%= f.input :project_id, as: :select, collection: @projects, prompt: t('.project_prompt') %>
+  <% else %>
+    <p class="alert alert-primary"><%= t('.set_project_id') %></p>
+  <% end %>
+  <div class="mt-5">
+    <%= f.button :submit, class: "btn-primary" %>
+    <% if @todoist_integration.persisted? %>
+      <%= link_to @todoist_integration, method: :delete, data: { confirm: 'Sicher?' }, class: "btn btn-outline-danger" do %>
+        <i class="fas fa-trash-alt"></i>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>
