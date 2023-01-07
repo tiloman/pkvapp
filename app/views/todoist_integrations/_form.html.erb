@@ -2,9 +2,9 @@
   <%= f.error_notification %>
   <%= f.input :token %>
   <% if @todoist_integration.persisted? %>
-    <%= f.input :project_id, as: :select, collection: @projects, prompt: "Wo sollen die Aufgaben gespeichert werden?" %>
+    <%= f.input :project_id, as: :select, collection: @projects, prompt: t('.project_prompt') %>
   <% else %>
-    <p class="alert alert-primary">Kehre zu dieser Seite zurück, um nach der erfolgreichen Verknüpfung auszuwählen in welchem Projekt die Erinnerungen gespeichert werden sollen.</p>
+    <p class="alert alert-primary"><%= t('.set_project_id') %></p>
   <% end %>
   <%= f.button :submit, class: "btn-primary btn-block mt-3" %>
 <% end %>

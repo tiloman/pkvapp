@@ -39,11 +39,8 @@ class SyncTodoist
     {
       content: "Rechnung fällig: #{@operation.title}",
       due: { string: (@operation.bill_deadline - @user.remind_days_before.days).strftime("%d.%m.%Y") },
-      description: description
+      description: description,
+      project_id: @user.todoist_integration.project_id
     }
-  end
-
-  def get_projects
-    'foo'
   end
 end
