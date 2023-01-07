@@ -13,7 +13,7 @@ class TodoistIntegrationsController < ApplicationController
     validate_token
     respond_to do |format|
       if @todoist_integration.save
-        format.html { redirect_to integrations_path, notice: 'Integration wurde erstellt.' }
+        format.html { redirect_to edit_todoist_integration_path(@todoist_integration), notice: 'Integration wurde erstellt.' }
       else
         format.html { render :new, alert: ' Es ist ein Fehler aufgetreten' }
       end
@@ -27,7 +27,7 @@ class TodoistIntegrationsController < ApplicationController
     validate_token
     respond_to do |format|
       if @todoist_integration.update(todoist_params.merge!(user_id: current_user.id))
-        format.html { redirect_to integrations_path, notice: 'Integration wurde aktualisiert.' }
+        format.html { redirect_to edit_todoist_integration_path(@todoist_integration), notice: 'Integration wurde aktualisiert.' }
       else
         format.html { render :edit }
       end
@@ -38,6 +38,8 @@ class TodoistIntegrationsController < ApplicationController
   end
 
   def edit
+    client ||= Todoist::Client.create_client_by_token(@todoist_integration.token)
+    @projects = client.sync_projects.collection.map { |project| [project[1].name, project[0]] }
   end
 
   def destroy
@@ -50,7 +52,7 @@ class TodoistIntegrationsController < ApplicationController
   end
 
   def todoist_params
-    params.require(:todoist_integration).permit(:token)
+    params.require(:todoist_integration).permit(:token, :project_id)
   end
 
   def validate_token

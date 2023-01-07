@@ -42,4 +42,8 @@ class SyncTodoist
       description: description
     }
   end
+
+  def get_projects
+    'foo'
+  end
 end

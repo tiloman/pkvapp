@@ -7,8 +7,11 @@
     </div>
     <% if @todoist_integration %>
       <p class="text-muted">API Token: <%= @todoist_integration.token %></p>
+      <p class="text-muted">Projekt_ID: <%= @todoist_integration.project_id %></p>
       <%= link_to "Editieren", edit_todoist_integration_path(@todoist_integration.id), class: 'btn btn-secondary' %>
     <% else %>
+      <p class="text-muted">Gehe zu den Einstellungen -> Integrationen und füge hier den API-Token ein.</p>
+      <p class="text-muted">Abile erstellt pro Vorgang eine Aufgabe mit entsprechendem Fälligkeitsdatum. Sobald ein Vorgang als bezahlt markiert wurde, wird die Aufgabe in Todoist auch erledigt.</p>
       <%= link_to "Neue Todoist integration", new_todoist_integration_path, class: 'btn btn-secondary' %>
     <% end %>
   </div>
