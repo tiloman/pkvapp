@@ -28,6 +28,7 @@ class IntegrationsController < ApplicationController
     return unless @todoist_integration
 
     client = Todoist::Client.create_client_by_token(@todoist_integration.token)
-    @project_name = client.sync_projects.collection[@todoist_integration.project_id]&.name
+    projects = client.sync_projects.collection[@todoist_integration.project_id]
+    @project_name = projects[@todoist_integration.project_id].name if projects[@todoist_integration.project_id]
   end
 end
