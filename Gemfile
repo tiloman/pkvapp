@@ -19,7 +19,7 @@ gem 'webpacker'
 gem 'best_in_place', '~> 3.0.1'
 gem 'simple-form-datepicker'
 gem 'aasm'
-gem 'aws-sdk-s3' # for storage
+gem 'aws-sdk-s3'
 gem "select2-rails"
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
