@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.0.2'
-gem 'rails', '~> 6.0.3'
+gem 'rails', '~> 6.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'sass-rails', '~> 5.0'
@@ -16,7 +16,7 @@ gem 'devise'
 gem 'simple_form'
 gem 'image_processing'
 gem 'webpacker'
-gem 'best_in_place', '~> 3.0.1'
+gem "best_in_place", git: "https://github.com/mmotherwell/best_in_place"
 gem 'simple-form-datepicker'
 gem 'aasm'
 gem 'aws-sdk-s3'
@@ -24,7 +24,7 @@ gem "select2-rails"
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'icalendar', '~> 2.6' # for webcal
-gem 'filterrific'
+gem 'filterrific', '<= 5.2.3'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap4'
 gem 'delayed_job_active_record'
