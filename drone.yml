@@ -4,58 +4,22 @@ name: default
 
 steps:
   - name: build
-    image: ruby:3.0.2
+    image: docker
     commands:
-      - apt update
-      - apt install nodejs npm -y
-      - npm install --global yarn
-      - rm config/database.yml
-      - mv config/database.yml.ci config/database.yml
-      - gem install bundler
-      - bundle install --jobs=4
-      - bundle exec rails db:create RAILS_ENV=test
-      - bundle exec rails db:schema:load RAILS_ENV=test
-      - yarn
-      - bundle exec rspec spec
-    volumes:
-      - name: gem-cache
-        path: /bundle
-      - name: tmp
-        path: /drone/src/tmp
-    environment:
-      RAILS_ENV: test
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: abile_test
-      DATABASE_HOST: database
-      PARALLEL_TEST_PROCESSORS: 15
-      TZ: Europe/Berlin
-
-  - name: Deploy
-    image: appleboy/drone-git-push
-    environment:
-      GIT_PUSH_SSH_KEY:
-        from_secret: ssh_key
-    settings:
-      remote: ssh://dokku@192.168.178.83:876/abile
-      remote_name: production
-      ssh_key:
-        from_secret: ssh_key
+      - docker buildx create --platform linux/amd64 -t tiloman/abile:latest
     when:
       branch:
-        - main
+      - main
 
-services:
-  - name: database
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: autostat_test
-
-volumes:
-  - name: gem-cache
-    host:
-      path: /tmp/cache
-  - name: tmp
-    temp: {}
+  - name: push
+    image: plugins/docker
+    settings:
+      repo: tiloman/abile
+      tags: latest
+      username:
+        from_secret: dockerhub_username
+      password:
+        from_secret: dockerhub_password
+    when:
+      branch:
+      - main
