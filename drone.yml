@@ -31,19 +31,13 @@ steps:
       PARALLEL_TEST_PROCESSORS: 15
       TZ: Europe/Berlin
 
-  - name: Docker build
-    image: docker
-    commands:
-      - docker buildx create --platform linux/amd64 -t tiloman/abile:latest
-    when:
-      branch:
-      - main
-
   - name: Push to Dockerhub
     image: plugins/docker
     settings:
       repo: tiloman/abile
-      tags: latest
+      tags:
+        - latest
+        - ${DRONE_COMMIT_SHA:0:8}
       username:
         from_secret: dockerhub_username
       password:
