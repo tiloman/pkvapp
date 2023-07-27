@@ -1,12 +1,10 @@
-
-<div class="operation shadow  <%= operation.person.color %>">
+<div class="operation shadow <%= operation.person.color %>">
     <span class="title"><%= operation.title %></span>
     <%= show_attachment_icon(operation) %>
     <br>
     <%= get_status_name(operation) %><br>
     <span class="person"><%= operation.person.name %> |</span>
     <span class="value"><%= operation.value %> €</span>
-
     <br>
     <hr>
     <%= render "operations/checkboxes", :operation => operation %>

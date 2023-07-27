@@ -60,8 +60,8 @@ class OperationsController < ApplicationController
       if @operation.update(operation_params)
         SyncTodoist.call(operation: @operation)
 
-        format.html { redirect_to @operation, notice: 'Operation was successfully updated.' }
-        format.json { render :show, status: :ok, location: @operation }
+        format.html { render @operation, notice: 'Operation was successfully updated.' }
+        format.json { render success: true }
         format.js {}
       else
         format.html { render :edit }

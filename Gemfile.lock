@@ -5,14 +5,6 @@ GIT
   specs:
     mimemagic (0.3.5)
 
-GIT
-  remote: https://github.com/mmotherwell/best_in_place
-  revision: 88eb3052623a9a6cd346864d2aca05021c2f80d0
-  specs:
-    best_in_place (3.1.1)
-      actionpack (>= 3.2)
-      railties (>= 3.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -331,6 +323,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    stimulus-rails (1.2.1)
+      railties (>= 6.0.0)
     thor (1.2.2)
     tilt (2.1.0)
     timeout (0.3.2)
@@ -377,7 +371,6 @@ PLATFORMS
 DEPENDENCIES
   aasm
   aws-sdk-s3
-  best_in_place!
   bootsnap (>= 1.1.0)
   byebug
   capybara (>= 2.15)
@@ -405,6 +398,7 @@ DEPENDENCIES
   sentry-ruby
   simple-form-datepicker
   simple_form
+  stimulus-rails
   todoist-ruby
   turbolinks (~> 5)
   tzinfo-data

@@ -21,16 +21,21 @@
         <td class="title"><%= operation.title %></td>
         <td class="name"><%= operation.person.name %></td>
         <td class="text-left value"><%= number_to_currency(operation.value) %></td>
-        <td><%= best_in_place operation, :paid, type: :checkbox, :collection => check_collection
-        %></td>
-        <td><%= best_in_place operation, :insurance_submitted, type: :checkbox, :collection => check_collection
-        %></td>
-        <td><%= best_in_place operation, :insurance_paid, type: :checkbox, :collection => check_collection
-        %></td>
-        <td><%= best_in_place operation, :assistance_submitted, type: :checkbox, :collection => check_collection
-        %></td>
-        <td><%= best_in_place operation, :assistance_paid, type: :checkbox, :collection => check_collection
-        %></td>
+        <td>
+          <%= check_box_tag :paid, operation.paid, operation.paid, data: { 'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+        </td>
+        <td>
+          <%= check_box_tag :insurance_submitted, operation.insurance_submitted, operation.insurance_submitted, data: { 'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+        </td>
+        <td>
+          <%= check_box_tag :insurance_paid, operation.insurance_paid, operation.insurance_paid, data: { 'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+         </td>
+        <td>
+          <%= check_box_tag :assistance_submitted, operation.assistance_submitted, operation.assistance_submitted, data: { 'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+        </td>
+        <td>
+          <%= check_box_tag :assistance_paid, operation.assistance_paid, operation.assistance_paid, data: { 'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+        </td>
         <td class="created_at"><%= operation.created_at.strftime("%d.%m.%Y") %></td>
         <td class="status"><%= get_status_name(operation) %></td>
         <td class="text-right">
@@ -50,5 +55,5 @@
 </div>
 
 <%= will_paginate operations,
-                  renderer: WillPaginate::ActionView::BootstrapLinkRenderer,
-                  list_classes: %w(pagination justify-content-center) %>
+  renderer:     WillPaginate::ActionView::BootstrapLinkRenderer,
+  list_classes: %w(pagination justify-content-center) %>

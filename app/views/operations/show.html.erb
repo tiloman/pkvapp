@@ -1,17 +1,18 @@
-
-
 <div class="details_box">
-  <% best_in_place @operation, :billing_date, as: :date %>
   <%= @operation.billing_date.strftime("Rechnung vom %d.%m.%Y") if @operation.billing_date %><br>
   Fällig in:
-  <%= distance_of_time_in_words(Time.now, @operation.bill_deadline) %> (<%= @operation.bill_deadline.strftime("%d.%m.%Y") %>) <br>
+  <%= distance_of_time_in_words(Time.now, @operation.bill_deadline) %>
+  (<%= @operation.bill_deadline.strftime("%d.%m.%Y") %>) <br>
   Person: <%= @operation.person.name %>
 </div>
 
 <h1 class= <%= @operation.person.color %>>
-  <%= best_in_place @operation, :title %>
-  <%= link_to edit_operation_path(@operation), class: "btn btn-sm btn-outline-primary" do %><i class="fas fa-edit"></i><% end %>
-  <%= link_to @operation, method: :delete, data: { confirm: 'Sicher?' }, class: "btn btn-sm btn-outline-danger "  do %><i class="fas fa-trash-alt"></i><% end %>
+  <%= @operation.title %>
+  <%= link_to edit_operation_path(@operation), class: "btn btn-sm btn-outline-primary" do %><i class="fas fa-edit"></i>
+  <% end %>
+  <%= link_to @operation, method: :delete, data: { confirm: 'Sicher?' }, class: "btn btn-sm btn-outline-danger " do %>
+    <i class="fas fa-trash-alt"></i>
+  <% end %>
 </h1>
 
 
@@ -21,22 +22,24 @@
 
   <div class="money_box shadow">
     <table class="table table-hover table-sm ">
-        <thead>
+      <thead>
       <tr>
         <th>Rechnungsbetrag</th>
-        <th><%= best_in_place @operation, :value, :display_with => :number_to_currency %></th>
+        <th><%= @operation.value %><%# best_in_place @operation, :value, :display_with => :number_to_currency %></th>
       </tr>
-    </thead>
+      </thead>
       <tr>
         <td>Rückzahlung Versicherung <br>
           <span class="subtitle"><%= get_insurance_ratio(@operation) %></span></td>
-        <td id="insurance_payback"> <%= best_in_place @operation, :insurance_payback, :display_with => :number_to_currency %> <br>
-         <span class="subtitle"><%= get_insurance_difference(@operation) %></td>
+        <td id="insurance_payback"> <%= @operation.insurance_payback %><%# best_in_place @operation, :insurance_payback, :display_with => :number_to_currency %>
+          <br>
+          <span class="subtitle"><%= get_insurance_difference(@operation) %></td>
       </tr>
       <tr>
         <td>Rückzahlung Beihilfe<br>
           <span class="subtitle"><%= get_assistance_ratio(@operation) %></span></td>
-        <td><%= best_in_place @operation, :assistance_payback, :display_with => :number_to_currency %> <br>
+        <td><%= @operation.assistance_payback %><%# best_in_place @operation, :assistance_payback, :display_with => :number_to_currency %>
+          <br>
           <span class="subtitle"><%= get_assistance_difference(@operation) %></span></td>
       </tr>
       <tr>
@@ -47,8 +50,7 @@
   </div>
 
   <div class="checkbox_container shadow">
-       <%= render "operations/checkboxes", :operation => @operation %>
-
+    <%= render "operations/checkboxes", :operation => @operation %>
   </div>
 
 </div>
@@ -57,11 +59,11 @@
 
 
 
-  <% if @operation.content.present? %>
-    <div class="description_box shadow">
-     <%= @operation.content %>
-    </div>
-  <% end %>
+<% if @operation.content.present? %>
+  <div class="description_box shadow">
+    <%= @operation.content %>
+  </div>
+<% end %>
 <br>
 <% if @operation.has_attachments? %>
   <hr>

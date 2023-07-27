@@ -16,7 +16,6 @@ gem 'devise'
 gem 'simple_form'
 gem 'image_processing'
 gem 'webpacker'
-gem "best_in_place", git: "https://github.com/mmotherwell/best_in_place"
 gem 'simple-form-datepicker'
 gem 'aasm'
 gem 'aws-sdk-s3'
@@ -33,6 +32,7 @@ gem "sentry-ruby"
 gem 'sentry-rails'
 gem 'todoist-ruby'
 gem "interactor"
+gem 'stimulus-rails'
 
 # mimemagic version bug...
 gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'

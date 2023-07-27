@@ -6,5 +6,6 @@ require("@rails/actiontext")
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js')
 
 import '@fortawesome/fontawesome-free/css/all'
+import "controllers"
 
 require("../stylesheets/application.scss")

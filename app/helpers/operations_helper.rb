@@ -39,13 +39,6 @@ module OperationsHelper
     end
   end
 
-  def check_collection
-    {
-           true: raw("<i class='fas fa-check' style='color: green'></i>"),
-           false: raw("<i class='fas fa-times' style='color:red'></i>")
-    }
-  end
-
   def get_assistance_ratio(operation)
     person = operation.person
     if person.ratio == '80/20'
