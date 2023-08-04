@@ -70,13 +70,13 @@
   <h5>Anhänge</h5><br>
 
   <% if @operation.bill.attached? %>
-    <%= link_to rails_blob_path(@operation.bill, disposition: 'preview') do %>
+    <%= link_to rails_blob_path(@operation.bill, disposition: 'preview'), target: "_blank" do %>
       <%= show_bill_preview(@operation) %>
     <% end %>
   <% end %>
 
   <% if @operation.insurance_notice.attached? %>
-    <%= link_to rails_blob_path(@operation.insurance_notice, disposition: 'preview') do %>
+    <%= link_to rails_blob_path(@operation.insurance_notice, disposition: 'preview'), target: "_blank" do %>
       <%= show_insurance_notice_preview(@operation) %>
     <% end %>
   <% end %>
