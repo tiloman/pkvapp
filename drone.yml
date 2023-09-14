@@ -39,7 +39,7 @@ steps:
       branch:
       - main
 
-  - name: Push to Dockerhub
+  - name: Push to Docker
     image: plugins/docker
     settings:
       repo: tiloman/abile
