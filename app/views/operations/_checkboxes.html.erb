@@ -3,7 +3,7 @@
   <div style="display: flex; justify-content: center; text-align: center;">
     <div>
       <span class='check_text'>gezahlt</span><br>
-      <%= check_box_tag :paid, operation.paid, operation.paid, data: {'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+      <%= render 'check_toggler', attribute: :paid, operation: operation %>
     </div>
   </div>
 </div>
@@ -13,12 +13,12 @@
   <div style="display: flex; justify-content: center; text-align: center;">
     <div>
       <span class='check_text'>eingereicht</span><br>
-      <%= check_box_tag :insurance_submitted, operation.insurance_submitted, operation.insurance_submitted, data: {'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+      <%= render 'check_toggler', attribute: :insurance_submitted, operation: operation %>
     </div>
     <div>
       <span class='check_text'>gezahlt</span><br>
       <span>
-        <%= check_box_tag :insurance_paid,operation.insurance_paid, operation.insurance_paid, data: {'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+        <%= render 'check_toggler', attribute: :insurance_paid, operation: operation %>
       </span>
     </div>
   </div>
@@ -30,13 +30,13 @@
     <div>
       <span class='check_text'>eingereicht</span><br>
       <span>
-        <%= check_box_tag :assistance_submitted, operation.assistance_submitted, operation.assistance_submitted, data: {'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+        <%= render 'check_toggler', attribute: :assistance_submitted, operation: operation %>
       </span>
     </div>
     <div>
       <span class='check_text'>gezahlt</span><br>
       <span>
-        <%= check_box_tag :assistance_paid, operation.assistance_paid, operation.assistance_paid, data: {'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+        <%= render 'check_toggler', attribute: :assistance_paid, operation: operation %>
       </span>
     </div>
   </div>

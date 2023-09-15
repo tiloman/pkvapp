@@ -28,7 +28,7 @@ class OperationsController < ApplicationController
     respond_to do |format|
       format.js {}
       format.html { render :index }
-      format.json { respond_with_bip(@operations) }
+      format.json { }
     end
   end
 
@@ -62,7 +62,6 @@ class OperationsController < ApplicationController
 
         format.html { render @operation, notice: 'Operation was successfully updated.' }
         format.json { render success: true }
-        format.js {}
       else
         format.html { render :edit }
         format.json { render json: @operation.errors.full_messages, status: :unprocessable_entity }

@@ -22,19 +22,19 @@
         <td class="name"><%= operation.person.name %></td>
         <td class="text-left value"><%= number_to_currency(operation.value) %></td>
         <td>
-          <%= check_box_tag :paid, operation.paid, operation.paid, data: { 'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+          <%= render 'check_toggler', attribute: :paid, operation: operation %>
         </td>
         <td>
-          <%= check_box_tag :insurance_submitted, operation.insurance_submitted, operation.insurance_submitted, data: { 'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+          <%= render 'check_toggler', attribute: :insurance_submitted, operation: operation %>
         </td>
         <td>
-          <%= check_box_tag :insurance_paid, operation.insurance_paid, operation.insurance_paid, data: { 'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
-         </td>
-        <td>
-          <%= check_box_tag :assistance_submitted, operation.assistance_submitted, operation.assistance_submitted, data: { 'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+          <%= render 'check_toggler', attribute: :insurance_paid, operation: operation %>
         </td>
         <td>
-          <%= check_box_tag :assistance_paid, operation.assistance_paid, operation.assistance_paid, data: { 'controller': 'toggle', 'toggle-target': "checkbox", action: "toggle#toggle", url: operation_path(operation) } %>
+          <%= render 'check_toggler', attribute: :assistance_submitted, operation: operation %>
+        </td>
+        <td>
+          <%= render 'check_toggler', attribute: :assistance_paid, operation: operation %>
         </td>
         <td class="created_at"><%= operation.created_at.strftime("%d.%m.%Y") %></td>
         <td class="status"><%= get_status_name(operation) %></td>
