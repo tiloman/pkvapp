@@ -19,7 +19,6 @@ gem 'webpacker'
 gem 'simple-form-datepicker'
 gem 'aasm'
 gem 'aws-sdk-s3'
-gem "select2-rails"
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'icalendar', '~> 2.6' # for webcal

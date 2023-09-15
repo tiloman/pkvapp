@@ -6,13 +6,15 @@
   <%= csp_meta_tag %>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="/manifest.json"/>
+<!--  <link rel="manifest" href="/manifest.json"/>-->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="description" content="Organisiere Beihilfeanträge und Versicherungsrückzahlungen"/>
+
   <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  <%= stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%# stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+  <%# stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%# javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 </head>
 <body>
 <%= render "shared/navbar" %>

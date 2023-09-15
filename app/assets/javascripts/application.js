@@ -11,12 +11,9 @@
 // about supported directives.
 //
 // require rails-ujs
-//= require activestorage
+// require activestorage tmp
 // require turbolinks
-//= require filterrific/filterrific-jquery
-
-//= require select2
-//= require select2_locale_de
+// require filterrific/filterrific-jquery tmp
 
 //= require moment
 //= require fullcalendar
@@ -50,13 +47,6 @@ function clearCalendar() {
 
 $(document).on("turbolinks:load", operationsCalendar);
 $(document).on("turbolinks:before-cache", clearCalendar);
-
-document.addEventListener("turbolinks:load", function () {
-
-  $(".select2_form").select2({
-    theme: "bootstrap",
-  });
-});
 
 document.addEventListener("turbolinks:load", function () {
   $("body").on("change", ".ajax-input", function () {
