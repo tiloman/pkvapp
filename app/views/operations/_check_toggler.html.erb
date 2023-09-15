@@ -1,13 +1,14 @@
-<% value = operation.send(attribute)%>
+<% value = operation.send(attribute) %>
 
 <div data-controller="toggle" data-toggle-checked-value="<%= value %>" data-toggle-url-value="<%= operation_path(operation) %>" data-toggle-attribute-value="<%= attribute.to_s %>">
-  <div class="d-none" data-toggle-target="waiting">
-    <i class="fa-regular fa-hourglass" style='color: yellow'></i>
+  <div class="spinner-grow spinner-grow-sm d-none" role="status" data-toggle-target="waiting">
+    <span class="sr-only">Loading...</span>
   </div>
+
   <div class="<%= 'd-none' unless value %>" data-toggle-target="checked" data-action="click->toggle#toggle">
     <i class="fas fa-check" style='color: green'></i>
   </div>
-  <div class="<%= 'd-none' if value %>" data-toggle-target="unchecked" data-action="click->toggle#toggle" >
+  <div class="<%= 'd-none' if value %>" data-toggle-target="unchecked" data-action="click->toggle#toggle">
     <i class="fas fa-times" style='color:red'></i>
   </div>
 </div>
