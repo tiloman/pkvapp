@@ -1,4 +1,3 @@
-
 global.toastr = require("toastr")
 require('@rails/ujs').start()
 require('turbolinks').start()
