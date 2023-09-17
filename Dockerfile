@@ -1,5 +1,10 @@
 FROM ruby:3.0.2
 
+ENV RAILS_ENV production
+ENV SECRET_KEY_BASE asdoiasodyui23476asirfuhs876gsjdyf78698u32l
+ENV RAILS_LOG_TO_STDOUT true
+ENV PATH /app/bin:$PATH
+
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg && apt-key add /root/yarn-pubkey.gpg
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
 RUN apt-get update && apt-get install -y nodejs yarn postgresql-client
@@ -16,12 +21,6 @@ RUN bundle install
 RUN yarn install
 
 COPY . .
-
-ENV RAILS_ENV production
-ENV SECRET_KEY_BASE asdoiasodyui23476asirfuhs876gsjdyf78698u32l
-ENV RAILS_LOG_TO_STDOUT true
-ENV PATH /app/bin:$PATH
-ENV NODE_OPTIONS=--openssl-legacy-provider
 
 EXPOSE 3000
 
