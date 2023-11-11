@@ -15,32 +15,36 @@
   <% end %>
 </h1>
 
-
 <hr>
-
 <div class="operation_container">
-
   <div class="money_box shadow">
     <table class="table table-hover table-sm ">
       <thead>
       <tr>
         <th>Rechnungsbetrag</th>
-        <th><%= @operation.value %><%# best_in_place @operation, :value, :display_with => :number_to_currency %></th>
+        <th data-controller="edit" data-edit-init-value="<%= @operation.value %>">
+          <div data-edit-target="show"> <%= @operation.value %></div>
+          <%= render 'inline_form', attribute: :value %>
+        </th>
       </tr>
       </thead>
       <tr>
         <td>Rückzahlung Versicherung <br>
           <span class="subtitle"><%= get_insurance_ratio(@operation) %></span></td>
-        <td id="insurance_payback"> <%= @operation.insurance_payback %><%# best_in_place @operation, :insurance_payback, :display_with => :number_to_currency %>
-          <br>
-          <span class="subtitle"><%= get_insurance_difference(@operation) %></td>
+        <td id="insurance_payback" data-controller="edit" data-edit-init-value="<%= @operation.insurance_payback %>">
+          <div data-edit-target="show"> <%= @operation.insurance_payback %></div>
+          <%= render 'inline_form', attribute: :insurance_payback %>
+          <span class="subtitle"><%= get_insurance_difference(@operation) %></span>
+        </td>
       </tr>
       <tr>
         <td>Rückzahlung Beihilfe<br>
           <span class="subtitle"><%= get_assistance_ratio(@operation) %></span></td>
-        <td><%= @operation.assistance_payback %><%# best_in_place @operation, :assistance_payback, :display_with => :number_to_currency %>
-          <br>
-          <span class="subtitle"><%= get_assistance_difference(@operation) %></span></td>
+        <td id="assistance_payback" data-controller="edit" data-edit-init-value="<%= @operation.assistance_payback %>">
+          <div data-edit-target="show"> <%= @operation.assistance_payback %></div>
+          <%= render 'inline_form', attribute: :assistance_payback %>
+          <span class="subtitle"><%= get_assistance_difference(@operation) %></span>
+        </td>
       </tr>
       <tr>
         <th>Offener Betrag</th>
@@ -54,8 +58,6 @@
   </div>
 
 </div>
-
-
 
 
 

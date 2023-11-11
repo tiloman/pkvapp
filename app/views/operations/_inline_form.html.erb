@@ -1,0 +1,7 @@
+<div class="d-none" data-edit-target="form" >
+  <%= simple_form_for @operation, remote: true do |f| %>
+    <%= f.input attribute  %>
+    <%= f.submit 'OK', class: 'btn btn-primary', data: { action: 'click->edit#viewMode' } %>
+    <div class="btn btn-secondary" data-action="click->edit#viewMode">X</div>
+  <% end %>
+</div>

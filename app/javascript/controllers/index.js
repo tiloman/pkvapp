@@ -4,5 +4,8 @@
 
 import { application } from "./application"
 
+import EditController from "./edit_controller"
+application.register("edit", EditController)
+
 import ToggleController from "./toggle_controller"
 application.register("toggle", ToggleController)
