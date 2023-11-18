@@ -1,32 +1,50 @@
-FROM ruby:3.0.2
+FROM ruby:3.0.2-alpine AS base
 
 ENV RAILS_ENV production
 ENV SECRET_KEY_BASE asdoiasodyui23476asirfuhs876gsjdyf78698u32l
 ENV RAILS_LOG_TO_STDOUT true
 ENV PATH /app/bin:$PATH
 
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg && apt-key add /root/yarn-pubkey.gpg
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install -y nodejs yarn postgresql-client
+RUN apk add --update \
+  postgresql-dev \
+  tzdata \
+  nodejs \
+  yarn \
+  git \
+  gcompat \
+  imagemagick
 
+FROM base AS dependencies
 
-
-
-RUN mkdir /app
-
-WORKDIR /app
+RUN apk add --update build-base
 
 COPY Gemfile Gemfile.lock ./
 
-RUN gem install bundler
+RUN gem install bundler:2.4.12
+RUN gem install nokogiri
 
-RUN bundle install
-RUN yarn install
+RUN bundle config set without "development test" && \
+  bundle install --jobs=3 --retry=3
 
-COPY . .
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+FROM base
+
+RUN adduser -D app
+
+USER app
+
+WORKDIR /home/app
+
+COPY --from=dependencies /usr/local/bundle/ /usr/local/bundle/
+
+COPY --chown=app --from=dependencies /node_modules/ node_modules/
+
+COPY --chown=app . ./
+
+RUN RAILS_ENV=production SECRET_KEY_BASE=assets bundle exec rake assets:precompile
 
 EXPOSE 3000
-
-RUN RAILS_ENV=production bundle exec rake assets:precompile
 
 CMD ["rails", "server", "-b", "0.0.0.0"]
