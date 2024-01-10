@@ -19,9 +19,7 @@ module OperationsHelper
       elsif operation.insurance_notice.previewable?
         image_tag operation.insurance_notice.preview(resize_to_limit: [300, 300]), class: 'attachment_preview'
       else
-        link_to 'Versicherungsantwort',
-                Rails.application.routes.url_helpers.rails_blob_path(operation.insurance_notice,
-                                                                     disposition: 'attachment')
+        "Versicherungsantwort"
       end
     end
   end

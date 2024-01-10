@@ -6,7 +6,7 @@ class OperationsController < ApplicationController
 
   def index
     users_operations = Operation.where(person_id: [current_user.people])
-    @people = current_user.people
+    @people          = current_user.people
     if params.dig('filterrific', 'view').present?
       @view = params[:filterrific][:view]
     elsif @view = params[:view]
@@ -19,7 +19,7 @@ class OperationsController < ApplicationController
       params[:filterrific],
       select_options: {
         by_person: Operation.options_for_person_select(current_user),
-        by_state: Operation.options_for_state_select(users_operations)
+        by_state:  Operation.options_for_state_select(users_operations)
       },
     ) || return
 
@@ -28,7 +28,7 @@ class OperationsController < ApplicationController
     respond_to do |format|
       format.js {}
       format.html { render :index }
-      format.json { }
+      format.json {}
     end
   end
 
@@ -56,16 +56,11 @@ class OperationsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @operation.update(operation_params)
-        SyncTodoist.call(operation: @operation)
-
-        format.html { render @operation, notice: 'Operation was successfully updated.' }
-        format.json { render success: true }
-      else
-        format.html { render :edit }
-        format.json { render json: @operation.errors.full_messages, status: :unprocessable_entity }
-      end
+    if @operation.update(operation_params)
+      SyncTodoist.call(operation: @operation)
+      render @operation, notice: 'Operation was successfully updated.'
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -84,11 +79,11 @@ class OperationsController < ApplicationController
   end
 
   def dashboard
-    users_operations = Operation.unscoped.where(person_id: [current_user.people])
+    users_operations   = Operation.unscoped.where(person_id: [current_user.people])
     @unpaid_operations = users_operations.unpaid_operations
-    @paid_operations = users_operations.paid_operations
+    @paid_operations   = users_operations.paid_operations
 
-    @next_payment = users_operations.where('bill_deadline <= ?', Time.now).first
+    @next_payment       = users_operations.where('bill_deadline <= ?', Time.now).first
     @overdue_operations = users_operations.overdue
   end
 
