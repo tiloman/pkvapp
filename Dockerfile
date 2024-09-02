@@ -1,4 +1,4 @@
-FROM ruby:3.0.2-alpine AS base
+FROM ruby:3.3.0-alpine AS base
 
 ENV RAILS_ENV production
 ENV SECRET_KEY_BASE asdoiasodyui23476asirfuhs876gsjdyf78698u32l

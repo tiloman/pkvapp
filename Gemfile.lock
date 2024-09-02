@@ -178,7 +178,7 @@ GEM
     method_source (1.0.0)
     mini_magick (4.12.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.2)
+    mini_portile2 (2.8.7)
     minitest (5.18.0)
     momentjs-rails (2.29.4.1)
       railties (>= 3.1)
@@ -196,12 +196,12 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.9)
-    nokogiri (1.15.2)
+    nokogiri (1.16.7)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.15.2-arm64-darwin)
+    nokogiri (1.16.7-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.15.2-x86_64-linux)
+    nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     parallel (1.23.0)
@@ -210,7 +210,7 @@ GEM
     pg (1.5.3)
     public_suffix (5.0.1)
     puma (3.12.6)
-    racc (1.6.2)
+    racc (1.8.1)
     rack (2.2.7)
     rack-protection (3.0.6)
       rack
@@ -365,6 +365,7 @@ GEM
 PLATFORMS
   -darwin-21
   arm64-darwin-21
+  arm64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
@@ -386,6 +387,7 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   mimemagic!
   momentjs-rails
+  nokogiri
   pg (>= 0.18, < 2.0)
   puma (~> 3.11)
   rails (~> 6.1)
@@ -407,7 +409,7 @@ DEPENDENCIES
   will_paginate-bootstrap4
 
 RUBY VERSION
-   ruby 3.0.2p107
+   ruby 3.3.0p0
 
 BUNDLED WITH
    2.3.20
