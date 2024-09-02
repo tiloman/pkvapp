@@ -4,6 +4,7 @@ ENV RAILS_ENV production
 ENV SECRET_KEY_BASE asdoiasodyui23476asirfuhs876gsjdyf78698u32l
 ENV RAILS_LOG_TO_STDOUT true
 ENV PATH /app/bin:$PATH
+ENV NODE_OPTIONS --openssl-legacy-provider
 
 RUN apk add --update \
   postgresql-dev \
