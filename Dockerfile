@@ -13,7 +13,9 @@ RUN apk add --update \
   yarn \
   git \
   gcompat \
-  imagemagick
+  imagemagick \
+  ca-certificates \
+  curl
 
 FROM base AS dependencies
 
