@@ -1,3 +1,5 @@
+require 'logger' # FIX für rails 6.1 und ruby 3.3
+
 require_relative 'boot'
 
 require 'rails/all'
