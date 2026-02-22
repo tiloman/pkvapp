@@ -28,7 +28,12 @@ class IntegrationsController < ApplicationController
     return unless @todoist_integration
 
     client = Todoist::Client.create_client_by_token(@todoist_integration.token)
-    projects = client.sync_projects.collection[@todoist_integration.project_id]
-    @project_name = projects[@todoist_integration.project_id].name if projects[@todoist_integration.project_id]
+    collection = client.sync_projects.collection
+    pid = @todoist_integration.project_id
+    project = collection[pid] || collection[pid.to_s] || collection[pid.to_i]
+    @project_name = project&.name
+  rescue Net::ReadTimeout, Net::OpenTimeout => e
+    Rails.logger.warn("Todoist nicht erreichbar (Integrations#index): #{e.message}")
+    @project_name = nil
   end
 end

@@ -62,6 +62,9 @@ class TodoistIntegrationsController < ApplicationController
   def validate_token
     todoist_client
     @todoist_client.sync
+  rescue Net::ReadTimeout, Net::OpenTimeout => e
+    Rails.logger.warn("Todoist nicht erreichbar (validate_token): #{e.message}")
+    raise "Todoist ist derzeit nicht erreichbar. Bitte später erneut versuchen."
   end
 
   def todoist_client
@@ -71,5 +74,9 @@ class TodoistIntegrationsController < ApplicationController
   def get_projects
     todoist_client
     @projects = @todoist_client.sync_projects.collection.map { |project| [project[1].name, project[0]] }
+  rescue Net::ReadTimeout, Net::OpenTimeout => e
+    Rails.logger.warn("Todoist nicht erreichbar (get_projects): #{e.message}")
+    @projects = []
+    flash.now[:alert] = "Todoist ist derzeit nicht erreichbar. Projektauswahl kann nicht geladen werden."
   end
 end

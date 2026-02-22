@@ -20,15 +20,22 @@ class SyncTodoist
 
   def create_todoist_item
     @item = @client.sync_items.add(content)
-    @client.sync
-    @operation.update(todoist_item_id: @item.id)
+    sync_client
+    @operation.update(todoist_item_id: @item.id) unless context.failure?
   end
 
   def update_todoist_item
     done = @operation.paid ? 1 : 0
     @item = @client.sync_items.update(
       { id: @operation.todoist_item_id }.merge(content))
+    sync_client
+  end
+
+  def sync_client
     @client.sync
+  rescue Net::ReadTimeout, Net::OpenTimeout => e
+    Rails.logger.warn("Todoist sync timeout: #{e.message}")
+    context.fail!(error: "Todoist ist derzeit nicht erreichbar.")
   end
 
   def description
