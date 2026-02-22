@@ -1,10 +1,11 @@
 FROM ruby:3.3.0-alpine AS base
 
-ENV RAILS_ENV production
-ENV SECRET_KEY_BASE asdoiasodyui23476asirfuhs876gsjdyf78698u32l
-ENV RAILS_LOG_TO_STDOUT true
-ENV PATH /app/bin:$PATH
-ENV NODE_OPTIONS --openssl-legacy-provider
+ENV RAILS_ENV=production
+# Override at runtime (e.g. docker run -e SECRET_KEY_BASE=…)
+ENV SECRET_KEY_BASE=replace-at-runtime
+ENV RAILS_LOG_TO_STDOUT=true
+ENV PATH=/app/bin:$PATH
+ENV NODE_OPTIONS=--openssl-legacy-provider
 
 RUN apk add --update \
   postgresql-dev \
@@ -36,17 +37,19 @@ FROM base
 
 RUN adduser -D app
 
-USER app
-
 WORKDIR /home/app
 
 COPY --from=dependencies /usr/local/bundle/ /usr/local/bundle/
 
-COPY --chown=app --from=dependencies /node_modules/ node_modules/
+COPY --from=dependencies /node_modules/ node_modules/
 
-COPY --chown=app . ./
+COPY . ./
 
-RUN RAILS_ENV=production SECRET_KEY_BASE=assets bundle exec rake assets:precompile
+RUN RAILS_ENV=production SECRET_KEY_BASE=precompile-dummy bundle exec rake assets:precompile
+
+RUN chown -R app:app /home/app
+
+USER app
 
 EXPOSE 3000
 
