@@ -1,8 +1,7 @@
 FROM ruby:3.3.0-alpine AS base
 
 ENV RAILS_ENV=production
-# Override at runtime (e.g. docker run -e SECRET_KEY_BASE=…)
-ENV SECRET_KEY_BASE=replace-at-runtime
+# SECRET_KEY_BASE must be set at runtime (e.g. docker run -e SECRET_KEY_BASE=…)
 ENV RAILS_LOG_TO_STDOUT=true
 ENV PATH=/app/bin:$PATH
 ENV NODE_OPTIONS=--openssl-legacy-provider
@@ -45,7 +44,7 @@ COPY --from=dependencies /node_modules/ node_modules/
 
 COPY . ./
 
-RUN RAILS_ENV=production SECRET_KEY_BASE=precompile-dummy bundle exec rake assets:precompile
+RUN chmod +x scripts/docker-precompile.sh && ./scripts/docker-precompile.sh
 
 RUN chown -R app:app /home/app
 
