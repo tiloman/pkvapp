@@ -44,7 +44,7 @@ COPY --from=dependencies /node_modules/ node_modules/
 
 COPY . ./
 
-RUN chmod +x scripts/docker-precompile.sh && ./scripts/docker-precompile.sh
+RUN RAILS_ENV=production SECRET_KEY_BASE=precompile-dummy bundle exec rake assets:precompile
 
 RUN chown -R app:app /home/app
 
