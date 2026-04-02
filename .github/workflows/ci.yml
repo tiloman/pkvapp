@@ -33,4 +33,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: registry.gitlab.com/tiloman2/abile
+          tags: |
+            registry.gitlab.com/tiloman2/abile:latest
+            registry.gitlab.com/tiloman2/abile:main-${{ github.sha }}-${{ github.run_number }}
