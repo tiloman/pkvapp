@@ -30,7 +30,7 @@ gem 'delayed_job_active_record'
 gem "delayed_job_web"
 gem "sentry-ruby"
 gem 'sentry-rails'
-gem 'todoist-ruby'
+gem 'faraday', '~> 2.0'
 gem "interactor"
 gem 'stimulus-rails'
 gem 'nokogiri'

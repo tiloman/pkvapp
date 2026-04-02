@@ -1,6 +1,4 @@
 class OperationsController < ApplicationController
-  require 'todoist'
-
   before_action :authenticate_user!
   before_action :set_operation, only: %i[show edit update destroy]
 

@@ -1,6 +1,4 @@
 class TodoistIntegrationsController < ApplicationController
-  require 'todoist'
-
   before_action :authenticate_user!
   before_action :set_integration, only: %i[show edit update destroy]
 
@@ -60,21 +58,17 @@ class TodoistIntegrationsController < ApplicationController
   end
 
   def validate_token
-    todoist_client
-    @todoist_client.sync
-  rescue Net::ReadTimeout, Net::OpenTimeout => e
+    client = TodoistClient.new(@todoist_integration.token)
+    client.validate_token!
+  rescue Faraday::TimeoutError, Faraday::ConnectionFailed => e
     Rails.logger.warn("Todoist nicht erreichbar (validate_token): #{e.message}")
     raise "Todoist ist derzeit nicht erreichbar. Bitte später erneut versuchen."
   end
 
-  def todoist_client
-    @todoist_client = Todoist::Client.create_client_by_token(@todoist_integration.token)
-  end
-
   def get_projects
-    todoist_client
-    @projects = @todoist_client.sync_projects.collection.map { |project| [project[1].name, project[0]] }
-  rescue Net::ReadTimeout, Net::OpenTimeout => e
+    client = TodoistClient.new(@todoist_integration.token)
+    @projects = client.projects.map { |p| [p["name"], p["id"]] }
+  rescue Faraday::TimeoutError, Faraday::ConnectionFailed => e
     Rails.logger.warn("Todoist nicht erreichbar (get_projects): #{e.message}")
     @projects = []
     flash.now[:alert] = "Todoist ist derzeit nicht erreichbar. Projektauswahl kann nicht geladen werden."
