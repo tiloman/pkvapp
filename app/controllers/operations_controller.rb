@@ -58,7 +58,7 @@ class OperationsController < ApplicationController
     if @operation.update(operation_params)
       @operation.insurance_notices.attach(new_notices) if new_notices.present?
       SyncTodoist.call(operation: @operation)
-      render @operation, notice: 'Operation was successfully updated.'
+      redirect_to @operation, notice: 'Operation was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
