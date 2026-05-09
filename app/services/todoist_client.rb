@@ -13,10 +13,11 @@ class TodoistClient
     post("tasks", body)
   end
 
-  def update_task(task_id, content: nil, description: nil, due_date: nil)
+  def update_task(task_id, content: nil, description: nil, project_id: nil, due_date: nil)
     body = {}
     body[:content] = content if content
     body[:description] = description if description
+    body[:project_id] = project_id if project_id
     body[:due_date] = due_date if due_date
     post("tasks/#{task_id}", body)
   end
