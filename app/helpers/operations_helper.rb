@@ -12,15 +12,13 @@ module OperationsHelper
     end
   end
 
-  def show_insurance_notice_preview(operation)
-    if operation.insurance_notice.attached?
-      if operation.insurance_notice.variable?
-        image_tag operation.insurance_notice.variant(resize_to_limit: [300, 300]), class: 'attachment_preview'
-      elsif operation.insurance_notice.previewable?
-        image_tag operation.insurance_notice.preview(resize_to_limit: [300, 300]), class: 'attachment_preview'
-      else
-        "Versicherungsantwort"
-      end
+  def show_insurance_notice_preview(notice)
+    if notice.variable?
+      image_tag notice.variant(resize_to_limit: [300, 300]), class: 'attachment_preview'
+    elsif notice.previewable?
+      image_tag notice.preview(resize_to_limit: [300, 300]), class: 'attachment_preview'
+    else
+      "Versicherungsantwort"
     end
   end
 

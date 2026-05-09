@@ -17,7 +17,7 @@
   <%= f.input :content, as: :rich_text_area %>
   <hr>
   <%= f.input :bill, as: :file %>
-  <%= f.input :insurance_notice, as: :file %>
+  <%= f.input :insurance_notices, as: :file, input_html: { multiple: true } %>
   <br>
 
 

@@ -14,7 +14,7 @@ de:
         billing_date: Rechnungsdatum
         title: Titel
         value: Summe
-        insurance_notice: Versicherungsantwort
+        insurance_notices: Versicherungsantworten
       user:
         first_name: Vorname
         last_name: Nachname

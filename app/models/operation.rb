@@ -23,7 +23,7 @@ class Operation < ApplicationRecord
   belongs_to :person
   delegate :user, to: :person
   has_one_attached :bill
-  has_one_attached :insurance_notice
+  has_many_attached :insurance_notices
   has_rich_text :content
 
   after_update :update_status
@@ -89,7 +89,7 @@ class Operation < ApplicationRecord
   end
 
   def has_attachments?
-    return true if bill.attached? || insurance_notice.attached?
+    return true if bill.attached? || insurance_notices.attached?
   end
 
   def insurance_submitted?

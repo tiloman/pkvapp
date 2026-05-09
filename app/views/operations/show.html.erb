@@ -74,9 +74,9 @@
     <% end %>
   <% end %>
 
-  <% if @operation.insurance_notice.attached? %>
-    <%= link_to rails_blob_path(@operation.insurance_notice, disposition: 'inline'), target: "_blank" do %>
-      <%= show_insurance_notice_preview(@operation) %>
+  <% @operation.insurance_notices.each do |notice| %>
+    <%= link_to rails_blob_path(notice, disposition: 'inline'), target: "_blank" do %>
+      <%= show_insurance_notice_preview(notice) %>
     <% end %>
   <% end %>
 <% end %>

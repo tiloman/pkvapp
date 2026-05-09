@@ -54,7 +54,9 @@ class OperationsController < ApplicationController
   end
 
   def update
+    new_notices = params[:operation]&.delete(:insurance_notices)
     if @operation.update(operation_params)
+      @operation.insurance_notices.attach(new_notices) if new_notices.present?
       SyncTodoist.call(operation: @operation)
       render @operation, notice: 'Operation was successfully updated.'
     else
@@ -100,6 +102,6 @@ class OperationsController < ApplicationController
   end
 
   def operation_params
-    params.require(:operation).permit(:title, :value, :insurance_paid, :insurance_submitted, :insurance_payback, :assistance_paid, :assistance_submitted, :assistance_payback, :billing_date, :content, :person_id, :bill, :bill_deadline, :insurance_notice, :paid)
+    params.require(:operation).permit(:title, :value, :insurance_paid, :insurance_submitted, :insurance_payback, :assistance_paid, :assistance_submitted, :assistance_payback, :billing_date, :content, :person_id, :bill, :bill_deadline, :paid, insurance_notices: [])
   end
 end
