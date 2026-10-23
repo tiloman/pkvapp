@@ -28,7 +28,8 @@ bin/delayed_job start           # or run inline in dev
 app/
   models/         User -> Person -> Operation (core domain)
   services/       TodoistClient (Faraday HTTP, 10s timeout)
-  interactors/    SyncTodoist (interactor gem pattern)
+  interactors/    SyncTodoist, ExtractBill, BuildOperationProposal, ApplyAiRun, RevertAiRun (interactor gem pattern)
+  jobs/           ExtractBillJob (ActiveJob -> Delayed Job)
   controllers/    Standard RESTful + Devise auth overrides
   javascript/     Stimulus controllers (Webpacker, not esbuild)
   views/          ERB + simple_form + ActionText
@@ -39,6 +40,11 @@ app/
 - **User** has_many :people, has_one :todoist_integration (Devise auth)
 - **Person** has_many :operations, belongs_to :user (name, color, ratio)
 - **Operation** belongs_to :person, has_one_attached :bill, has_many_attached :insurance_notices, has_rich_text :content
+
+### AI bill extraction
+
+`AiRun` is the audit record for every AI step: user uploads a bill (or reuses `Operation#bill`) -> `ExtractBillJob` calls `AiClient#extract` with the user's own Claude/Gemini key -> status `proposed` with per-field `{value, confidence, evidence}` in `output` -> user reviews on `/ai_runs/:id` -> `ApplyAiRun` creates/updates the Operation (`accepted`, `applied_changes` stores before/after, `RevertAiRun` undoes it).
+Statuses: processing -> proposed -> accepted / rejected / failed / reverted. The AI never writes to Operation directly.
 
 ### Operation state machine (AASM)
 
@@ -85,6 +91,9 @@ Auto-transitions in `update_status`: all paid flags set -> close; submitted flag
 - **NODE_OPTIONS=--openssl-legacy-provider** required in Dockerfile for Webpack 4 + newer Node
 - **Sentry DSN** is hardcoded in `config/initializers/sentry.rb` (not via ENV)
 - **Validation side effects**: `insurance_submitted?` and `assistance_submitted?` on Operation use `throw :abort` -- they halt the save chain, not just add errors
+- **AI extraction rules**: the LLM only extracts, Ruby computes (deadline from `payment_terms_days`, person matched from `patient_name` against the user's people, only unambiguous matches). `ApplyAiRun` requires `value` and `bill_deadline` because the operation pages crash without them. Users must consent once (`users.ai_consented_at`) because bills contain health data. Models are configurable via `AI_CLAUDE_MODEL` / `AI_GEMINI_MODEL`; the Gemini default `gemini-flash-latest` is an alias and unverified against a live key. Image downscaling needs ImageMagick (in the Dockerfile, not necessarily locally) and falls back to the original.
+- **`User#create_person`** calls `Person.create` without a user, so it silently fails validation -- new users start without people
+- **Request specs rendering the layout** must stub `javascript_pack_tag`/`stylesheet_pack_tag` (no webpack manifest in test)
 - **Rails 5.2 defaults** still loaded (`config.load_defaults 5.2` in application.rb) despite running Rails 6.1
 - **`search_query` scope** interpolates directly into LIKE -- safe only because `%` is the only special char handled
 

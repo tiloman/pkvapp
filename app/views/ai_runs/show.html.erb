@@ -1,0 +1,70 @@
+<h1>Rechnung einlesen <%= ai_run_status_badge(@run) %></h1>
+<p class="text-muted">
+  <%= @run.document.filename %> &middot;
+  <%= t("ai_integrations.providers.#{@run.provider}") if @run.provider %>
+  <%= "(#{@run.model})" if @run.model %>
+</p>
+
+<% case @run.status %>
+<% when 'processing' %>
+  <div data-controller="poll" class="alert alert-info">
+    Die Rechnung wird gelesen &hellip; Diese Seite aktualisiert sich automatisch.
+  </div>
+  <%= ai_run_document_preview(@run) %>
+
+<% when 'failed' %>
+  <div class="alert alert-danger"><%= @run.error_message.presence || 'Die Rechnung konnte nicht gelesen werden.' %></div>
+  <%= render 'actions', run: @run %>
+
+<% when 'proposed' %>
+  <% @warnings.to_a.each do |warning| %>
+    <div class="alert alert-warning"><%= warning %></div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-lg-6 mb-3"><%= ai_run_document_preview(@run) %></div>
+    <div class="col-lg-6">
+      <%= simple_form_for @operation, url: ai_run_path(@run), method: :patch do |f| %>
+        <%= f.error_notification %>
+        <% if @run.operation %>
+          <p class="text-muted">Bestehender Vorgang <strong><%= @run.operation.title %></strong> &ndash; die Felder unten überschreiben die bisherigen Werte.</p>
+        <% end %>
+        <%= f.association :person, collection: current_user.people, include_blank: 'Bitte wählen',
+                          hint: ai_field_hint(@run, :person_id, @operation.person_id) %>
+        <%= f.input :title, hint: ai_field_hint(@run, :title, @operation.title) %>
+        <%= f.input :value, required: true, hint: ai_field_hint(@run, :value, @operation.value) %>
+        <%= f.input :billing_date, as: :date, include_blank: true,
+                    hint: ai_field_hint(@run, :billing_date, @operation.billing_date) %>
+        <%= f.input :bill_deadline, as: :date, include_blank: true, required: true,
+                    hint: ai_field_hint(@run, :bill_deadline, @operation.bill_deadline) %>
+        <%= f.button :submit, @run.operation ? 'Werte übernehmen' : 'Als Vorgang anlegen', class: 'btn-primary' %>
+      <% end %>
+      <hr>
+      <%= render 'actions', run: @run %>
+    </div>
+  </div>
+
+<% when 'accepted' %>
+  <div class="alert alert-success">
+    Übernommen am <%= l(@run.decided_at, format: :short) %>
+    <% if @run.operation %>
+      &rarr; <%= link_to @run.operation.title, @run.operation %>
+    <% end %>
+  </div>
+  <% changes = @run.applied_changes.except('_created') %>
+  <% if changes.any? %>
+    <table class="table table-sm">
+      <thead><tr><th>Feld</th><th>Vorher</th><th>Nachher</th></tr></thead>
+      <tbody>
+        <% changes.each do |field, (from, to)| %>
+          <tr><td><%= Operation.human_attribute_name(field) %></td><td><%= from %></td><td><%= to %></td></tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+  <%= button_to 'Rückgängig machen', revert_ai_run_path(@run), method: :post, class: 'btn btn-outline-danger',
+                data: { confirm: 'Die Übernahme wirklich rückgängig machen?' } %>
+
+<% else %>
+  <div class="alert alert-secondary">Dieser Vorschlag wurde <%= t("ai_runs.statuses.#{@run.status}").downcase %>.</div>
+<% end %>

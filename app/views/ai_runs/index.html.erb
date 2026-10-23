@@ -1,0 +1,20 @@
+<h1>KI-Vorschläge</h1>
+<p><%= link_to 'Rechnung einlesen', new_ai_run_path, class: 'btn btn-primary' %></p>
+
+<table class="table table-hover">
+  <thead>
+    <tr><th>Datum</th><th>Dokument</th><th>Anbieter</th><th>Status</th><th>Vorgang</th></tr>
+  </thead>
+  <tbody>
+    <% @ai_runs.each do |run| %>
+      <tr>
+        <td><%= link_to l(run.created_at, format: :short), run %></td>
+        <td><%= run.document.filename %></td>
+        <td><%= run.provider && t("ai_integrations.providers.#{run.provider}") %></td>
+        <td><%= ai_run_status_badge(run) %></td>
+        <td><%= link_to run.operation.title, run.operation if run.operation %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= 'Noch keine Vorschläge.' if @ai_runs.empty? %>

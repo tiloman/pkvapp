@@ -1,0 +1,11 @@
+<div class="d-flex flex-wrap gap-2 align-items-center">
+  <% providers = ai_provider_options(current_user) %>
+  <%= form_with url: retry_ai_run_path(run), method: :post, local: true, class: 'd-flex gap-2' do %>
+    <% if providers.size > 1 %>
+      <%= select_tag :provider, options_for_select(providers, run.provider), class: 'form-select form-select-sm w-auto' %>
+    <% end %>
+    <%= submit_tag 'Erneut analysieren', class: 'btn btn-outline-primary btn-sm' %>
+  <% end %>
+  <%= button_to 'Verwerfen', reject_ai_run_path(run), method: :post, class: 'btn btn-outline-danger btn-sm',
+                form: { data: { confirm: 'Vorschlag verwerfen?' } } %>
+</div>

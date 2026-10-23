@@ -1,0 +1,47 @@
+<h1><%= @operation ? 'Aus Rechnung ausfüllen' : 'Rechnung per KI einlesen' %></h1>
+
+<% if @operation %>
+  <p class="text-muted">
+    Die Rechnung von <strong><%= @operation.title %></strong> wird gelesen. Du prüfst den Vorschlag, bevor etwas geändert wird.
+  </p>
+<% else %>
+  <p class="text-muted">
+    Lade eine Rechnung (PDF oder Foto) hoch. Die KI liest die Daten aus; du prüfst den Vorschlag, bevor ein Vorgang angelegt wird.
+  </p>
+<% end %>
+
+<%= form_with scope: :ai_run, url: ai_runs_path, local: true, multipart: true do |f| %>
+  <%= hidden_field_tag :operation_id, @operation.id if @operation %>
+
+  <% unless @operation %>
+    <div class="mb-3">
+      <%= f.label :document, 'Rechnung', class: 'form-label' %>
+      <%= f.file_field :document, accept: 'image/*,application/pdf', class: 'form-control', required: true %>
+      <div class="form-text">PDF oder Bild, maximal 10 MB.</div>
+    </div>
+  <% end %>
+
+  <% options = ai_provider_options(current_user) %>
+  <% if options.size > 1 %>
+    <div class="mb-3">
+      <%= label_tag :provider, 'KI-Anbieter', class: 'form-label' %>
+      <%= select_tag :provider, options_for_select(options), class: 'form-select' %>
+    </div>
+  <% else %>
+    <%= hidden_field_tag :provider, options.first&.last %>
+    <p class="text-muted">Anbieter: <%= options.first&.first %></p>
+  <% end %>
+
+  <% unless current_user.ai_consented? %>
+    <div class="form-check mb-3">
+      <%= check_box_tag :consent, '1', false, class: 'form-check-input', required: true %>
+      <%= label_tag :consent, class: 'form-check-label' do %>
+        Ich bin einverstanden, dass die Rechnung &ndash; sie kann Gesundheitsdaten enthalten &ndash; zur Auswertung
+        an den gewählten KI-Anbieter (mit meinem eigenen API-Key) übermittelt wird.
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= f.submit 'Rechnung einlesen', class: 'btn btn-primary' %>
+  <%= link_to 'Abbrechen', @operation || dashboard_path, class: 'btn btn-outline-secondary' %>
+<% end %>

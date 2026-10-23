@@ -6,6 +6,13 @@ Rails.application.routes.draw do
   resources :integrations
   resources :todoist_integrations
   resources :ai_integrations, only: %i[new create edit update destroy]
+  resources :ai_runs, only: %i[index new create show update] do
+    member do
+      post :reject
+      post :revert
+      post :retry
+    end
+  end
 
   devise_for :users,
              :controllers => {

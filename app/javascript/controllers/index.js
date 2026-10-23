@@ -9,3 +9,6 @@ application.register("edit", EditController)
 
 import ToggleController from "./toggle_controller"
 application.register("toggle", ToggleController)
+
+import PollController from "./poll_controller"
+application.register("poll", PollController)

@@ -7,6 +7,7 @@ de:
         other: Vorgänge
       todoist_integration: Todoist Integration
       ai_integration: KI-Integration
+      ai_run: KI-Vorschlag
     attributes:
       operation:
         rich_text_area: Beschreibung
@@ -16,6 +17,8 @@ de:
         title: Titel
         value: Summe
         insurance_notices: Versicherungsantworten
+        person: Person
+        person_id: Person
       user:
         first_name: Vorname
         last_name: Nachname
@@ -253,6 +256,14 @@ de:
     form:
       project_prompt: Wo sollen die Aufgaben gespeichert werden?
       set_project_id: Kehre zu dieser Seite zurück, um nach der erfolgreichen Verknüpfung auszuwählen in welchem Projekt die Aufgaben gespeichert werden sollen.
+  ai_runs:
+    statuses:
+      processing: Wird gelesen
+      proposed: Wartet auf Prüfung
+      accepted: Übernommen
+      rejected: Verworfen
+      failed: Fehlgeschlagen
+      reverted: Rückgängig gemacht
   ai_integrations:
     providers:
       claude: Claude (Anthropic)

@@ -1,5 +1,20 @@
 <h1> Übersicht </h1>
 
+<% if current_user.ai_integrations.any? %>
+  <% pending = current_user.ai_runs.awaiting_review %>
+  <div class="alert alert-<%= pending.any? ? 'warning' : 'light border' %> d-flex justify-content-between align-items-center">
+    <span>
+      <% if pending.any? %>
+        <i class="fas fa-magic"></i>
+        <%= link_to "#{pending.count} KI-#{'Vorschlag wartet' if pending.count == 1}#{'Vorschläge warten' if pending.count > 1} auf Prüfung", ai_run_path(pending.order(:created_at).first), class: 'alert-link' %>
+      <% else %>
+        <i class="fas fa-magic"></i> Neue Rechnung automatisch einlesen lassen
+      <% end %>
+    </span>
+    <%= link_to 'Rechnung einlesen', new_ai_run_path, class: 'btn btn-sm btn-primary' %>
+  </div>
+<% end %>
+
 <div class="d-flex dashboard_container justify-content-evenly">
   <div class="card m-2 dashboard_infobox dashboard_container__green">
     <div class="card-body">
