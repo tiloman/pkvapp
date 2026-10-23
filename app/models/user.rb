@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :people, dependent: :destroy
   has_one :todoist_integration
   has_many :ai_integrations, dependent: :destroy
+  has_many :ai_runs, dependent: :destroy
 
   def create_person
     Person.create(name: first_name, color: 'red', ratio: '50/50')
@@ -21,6 +22,10 @@ class User < ApplicationRecord
 
   def operations_view
     prefered_operations_view || 'tile'
+  end
+
+  def ai_consented?
+    ai_consented_at.present?
   end
 
   def remind_days_before

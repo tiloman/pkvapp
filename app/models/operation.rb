@@ -25,6 +25,7 @@ class Operation < ApplicationRecord
   has_one_attached :bill
   has_many_attached :insurance_notices
   has_rich_text :content
+  has_many :ai_runs, dependent: :nullify
 
   after_update :update_status
   after_create :reminder_job

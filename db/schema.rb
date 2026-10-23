@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_10_23_090000) do
+ActiveRecord::Schema.define(version: 2026_10_23_100000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,38 @@ ActiveRecord::Schema.define(version: 2026_10_23_090000) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "ai_integrations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "provider", null: false
+    t.text "api_key_ciphertext"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "provider"], name: "index_ai_integrations_on_user_id_and_provider", unique: true
+    t.index ["user_id"], name: "index_ai_integrations_on_user_id"
+  end
+
+  create_table "ai_runs", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "operation_id"
+    t.string "kind", null: false
+    t.string "status", default: "processing", null: false
+    t.string "provider"
+    t.string "model"
+    t.string "prompt_version"
+    t.jsonb "output", default: {}, null: false
+    t.jsonb "raw_response"
+    t.jsonb "applied_changes", default: {}, null: false
+    t.text "error_message"
+    t.integer "input_tokens"
+    t.integer "output_tokens"
+    t.datetime "decided_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["operation_id"], name: "index_ai_runs_on_operation_id"
+    t.index ["user_id", "status"], name: "index_ai_runs_on_user_id_and_status"
+    t.index ["user_id"], name: "index_ai_runs_on_user_id"
+  end
+
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
@@ -66,16 +98,6 @@ ActiveRecord::Schema.define(version: 2026_10_23_090000) do
     t.datetime "created_at", precision: 6
     t.datetime "updated_at", precision: 6
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
-  end
-
-  create_table "ai_integrations", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "provider", null: false
-    t.text "api_key_ciphertext"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id", "provider"], name: "index_ai_integrations_on_user_id_and_provider", unique: true
-    t.index ["user_id"], name: "index_ai_integrations_on_user_id"
   end
 
   create_table "operations", force: :cascade do |t|
@@ -131,11 +153,14 @@ ActiveRecord::Schema.define(version: 2026_10_23_090000) do
     t.boolean "mail_reminder"
     t.integer "remind_days_before"
     t.string "prefered_operations_view"
+    t.datetime "ai_consented_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "ai_integrations", "users"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "ai_integrations", "users"
+  add_foreign_key "ai_runs", "operations"
+  add_foreign_key "ai_runs", "users"
 end

@@ -7,6 +7,7 @@ class SyncTodoist
     @user = context.operation.user
 
     return unless @user.todoist_integration
+    return unless @operation.bill_deadline
 
     @client = TodoistClient.new(@user.todoist_integration.token)
     @operation.todoist_item_id ? update_todoist_item : create_todoist_item
