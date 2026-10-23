@@ -93,6 +93,7 @@ Auto-transitions in `update_status`: all paid flags set -> close; submitted flag
 Required for production:
 - `SECRET_KEY_BASE`
 - `PKVAPP_DATABASE_PASSWORD`
+- `LOCKBOX_MASTER_KEY` (64 hex chars; encrypts users' AI API keys -- losing it makes them unreadable)
 - `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET_NAME`
 
 Optional:

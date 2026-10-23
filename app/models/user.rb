@@ -5,6 +5,7 @@ class User < ApplicationRecord
   after_create :create_person
   has_many :people, dependent: :destroy
   has_one :todoist_integration
+  has_many :ai_integrations, dependent: :destroy
 
   def create_person
     Person.create(name: first_name, color: 'red', ratio: '50/50')

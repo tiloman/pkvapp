@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :people
   resources :integrations
   resources :todoist_integrations
+  resources :ai_integrations, only: %i[new create edit update destroy]
 
   devise_for :users,
              :controllers => {

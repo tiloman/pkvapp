@@ -6,6 +6,7 @@ de:
         one: Vorgang
         other: Vorgänge
       todoist_integration: Todoist Integration
+      ai_integration: KI-Integration
     attributes:
       operation:
         rich_text_area: Beschreibung
@@ -21,6 +22,9 @@ de:
         email: E-Mail Adresse
         password: Passwort
         password_confirmation: Passwort wiederholen
+      ai_integration:
+        provider: Anbieter
+        api_key: API-Key
       todoist_integration:
         token: API-Token
         project_id: Projekt
@@ -249,8 +253,19 @@ de:
     form:
       project_prompt: Wo sollen die Aufgaben gespeichert werden?
       set_project_id: Kehre zu dieser Seite zurück, um nach der erfolgreichen Verknüpfung auszuwählen in welchem Projekt die Aufgaben gespeichert werden sollen.
+  ai_integrations:
+    providers:
+      claude: Claude (Anthropic)
+      gemini: Gemini (Google)
+    new:
+      title: KI verbinden
+    edit:
+      title: KI-Integration bearbeiten
+    form:
+      keep_key_hint: Leer lassen, um den bestehenden Key zu behalten.
   integrations:
     index:
+      ai_description: Verbinde deinen eigenen API-Key, damit Abile KI-Funktionen für dich nutzen kann.
       todoist_token: API Token
       todoist_project: Projekt
       todoist_description_1: Gehe zu den Einstellungen -> Integrationen und füge hier den API-Token ein.

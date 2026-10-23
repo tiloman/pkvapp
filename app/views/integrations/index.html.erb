@@ -16,3 +16,18 @@
     <% end %>
   </div>
 </div>
+<% AiIntegration::PROVIDERS.each do |provider| %>
+  <% integration = @ai_integrations[provider] %>
+  <div class="card integration_card mt-3">
+    <div class="card-body">
+      <h3 class="p-0 mb-3"><%= t("ai_integrations.providers.#{provider}") %></h3>
+      <% if integration %>
+        <small class="text-muted">API Key: <%= integration.masked_api_key %></small></br>
+        <%= link_to 'Editieren', edit_ai_integration_path(integration), class: 'btn btn-secondary mt-3' %>
+      <% else %>
+        <p class="text-muted"><%= t('integrations.index.ai_description') %></p>
+        <%= link_to "#{t("ai_integrations.providers.#{provider}")} verbinden", new_ai_integration_path(provider: provider), class: 'btn btn-secondary mt-3' %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

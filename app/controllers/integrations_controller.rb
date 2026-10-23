@@ -4,6 +4,7 @@ class IntegrationsController < ApplicationController
   def index
     @todoist_integration = current_user.todoist_integration
     get_todoist_project_name
+    @ai_integrations = current_user.ai_integrations.index_by(&:provider)
   end
 
   def new

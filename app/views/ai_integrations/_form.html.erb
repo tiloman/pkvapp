@@ -1,0 +1,21 @@
+<%= simple_form_for @ai_integration do |f| %>
+  <%= f.error_notification %>
+  <%= f.error :base, class: 'alert alert-danger' %>
+  <% if @ai_integration.persisted? %>
+    <p class="text-muted"><%= t("ai_integrations.providers.#{@ai_integration.provider}") %> &middot; <%= @ai_integration.masked_api_key %></p>
+    <%= f.input :api_key, as: :password, required: false, hint: t('.keep_key_hint'),
+                input_html: { autocomplete: 'off', value: nil } %>
+  <% else %>
+    <%= f.input :provider, as: :select, include_blank: false,
+                collection: AiIntegration::PROVIDERS.map { |p| [t("ai_integrations.providers.#{p}"), p] } %>
+    <%= f.input :api_key, as: :password, input_html: { autocomplete: 'off', value: nil } %>
+  <% end %>
+  <div class="mt-5">
+    <%= f.button :submit, class: 'btn-primary' %>
+    <% if @ai_integration.persisted? %>
+      <%= link_to @ai_integration, method: :delete, data: { confirm: 'Sicher?' }, class: 'btn btn-outline-danger' do %>
+        <i class="fas fa-trash-alt"></i>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
