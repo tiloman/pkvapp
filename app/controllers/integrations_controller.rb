@@ -5,6 +5,7 @@ class IntegrationsController < ApplicationController
     @todoist_integration = current_user.todoist_integration
     get_todoist_project_name
     @ai_integrations = current_user.ai_integrations.index_by(&:provider)
+    @local_setting = AiLocalSetting.current if current_user.admin? || AiClient::Local.available_for?(current_user)
   end
 
   def new

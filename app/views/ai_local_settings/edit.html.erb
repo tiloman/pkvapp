@@ -1,0 +1,34 @@
+<h1>Lokales Modell</h1>
+<p class="text-muted">
+  Ein Modell auf deinem eigenen Rechner (z. B. Ollama), das Rechnungen für freigeschaltete Konten einliest.
+  Die Anfragen kommen von diesem Server, der Rechner muss also von hier aus erreichbar sein.
+  Ist er aus, schlägt der Lauf mit &bdquo;nicht erreichbar&ldquo; fehl und lässt sich später wiederholen.
+</p>
+
+<%= simple_form_for @setting, url: ai_local_setting_path, method: :patch do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :enabled, as: :boolean, label: 'Aktiv',
+              hint: 'Nur wenn aktiv, wird das lokale Modell freigeschalteten Konten angeboten.' %>
+  <%= f.input :base_url, required: false, placeholder: 'http://192.168.178.50:11434',
+              hint: 'Adresse des Servers, ohne /v1. Bei Ollama muss er mit OLLAMA_HOST=0.0.0.0 gestartet sein.' %>
+  <%= f.input :model, hint: 'Muss Bilder lesen können (Vision), z. B. qwen2.5vl:7b. Vorher mit ollama pull laden.' %>
+  <%= f.input :api_key, as: :password, required: false,
+              hint: (@setting.masked_api_key ? "Gesetzt: #{@setting.masked_api_key}. Leer lassen, um ihn zu behalten." : 'Optional, falls der Server einen Bearer-Token verlangt.'),
+              input_html: { autocomplete: 'off', value: nil } %>
+  <% if @setting.api_key.present? %>
+    <div class="form-check mb-3">
+      <%= check_box_tag 'ai_local_setting[clear_api_key]', '1', false, class: 'form-check-input', id: 'clear_api_key' %>
+      <%= label_tag :clear_api_key, 'API-Key entfernen', class: 'form-check-label' %>
+    </div>
+  <% end %>
+  <%= f.input :allowed_emails, as: :text, required: false, input_html: { rows: 4 },
+              hint: 'E-Mail-Adressen der Konten, die das Modell nutzen dürfen, eine pro Zeile (oder mit Komma getrennt).' %>
+
+  <%= f.button :submit, 'Speichern', class: 'btn-primary' %>
+  <%= link_to 'Zurück', integrations_path, class: 'btn btn-outline-secondary' %>
+<% end %>
+
+<hr>
+<h5>Verbindung testen</h5>
+<p class="text-muted">Prüft die zuletzt <em>gespeicherte</em> Adresse und ob das Modell auf dem Server vorhanden ist.</p>
+<%= button_to 'Verbindung testen', test_ai_local_setting_path, method: :post, class: 'btn btn-outline-primary' %>

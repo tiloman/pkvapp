@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   resources :integrations
   resources :todoist_integrations
   resources :ai_integrations, only: %i[new create edit update destroy]
+  resource :ai_local_setting, only: %i[edit update] do
+    post :test
+  end
   resources :ai_runs, only: %i[index new create show update] do
     member do
       post :reject

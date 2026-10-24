@@ -34,11 +34,10 @@ class ExtractBill
 
   def call
     run = context.ai_run
-    integration = run.user.ai_integrations.find_by(provider: run.provider)
-    return fail_run(run, 'Keine KI-Integration für diesen Anbieter eingerichtet.') unless integration
+    client = run.user.ai_client_for(run.provider)
+    return fail_run(run, 'Keine KI-Integration für diesen Anbieter eingerichtet.') unless client
 
-    result = integration.client.extract(document: prepared_document(run.document), fields: FIELDS,
-                                        instructions: INSTRUCTIONS)
+    result = client.extract(document: prepared_document(run.document), fields: FIELDS, instructions: INSTRUCTIONS)
     run.transition_to!('proposed', output: result.fields, raw_response: result.raw, model: result.model,
                                    input_tokens: result.input_tokens, output_tokens: result.output_tokens,
                                    prompt_version: PROMPT_VERSION, error_message: nil)

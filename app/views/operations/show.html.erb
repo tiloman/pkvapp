@@ -22,7 +22,7 @@
     <%= link_to 'Protokoll', ai_run_path(ai_run) %>
   </p>
 <% end %>
-<% if @operation.bill.attached? && current_user.ai_integrations.any? %>
+<% if @operation.bill.attached? && current_user.ai_enabled? %>
   <p><%= link_to new_ai_run_path(operation_id: @operation.id), class: 'btn btn-sm btn-outline-primary' do %>
     <i class="fas fa-magic"></i> Aus Rechnung ausfüllen
   <% end %></p>

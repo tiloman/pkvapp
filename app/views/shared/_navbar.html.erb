@@ -35,7 +35,7 @@
               <%= link_to "Deine Mitgliedschaft", "#", class: "dropdown-item" %>
               <%= link_to "Benachrichtigungen", "#", class: "dropdown-item" %>
               <%= link_to "Integrationen", integrations_path, class: "dropdown-item" %>
-              <%= link_to "KI-Vorschläge", ai_runs_path, class: "dropdown-item" if current_user.ai_integrations.any? %>
+              <%= link_to "KI-Vorschläge", ai_runs_path, class: "dropdown-item" if current_user.ai_enabled? %>
             </div>
           </li>
 

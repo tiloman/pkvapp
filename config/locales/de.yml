@@ -8,6 +8,7 @@ de:
       todoist_integration: Todoist Integration
       ai_integration: KI-Integration
       ai_run: KI-Vorschlag
+      ai_local_setting: Lokales Modell
     attributes:
       operation:
         rich_text_area: Beschreibung
@@ -25,6 +26,12 @@ de:
         email: E-Mail Adresse
         password: Passwort
         password_confirmation: Passwort wiederholen
+      ai_local_setting:
+        enabled: Aktiv
+        base_url: Adresse
+        model: Modell
+        api_key: API-Key
+        allowed_emails: Freigeschaltete Konten
       ai_integration:
         provider: Anbieter
         api_key: API-Key
@@ -268,6 +275,7 @@ de:
     providers:
       claude: Claude (Anthropic)
       gemini: Gemini (Google)
+      local: Lokales Modell
     new:
       title: KI verbinden
     edit:

@@ -37,7 +37,7 @@ module AiRunsHelper
   end
 
   def ai_provider_options(user)
-    user.ai_integrations.order(:created_at).map { |i| [t("ai_integrations.providers.#{i.provider}"), i.provider] }
+    user.ai_providers.map { |provider| [t("ai_integrations.providers.#{provider}"), provider] }
   end
 
   private

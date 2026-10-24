@@ -14,6 +14,7 @@ RUN apk add --update \
   git \
   gcompat \
   imagemagick \
+  poppler-utils \
   ca-certificates \
   curl
 

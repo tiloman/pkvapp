@@ -37,18 +37,31 @@ class BuildOperationProposal
   end
 
   def amount
-    value = @run.field_value(:total_amount)
-    return unless value.is_a?(Numeric) && value.positive?
+    value = number(@run.field_value(:total_amount))
+    value.round(2) if value&.positive?
+  end
 
-    value.round(2)
+  def payment_terms_days
+    value = number(@run.field_value(:payment_terms_days))
+    value.to_i if value && value == value.to_i
+  end
+
+  # Models sometimes return numbers as text, e.g. "1.234,56 €" (German format).
+  def number(value)
+    return value if value.is_a?(Numeric)
+    return unless value.is_a?(String)
+
+    cleaned = value.gsub(/[^\d,.\-]/, '')
+    cleaned = cleaned.delete('.').tr(',', '.') if cleaned.include?(',')
+    Float(cleaned, exception: false)
   end
 
   def deadline(billing_date)
     explicit = parse_date(@run.field_value(:due_date))
     return explicit if explicit
 
-    days = @run.field_value(:payment_terms_days)
-    billing_date + days.days if billing_date && days.is_a?(Integer) && days.positive?
+    days = payment_terms_days
+    billing_date + days.days if billing_date && days&.positive?
   end
 
   def parse_date(value)

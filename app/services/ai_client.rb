@@ -14,6 +14,7 @@ class AiClient
     case provider.to_s
     when 'claude' then Claude.new(api_key)
     when 'gemini' then Gemini.new(api_key)
+    when 'local' then Local.new
     else raise ArgumentError, "Unbekannter KI-Anbieter: #{provider}"
     end
   end
@@ -34,19 +35,42 @@ class AiClient
 
   # Reads a document (ActiveStorage attachment: PDF or image) into structured fields.
   def extract(document:, fields:, instructions:)
-    response = connection(timeout: EXTRACT_TIMEOUT).post(
-      extract_path, extract_body(document, fields, instructions), headers
-    )
-    raise_for_status!(response)
-    parse_extraction(response.body)
-  rescue Faraday::TimeoutError, Faraday::ConnectionFailed => e
-    raise ProviderError, "#{provider_name} ist nicht erreichbar (#{e.class.name.demodulize})."
+    guard_connection do
+      response = connection(timeout: extract_timeout).post(
+        extract_path, extract_body(document, fields, instructions), headers
+      )
+      raise_for_status!(response)
+      parse_extraction(response.body)
+    end
   end
 
   private
 
+  def guard_connection
+    yield
+  rescue Faraday::TimeoutError, Faraday::ConnectionFailed => e
+    raise ProviderError, "#{provider_name} ist nicht erreichbar (#{e.class.name.demodulize})."
+  end
+
   def provider_name
     self.class.name.demodulize
+  end
+
+  def extract_timeout = EXTRACT_TIMEOUT
+
+  # JSON Schema for the extraction: every field is { value, confidence, evidence }.
+  def json_schema(fields)
+    properties = fields.transform_values do |spec|
+      value = { type: [spec[:type].to_s, 'null'] }
+      value[:enum] = spec[:enum] + [nil] if spec[:enum]
+      {
+        type: 'object',
+        properties: { value: value, confidence: { type: 'number' }, evidence: { type: %w[string null] } },
+        required: %w[value confidence evidence],
+        additionalProperties: false
+      }
+    end
+    { type: 'object', properties: properties, required: fields.keys.map(&:to_s), additionalProperties: false }
   end
 
   def raise_for_status!(response)

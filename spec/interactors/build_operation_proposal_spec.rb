@@ -29,6 +29,18 @@ RSpec.describe BuildOperationProposal do
     expect(attrs.keys).to contain_exactly(:title, :person_id)
   end
 
+  it 'reads numbers that a model returned as text' do
+    attrs = propose(bill_output('total_amount' => field('1.234,56 €'), 'payment_terms_days' => field('14'))).attributes
+    expect(attrs[:value]).to eq(1234.56)
+    expect(attrs[:bill_deadline].to_date).to eq(Date.new(2026, 10, 15))
+  end
+
+  it 'ignores amounts that are not numbers' do
+    attrs = propose(bill_output('total_amount' => field('siehe Anlage'), 'payment_terms_days' => field('bald'))).attributes
+    expect(attrs).not_to have_key(:value)
+    expect(attrs).not_to have_key(:bill_deadline)
+  end
+
   it 'truncates long titles to the validation limit' do
     attrs = propose(bill_output('summary' => field('x' * 300))).attributes
     expect(attrs[:title].length).to eq(100)

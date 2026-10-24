@@ -44,6 +44,7 @@ app/
 ### AI bill extraction
 
 `AiRun` is the audit record for every AI step: user uploads a bill (or reuses `Operation#bill`) -> `ExtractBillJob` calls `AiClient#extract` with the user's own Claude/Gemini key -> status `proposed` with per-field `{value, confidence, evidence}` in `output` -> user reviews on `/ai_runs/:id` -> `ApplyAiRun` creates/updates the Operation (`accepted`, `applied_changes` stores before/after, `RevertAiRun` undoes it).
+Providers: `claude`, `gemini` (user's own key in `AiIntegration`) and `local` (OpenAI-compatible server such as Ollama on the operator's machine). `local` is configured in the UI (Integrationen -> Lokales Modell) through the single-row `AiLocalSetting` (URL, model, optional key, allowed emails). Only `users.admin` accounts may edit it, because a user-editable URL would be an SSRF hole; grant it with `User.find_by(email: ...).update!(admin: true)` via `rails runner`. `User#ai_providers` / `#ai_client_for` are the single entry point; do not query `ai_integrations` directly for availability. The local model gets PDFs as page images (`DocumentPages`, `pdftoppm` from poppler-utils in the Dockerfile).
 Statuses: processing -> proposed -> accepted / rejected / failed / reverted. The AI never writes to Operation directly.
 
 ### Operation state machine (AASM)
@@ -106,6 +107,7 @@ Required for production:
 - `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET_NAME`
 
 Optional:
+- `AI_CLAUDE_MODEL`, `AI_GEMINI_MODEL` - override the extraction models
 - `RAILS_SERVE_STATIC_FILES` - enable in containerized deploys
 - `RAILS_LOG_TO_STDOUT` - Docker logging
 - `RAILS_MAX_THREADS` - DB pool size (default 5)

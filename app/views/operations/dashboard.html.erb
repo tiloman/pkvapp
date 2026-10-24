@@ -1,6 +1,6 @@
 <h1> Übersicht </h1>
 
-<% if current_user.ai_integrations.any? %>
+<% if current_user.ai_enabled? %>
   <% pending = current_user.ai_runs.awaiting_review %>
   <div class="alert alert-<%= pending.any? ? 'warning' : 'light border' %> d-flex justify-content-between align-items-center">
     <span>

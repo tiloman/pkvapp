@@ -89,6 +89,36 @@ RSpec.describe 'AiRuns', type: :request do
       end
     end
 
+    describe 'with only the local model' do
+      before do
+        AiLocalSetting.create!(enabled: true, base_url: 'http://laptop.lan:11434', allowed_emails: user.email)
+      end
+
+      it 'works without an own api key' do
+        user.update!(ai_consented_at: Time.current)
+        get new_ai_run_path
+        expect(response).to be_successful
+        expect(response.body).to include('Lokales Modell')
+
+        expect { post ai_runs_path, params: { ai_run: { document: pdf }, provider: 'local' } }
+          .to change(AiRun, :count).by(1).and have_enqueued_job(ExtractBillJob)
+        expect(AiRun.last.provider).to eq('local')
+      end
+
+      it 'shows the local model on the integrations page' do
+        get integrations_path
+        expect(response.body).to include('Für dein Konto freigeschaltet')
+        expect(response.body).not_to include('laptop.lan')
+      end
+
+      it 'is not offered to other accounts' do
+        sign_out user
+        sign_in other_user
+        get new_ai_run_path
+        expect(response).to redirect_to(integrations_path)
+      end
+    end
+
     describe 'GET /ai_runs/:id' do
       it 'shows a processing run with polling' do
         get ai_run_path(create_run(user, status: 'processing', output: {}))

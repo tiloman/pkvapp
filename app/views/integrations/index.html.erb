@@ -31,3 +31,22 @@
     </div>
   </div>
 <% end %>
+<% if @local_setting %>
+  <div class="card integration_card mt-3">
+    <div class="card-body">
+      <h3 class="p-0 mb-3"><%= t('ai_integrations.providers.local') %></h3>
+      <% if current_user.admin? %>
+        <p class="mb-1">
+          <span class="badge bg-<%= @local_setting.enabled? ? 'success' : 'secondary' %>"><%= @local_setting.enabled? ? 'aktiv' : 'deaktiviert' %></span>
+        </p>
+        <small class="text-muted d-block">Adresse: <%= @local_setting.base_url.presence || 'nicht gesetzt' %></small>
+        <small class="text-muted d-block">Modell: <%= @local_setting.model %></small>
+        <small class="text-muted d-block">Freigeschaltet für: <%= @local_setting.allowed_email_list.size %> Konto(en)</small>
+        <%= link_to 'Einstellungen', edit_ai_local_setting_path, class: 'btn btn-secondary mt-3' %>
+      <% else %>
+        <p class="text-muted mb-1">Für dein Konto freigeschaltet &ndash; kein API-Key nötig.</p>
+        <small class="text-muted">Modell: <%= @local_setting.model %></small>
+      <% end %>
+    </div>
+  </div>
+<% end %>

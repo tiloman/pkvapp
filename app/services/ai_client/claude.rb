@@ -19,7 +19,7 @@ class AiClient
         model: MODEL,
         max_tokens: 2000,
         tools: [{ name: TOOL_NAME, description: 'Gibt die aus dem Dokument gelesenen Felder zurück.',
-                  input_schema: schema(fields) }],
+                  input_schema: json_schema(fields) }],
         tool_choice: { type: 'tool', name: TOOL_NAME },
         messages: [{ role: 'user', content: [document_block(document), { type: 'text', text: instructions }] }]
       }
@@ -28,19 +28,6 @@ class AiClient
     def document_block(document)
       type = document.content_type == 'application/pdf' ? 'document' : 'image'
       { type: type, source: { type: 'base64', media_type: document.content_type, data: encoded_document(document) } }
-    end
-
-    def schema(fields)
-      properties = fields.transform_values do |spec|
-        value = { type: [spec[:type].to_s, 'null'] }
-        value[:enum] = spec[:enum] + [nil] if spec[:enum]
-        {
-          type: 'object',
-          properties: { value: value, confidence: { type: 'number' }, evidence: { type: %w[string null] } },
-          required: %w[value confidence evidence]
-        }
-      end
-      { type: 'object', properties: properties, required: fields.keys.map(&:to_s) }
     end
 
     def parse_extraction(body)

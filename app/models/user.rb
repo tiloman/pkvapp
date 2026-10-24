@@ -24,6 +24,23 @@ class User < ApplicationRecord
     prefered_operations_view || 'tile'
   end
 
+  # Providers this user can run extractions with: own API keys plus the shared local model.
+  def ai_providers
+    providers = ai_integrations.order(:created_at).pluck(:provider)
+    providers << 'local' if AiClient::Local.available_for?(self)
+    providers
+  end
+
+  def ai_enabled?
+    ai_providers.any?
+  end
+
+  def ai_client_for(provider)
+    return unless ai_providers.include?(provider.to_s)
+
+    provider.to_s == 'local' ? AiClient::Local.new : ai_integrations.find_by!(provider: provider).client
+  end
+
   def ai_consented?
     ai_consented_at.present?
   end

@@ -85,7 +85,7 @@ class AiRunsController < ApplicationController
   end
 
   def require_integration
-    return if current_user.ai_integrations.any?
+    return if current_user.ai_enabled?
 
     redirect_to integrations_path, alert: 'Verbinde zuerst einen KI-Anbieter.'
   end
@@ -102,7 +102,7 @@ class AiRunsController < ApplicationController
   end
 
   def selected_provider(requested)
-    providers = current_user.ai_integrations.pluck(:provider)
+    providers = current_user.ai_providers
     providers.include?(requested) ? requested : providers.first
   end
 
