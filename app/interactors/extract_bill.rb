@@ -41,8 +41,17 @@ class ExtractBill
     run.transition_to!('proposed', output: result.fields, raw_response: result.raw, model: result.model,
                                    input_tokens: result.input_tokens, output_tokens: result.output_tokens,
                                    prompt_version: PROMPT_VERSION, error_message: nil)
+  rescue Interactor::Failure, AiClient::RateLimitError
+    raise # the first is our own fail!, the second is retried by the job
   rescue AiClient::AuthenticationError, AiClient::UnreadableDocumentError, AiClient::ProviderError => e
     fail_run(run, e.message)
+  rescue ActiveStorage::FileNotFoundError
+    fail_run(run, 'Die Datei fehlt im Speicher und kann nicht gelesen werden. Bitte lade sie neu hoch.')
+  rescue StandardError => e
+    # A run must never stay "processing" forever, and the job must not be retried blindly.
+    Rails.logger.error("ExtractBill crashed: #{e.class}: #{e.message}")
+    Sentry.capture_exception(e) if defined?(Sentry)
+    fail_run(run, "Unerwarteter Fehler beim Einlesen (#{e.class.name.demodulize}).")
   end
 
   private

@@ -16,6 +16,10 @@ class AiRunsController < ApplicationController
     @operation = source_operation
     return render_new_with('Bitte bestätige die Einwilligung zur Datenübermittlung.') unless consent_given?
 
+    if @operation && !bill_file_present?(@operation)
+      return render_new_with('Die Rechnungsdatei dieses Vorgangs fehlt im Speicher. Bitte lade sie neu hoch.')
+    end
+
     @run = build_run(provider: selected_provider(params[:provider]), operation: @operation,
                      blob: @operation&.bill&.blob, upload: params.dig(:ai_run, :document))
     if @run.save
@@ -95,6 +99,10 @@ class AiRunsController < ApplicationController
     return if params[:operation_id].blank?
 
     Operation.where(person_id: current_user.people.select(:id)).find(params[:operation_id])
+  end
+
+  def bill_file_present?(operation)
+    operation.bill.attached? && operation.bill.service.exist?(operation.bill.key)
   end
 
   def consent_given?

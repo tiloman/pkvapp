@@ -76,6 +76,17 @@ RSpec.describe 'AiRuns', type: :request do
         expect(run.document.blob).to eq(operation.bill.blob)
       end
 
+      it 'refuses an operation whose bill file is missing from storage' do
+        user.update!(ai_consented_at: Time.current)
+        operation = Operation.create!(title: 'Alt', value: 1, person: person)
+        operation.bill.attach(io: StringIO.new('%PDF'), filename: 'b.pdf', content_type: 'application/pdf')
+        operation.bill.blob.service.delete(operation.bill.key)
+
+        expect { post ai_runs_path, params: { operation_id: operation.id, provider: 'claude' } }
+          .not_to change(AiRun, :count)
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
       it 'ignores a provider the user has not connected' do
         user.update!(ai_consented_at: Time.current)
         post ai_runs_path, params: { ai_run: { document: pdf }, provider: 'gemini' }

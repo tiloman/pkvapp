@@ -47,6 +47,23 @@ RSpec.describe ExtractBill do
     expect(run.reload).to be_failed
   end
 
+  it 'fails the run when the stored file is gone' do
+    allow(client).to receive(:extract).and_raise(ActiveStorage::FileNotFoundError)
+
+    expect(described_class.call(ai_run: run)).to be_a_failure
+    expect(run.reload).to be_failed
+    expect(run.error_message).to include('fehlt im Speicher')
+  end
+
+  it 'fails the run instead of leaving it processing on unexpected errors' do
+    allow(client).to receive(:extract).and_raise(NoMethodError, 'boom')
+    expect(Rails.logger).to receive(:error).with(/NoMethodError: boom/)
+
+    expect(described_class.call(ai_run: run)).to be_a_failure
+    expect(run.reload).to be_failed
+    expect(run.error_message).to include('NoMethodError')
+  end
+
   it 'lets rate limit errors through for the job to retry' do
     allow(client).to receive(:extract).and_raise(AiClient::RateLimitError)
     expect { described_class.call(ai_run: run) }.to raise_error(AiClient::RateLimitError)
