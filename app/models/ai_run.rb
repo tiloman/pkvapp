@@ -2,6 +2,7 @@ class AiRun < ApplicationRecord
   KINDS = %w[extract_bill].freeze
   STATUSES = %w[processing proposed accepted rejected failed reverted].freeze
   MAX_DOCUMENT_SIZE = 10.megabytes
+  STALE_AFTER = 10.minutes
 
   belongs_to :user
   belongs_to :operation, optional: true
@@ -16,6 +17,11 @@ class AiRun < ApplicationRecord
 
   STATUSES.each do |name|
     define_method(:"#{name}?") { status == name }
+  end
+
+  # A run that nobody picked up (e.g. no worker running) must not wait forever.
+  def stale?
+    processing? && created_at < STALE_AFTER.ago
   end
 
   def decided?

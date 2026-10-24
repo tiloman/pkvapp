@@ -5,6 +5,10 @@ RSpec.describe ExtractBillJob do
   let(:user) { FactoryBot.create(:user) }
   let(:run) { create_run(user, status: 'processing', output: {}) }
 
+  it 'uses its own queue so a dedicated worker can pick it up' do
+    expect(described_class.new.queue_name).to eq('ai')
+  end
+
   it 'runs the extraction for processing runs' do
     expect(ExtractBill).to receive(:call).with(ai_run: run)
     described_class.perform_now(run.id)

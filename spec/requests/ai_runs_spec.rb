@@ -183,6 +183,21 @@ RSpec.describe 'AiRuns', type: :request do
         expect(response).to redirect_to(dashboard_path)
       end
 
+      it 'lets the user discard or retry a run that nobody picked up' do
+        AiIntegration.create!(user: user, provider: 'claude', api_key: 'k')
+        run = create_run(user, status: 'processing', output: {})
+        post reject_ai_run_path(run)
+        expect(run.reload).to be_processing
+
+        run.update_column(:created_at, 11.minutes.ago)
+        get ai_run_path(run)
+        expect(response.body).to include('ungewöhnlich lange')
+        expect(response.body).not_to include('data-controller="poll"')
+
+        expect { post retry_ai_run_path(run), params: { provider: 'claude' } }.to change(AiRun, :count).by(1)
+        expect(run.reload).to be_rejected
+      end
+
       it 'reverts an accepted run' do
         run = create_run(user)
         patch ai_run_path(run), params: { operation: { title: 'Zahnarzt', value: '50', bill_deadline: 5.days.from_now.to_date, person_id: person.id } }

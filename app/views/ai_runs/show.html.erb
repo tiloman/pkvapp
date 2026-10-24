@@ -7,9 +7,17 @@
 
 <% case @run.status %>
 <% when 'processing' %>
-  <div data-controller="poll" class="alert alert-info">
-    Die Rechnung wird gelesen &hellip; Diese Seite aktualisiert sich automatisch.
-  </div>
+  <% if @run.stale? %>
+    <div class="alert alert-warning">
+      Das dauert ungewöhnlich lange (seit <%= time_ago_in_words(@run.created_at) %>). Vermutlich wird der Lauf nicht bearbeitet.
+      Du kannst ihn verwerfen oder erneut starten.
+    </div>
+    <%= render 'actions', run: @run %>
+  <% else %>
+    <div data-controller="poll" class="alert alert-info">
+      Die Rechnung wird gelesen &hellip; Diese Seite aktualisiert sich automatisch.
+    </div>
+  <% end %>
   <%= ai_run_document_preview(@run) %>
 
 <% when 'failed' %>

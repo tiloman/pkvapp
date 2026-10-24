@@ -51,6 +51,17 @@ RSpec.describe AiRun, type: :model do
     end
   end
 
+  describe '#stale?' do
+    it 'is true only for processing runs older than ten minutes' do
+      run = build_run.tap(&:save!)
+      expect(run).not_to be_stale
+      run.update_column(:created_at, 11.minutes.ago)
+      expect(run).to be_stale
+      run.transition_to!('proposed')
+      expect(run).not_to be_stale
+    end
+  end
+
   describe 'field readers' do
     it 'reads value, confidence and evidence from output' do
       run = build_run(output: { 'total_amount' => { 'value' => 42.5, 'confidence' => 0.9, 'evidence' => 'Summe 42,50 €' } })

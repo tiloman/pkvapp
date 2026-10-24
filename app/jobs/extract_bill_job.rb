@@ -1,5 +1,6 @@
 class ExtractBillJob < ApplicationJob
-  queue_as :default
+  # Own queue so a dedicated worker can run it without touching the legacy default queue.
+  queue_as :ai
 
   retry_on AiClient::RateLimitError, wait: 30.seconds, attempts: 3 do |job, _error|
     run = AiRun.find_by(id: job.arguments.first)

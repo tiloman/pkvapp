@@ -53,7 +53,7 @@ class AiRunsController < ApplicationController
   end
 
   def reject
-    @run.transition_to!('rejected') if @run.proposed? || @run.failed?
+    @run.transition_to!('rejected') if @run.proposed? || @run.failed? || @run.stale?
     redirect_to dashboard_path, notice: 'Vorschlag wurde verworfen.'
   end
 
@@ -70,7 +70,7 @@ class AiRunsController < ApplicationController
 
   # Re-analyses the same document, e.g. with the other provider.
   def retry
-    return redirect_to(@run, alert: 'Dieser Vorschlag ist bereits entschieden.') if @run.decided? || @run.processing?
+    return redirect_to(@run, alert: 'Dieser Vorschlag ist bereits entschieden.') if @run.decided? || (@run.processing? && !@run.stale?)
 
     new_run = build_run(provider: selected_provider(params[:provider]), operation: @run.operation,
                         blob: @run.document.blob)
