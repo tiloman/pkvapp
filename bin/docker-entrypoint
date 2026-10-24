@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+# Migrate when the web server starts, not for one-off commands (dokku run, workers, console).
+# A failing migration aborts the start so a broken release never goes live.
+# Concurrent starts are safe: Rails takes a Postgres advisory lock while migrating.
+if [ "$1" = "rails" ] && [ "$2" = "server" ] && [ "${SKIP_MIGRATIONS:-}" != "1" ]; then
+  echo "Running database migrations"
+  bundle exec rake db:migrate
+fi
+
+exec "$@"

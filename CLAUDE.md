@@ -112,4 +112,4 @@ Optional:
 
 ## Deployment
 
-Docker (Alpine + Ruby 3.3.0) -> Dokku. `app.json` runs `db:migrate` on post-deploy. CI pushes image via GitHub Actions to GitLab registry.
+Docker (Alpine + Ruby 3.3.0) -> Dokku. `bin/docker-entrypoint` runs `db:migrate` before `rails server` starts (skip with `SKIP_MIGRATIONS=1`; one-off commands like `dokku run` do not migrate). The `postdeploy` hook in `app.json` is not reliable for this image-based deploy. CI pushes image via GitHub Actions to GitLab registry.

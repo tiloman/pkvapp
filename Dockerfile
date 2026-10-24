@@ -52,4 +52,5 @@ USER app
 
 EXPOSE 3000
 
+ENTRYPOINT ["/home/app/bin/docker-entrypoint"]
 CMD ["rails", "server", "-b", "0.0.0.0"]
