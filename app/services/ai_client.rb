@@ -1,7 +1,15 @@
 class AiClient
   class AuthenticationError < StandardError; end
   class RateLimitError < StandardError; end
-  class UnreadableDocumentError < StandardError; end
+  # raw: the provider's response, kept on the run so a bad answer can be inspected.
+  class UnreadableDocumentError < StandardError
+    attr_reader :raw
+
+    def initialize(message = nil, raw: nil)
+      super(message)
+      @raw = raw
+    end
+  end
   class ProviderError < StandardError; end
 
   # fields: { name => { type: :string | :number | :integer, enum: [...] (optional) } }
@@ -57,6 +65,13 @@ class AiClient
   end
 
   def extract_timeout = EXTRACT_TIMEOUT
+
+  public
+
+  # Longest image edge the provider should get; smaller inputs keep local models within context.
+  def max_image_edge = 2000
+
+  private
 
   # JSON Schema for the extraction: every field is { value, confidence, evidence }.
   def json_schema(fields)

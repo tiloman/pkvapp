@@ -94,13 +94,41 @@ RSpec.describe AiClient::Local do
   it 'renders a pdf into one image per page' do
     pdf = Struct.new(:content_type, :download).new('application/pdf', '%PDF')
     pages = [DocumentPages::Page.new('image/png', 'a'), DocumentPages::Page.new('image/png', 'b')]
-    allow(DocumentPages).to receive(:call).with(pdf).and_return(pages)
+    allow(DocumentPages).to receive(:call).with(pdf, dpi: 110, max_pages: 2).and_return(pages)
     stub = stub_request(:post, url).with { |req|
       JSON.parse(req.body)['messages'][0]['content'].count { |c| c['type'] == 'image_url' } == 2
     }.to_return(status: 200, headers: json, body: completion(extraction.to_json))
 
     described_class.new.extract(document: pdf, fields: fields, instructions: 'Lies.')
     expect(stub).to have_been_requested
+  end
+
+  it 'reads json wrapped in code fences or in a sentence' do
+    fenced = "```json\n#{extraction.to_json}\n```"
+    stub_request(:post, url).to_return(status: 200, headers: json, body: completion(fenced))
+    expect(extract.fields).to eq(extraction)
+
+    chatty = "Hier ist das Ergebnis: #{extraction.to_json} Viel Erfolg!"
+    stub_request(:post, url).to_return(status: 200, headers: json, body: completion(chatty))
+    expect(extract.fields).to eq(extraction)
+  end
+
+  it 'explains a cut-off answer and keeps the response for inspection' do
+    body = { choices: [{ finish_reason: 'length', message: { content: '{"total_amount": {"value": 4' } }] }
+    stub_request(:post, url).to_return(status: 200, headers: json, body: body.to_json)
+
+    expect { extract }.to raise_error(AiClient::UnreadableDocumentError, /abgeschnitten.*OLLAMA_CONTEXT_LENGTH/m) { |e|
+      expect(e.raw.dig('choices', 0, 'finish_reason')).to eq('length')
+    }
+  end
+
+  it 'sends smaller inputs than the cloud providers' do
+    expect(described_class.new(setting).max_image_edge).to be < AiClient::Claude.new('k').max_image_edge
+    pdf = Struct.new(:content_type, :download).new('application/pdf', '%PDF')
+    expect(DocumentPages).to receive(:call).with(pdf, dpi: 110, max_pages: 2)
+                                           .and_return([DocumentPages::Page.new('image/png', 'a')])
+    stub_request(:post, url).to_return(status: 200, headers: json, body: completion(extraction.to_json))
+    described_class.new(setting).extract(document: pdf, fields: fields, instructions: 'Lies.')
   end
 
   it 'raises for empty or invalid model output' do

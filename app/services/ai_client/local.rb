@@ -5,6 +5,9 @@ class AiClient
   class Local < AiClient
     LOCAL_TIMEOUT = 300
     CHECK_TIMEOUT = 5
+    PDF_DPI = 110
+    PDF_PAGES = 2
+    IMAGE_EDGE = 1400
 
     Check = Struct.new(:models, :model_available, keyword_init: true)
 
@@ -16,6 +19,9 @@ class AiClient
       super(setting.api_key.presence)
       @setting = setting
     end
+
+    # Small models have small context windows; every image costs a lot of it.
+    def max_image_edge = IMAGE_EDGE
 
     # Cheap reachability test for the settings page: lists the models the server offers.
     def check
@@ -43,7 +49,7 @@ class AiClient
     end
 
     def extract_body(document, fields, instructions)
-      images = DocumentPages.call(document).map do |page|
+      images = DocumentPages.call(document, dpi: PDF_DPI, max_pages: PDF_PAGES).map do |page|
         { type: 'image_url', image_url: { url: "data:#{page.content_type};base64,#{Base64.strict_encode64(page.data)}" } }
       end
       {
@@ -58,17 +64,37 @@ class AiClient
     def parse_extraction(body)
       raise ProviderError, "#{provider_name}: Der Server antwortet nicht im OpenAI-Format." unless body.is_a?(Hash)
 
-      text = body.dig('choices', 0, 'message', 'content')
-      raise UnreadableDocumentError, 'Das lokale Modell hat keine Felder zurückgegeben.' if text.blank?
-
-      fields = JSON.parse(text)
-      raise UnreadableDocumentError, 'Das lokale Modell hat ungültige Felder zurückgegeben.' unless fields.is_a?(Hash)
+      choice = body.dig('choices', 0) || {}
+      text = choice.dig('message', 'content')
+      fields = parse_json_object(text)
+      raise UnreadableDocumentError.new(unreadable_message(choice, text), raw: body) unless fields
 
       usage = body['usage'] || {}
       Result.new(fields: fields, model: body['model'] || model,
                  input_tokens: usage['prompt_tokens'], output_tokens: usage['completion_tokens'], raw: body)
-    rescue JSON::ParserError
-      raise UnreadableDocumentError, 'Das lokale Modell hat ungültiges JSON zurückgegeben.'
+    end
+
+    # Models sometimes wrap the object in ```json fences or add a sentence around it.
+    def parse_json_object(text)
+      candidates = [text.to_s.strip, text.to_s[/\{.*\}/m]].compact
+      candidates.each do |candidate|
+        parsed = JSON.parse(candidate.sub(/\A```(?:json)?\s*/i, '').sub(/\s*```\z/, ''))
+        return parsed if parsed.is_a?(Hash)
+      rescue JSON::ParserError
+        next
+      end
+      nil
+    end
+
+    def unreadable_message(choice, text)
+      Rails.logger.warn("Local model returned no usable JSON (finish_reason=#{choice['finish_reason']}): #{text.to_s.truncate(500)}")
+      return 'Das lokale Modell hat nichts zurückgegeben.' if text.blank?
+      if choice['finish_reason'] == 'length'
+        return 'Die Antwort des lokalen Modells wurde abgeschnitten. Meist ist die Kontextlänge zu klein ' \
+               '(Ollama: OLLAMA_CONTEXT_LENGTH=8192 setzen) oder das Bild zu groß.'
+      end
+
+      'Das lokale Modell hat ungültiges JSON zurückgegeben.'
     end
 
     # Local servers explain themselves (unknown model, no vision support); pass that on.

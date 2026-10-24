@@ -3,7 +3,7 @@ require_relative 'ai_run_helpers'
 
 RSpec.describe ExtractBill do
   let(:user) { FactoryBot.create(:user) }
-  let(:client) { instance_double(AiClient::Claude) }
+  let(:client) { instance_double(AiClient::Claude, max_image_edge: 2000) }
   let(:run) { create_run(user, status: 'processing', output: {}) }
   let(:result) do
     AiClient::Result.new(fields: bill_output, model: 'claude-x', input_tokens: 10, output_tokens: 5, raw: { 'id' => 'msg' })
@@ -45,6 +45,15 @@ RSpec.describe ExtractBill do
     run.update!(provider: 'gemini')
     expect(described_class.call(ai_run: run)).to be_a_failure
     expect(run.reload).to be_failed
+  end
+
+  it 'keeps the unreadable answer on the failed run for inspection' do
+    raw = { 'choices' => [{ 'message' => { 'content' => 'Hier ist keine Rechnung' } }] }
+    allow(client).to receive(:extract).and_raise(AiClient::UnreadableDocumentError.new('kaputt', raw: raw))
+
+    expect(described_class.call(ai_run: run)).to be_a_failure
+    expect(run.reload.raw_response).to eq(raw)
+    expect(run.error_message).to eq('kaputt')
   end
 
   it 'fails the run when the stored file is gone' do

@@ -2,7 +2,6 @@ class ExtractBill
   include Interactor
 
   PROMPT_VERSION = 'bill-v1'.freeze
-  MAX_IMAGE_EDGE = 2000
   RESIZABLE_TYPES = %w[image/jpeg image/png].freeze
 
   FIELDS = {
@@ -37,13 +36,16 @@ class ExtractBill
     client = run.user.ai_client_for(run.provider)
     return fail_run(run, 'Keine KI-Integration für diesen Anbieter eingerichtet.') unless client
 
-    result = client.extract(document: prepared_document(run.document), fields: FIELDS, instructions: INSTRUCTIONS)
+    result = client.extract(document: prepared_document(run.document, client.max_image_edge), fields: FIELDS,
+                            instructions: INSTRUCTIONS)
     run.transition_to!('proposed', output: result.fields, raw_response: result.raw, model: result.model,
                                    input_tokens: result.input_tokens, output_tokens: result.output_tokens,
                                    prompt_version: PROMPT_VERSION, error_message: nil)
   rescue Interactor::Failure, AiClient::RateLimitError
     raise # the first is our own fail!, the second is retried by the job
-  rescue AiClient::AuthenticationError, AiClient::UnreadableDocumentError, AiClient::ProviderError => e
+  rescue AiClient::UnreadableDocumentError => e
+    fail_run(run, e.message, raw: e.raw)
+  rescue AiClient::AuthenticationError, AiClient::ProviderError => e
     fail_run(run, e.message)
   rescue ActiveStorage::FileNotFoundError
     fail_run(run, 'Die Datei fehlt im Speicher und kann nicht gelesen werden. Bitte lade sie neu hoch.')
@@ -58,16 +60,16 @@ class ExtractBill
 
   PreparedDocument = Struct.new(:content_type, :download)
 
-  def fail_run(run, message)
-    run.transition_to!('failed', error_message: message)
+  def fail_run(run, message, raw: nil)
+    run.transition_to!('failed', error_message: message, raw_response: raw)
     context.fail!(error: message)
   end
 
   # Large photos are scaled down before upload; falls back to the original.
-  def prepared_document(document)
+  def prepared_document(document, edge)
     return document unless RESIZABLE_TYPES.include?(document.content_type)
 
-    variant = document.variant(resize_to_limit: [MAX_IMAGE_EDGE, MAX_IMAGE_EDGE]).processed
+    variant = document.variant(resize_to_limit: [edge, edge]).processed
     PreparedDocument.new(document.content_type, variant.download)
   rescue StandardError => e
     Rails.logger.warn("AI image resize skipped: #{e.class}: #{e.message}")

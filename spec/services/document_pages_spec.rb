@@ -26,6 +26,15 @@ RSpec.describe DocumentPages do
     expect(Open3).to have_received(:capture3).with('pdftoppm', '-png', '-r', '150', '-l', '4', anything, anything)
   end
 
+  it 'honours dpi and page limit' do
+    allow(Open3).to receive(:capture3) do |*args|
+      File.binwrite("#{args.last}-1.png", 'p')
+      ['', '', ok]
+    end
+    described_class.call(document('application/pdf'), dpi: 100, max_pages: 2)
+    expect(Open3).to have_received(:capture3).with('pdftoppm', '-png', '-r', '100', '-l', '2', anything, anything)
+  end
+
   it 'raises UnreadableDocumentError when pdftoppm fails' do
     allow(Open3).to receive(:capture3).and_return(['', 'Syntax Error', failed])
     expect { described_class.call(document('application/pdf')) }.to raise_error(AiClient::UnreadableDocumentError)
